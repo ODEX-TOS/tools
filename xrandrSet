@@ -1,0 +1,23 @@
+#!/bin/bash
+
+
+primary=$(xrandr -q | grep primary | awk '{print $1}')
+
+echo "This only works if you have one other display connected"
+
+secondary=$(xrandr -q | grep -e ' connected' | awk '{print $1}' | tail -n1)
+
+sizePrimary=$(xrandr | awk -v monitor="^$primary connected" '/connected/ {p = 0}$0 ~ monitor {p = 1}p' | head -n2 | tail -n1 | awk '{print $1}')
+
+sizeSecondary=$(xrandr | awk -v monitor="^$secondary connected" '/connected/ {p = 0}$0 ~ monitor {p = 1} p' | head -n2 | tail -n1 | awk '{print $1}')
+
+echo ""
+
+echo "primary monitor - $primary: $sizePrimary"
+echo "secondary monitor - $secondary: $sizeSecondary"
+
+echo ""
+
+echo "The default action is duplicate"
+ 
+xrandr --output $primary --rate 60 --mode $sizePrimary --fb $sizePrimary --panning $sizePrimary --output $secondary --mode $sizeSecondary --same-as $primary

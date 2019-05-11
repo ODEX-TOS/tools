@@ -1,0 +1,8 @@
+#!/bin/bash
+
+answer=$(echo -e "Yes\nNo" | rofi -dmenu -font 'Fira Code 10' -p "$1")
+
+if [ "$answer" == "Yes" ]; then
+    eval $2
+fi
+

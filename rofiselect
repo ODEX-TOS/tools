@@ -1,0 +1,13 @@
+#!/bin/bash
+
+prompt=$(ls /home/$USER/bin/rofi | awk "!/^askpass/" | sort)
+
+sol=$(echo -e "$prompt" | rofi -dmenu -p 'Select subscript' -font 'Fira Code 10')
+
+for i in $(ls /home/$USER/bin/rofi)
+do
+    if [ "$i" == "$sol" ];
+    then
+            eval "/home/$USER/bin/rofi/$i"
+    fi
+done

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rofiquestion "Do you want to poweroff" "sudo -A shutdown now"

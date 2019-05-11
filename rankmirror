@@ -1,0 +1,29 @@
+#!/bin/bash
+
+mirrors=273
+
+echo "You have $(cat /etc/pacman.d/mirrorlist | awk '$0 ~ /^Server|^#Server/{print $0}' | wc -l) servers in your /etc/pacmand.d/mirrorlist"
+read -p "You need to manually make sure your mirrorlist contains all servers otherwise copy over a backup found in /etc/pacman.d/*.backup. Understood (Y/N)"  
+datetime=$(date| tr ' ' '-')
+
+sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist$datetime.backup
+
+ls /etc/pacman.d/mirrorlist*
+
+sudo sed -i 's/^#Server/Server/' /etc/pacman.d/mirrorlist$datetime.backup
+
+echo "Finding the top $mirrors mirrors and moving them too the top"
+
+sudo sh -c "rankmirrors -n $mirrors /etc/pacman.d/mirrorlist$datetime.backup > /etc/pacman.d/mirrorlist"
+
+
+
+echo "Done finding the mirrors"
+
+echo "Test pacman to check if everything still works"
+
+echo "If nothing works run this command:"
+
+echo "mv /etc/pacman.d/mirrorlist$datetime.backup /etc/pacman.d/mirrolist"
+
+
