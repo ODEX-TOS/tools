@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rofiquestion "Do you wish to hibernate?" "sudo -A systemctl hibernate"
