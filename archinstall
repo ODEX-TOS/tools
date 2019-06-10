@@ -12,7 +12,7 @@ read -r -p "Do you wish to continue? y/n" entry
 
 device="/dev/"$( ls /dev/sd* | grep -E 'sd[a-z]$' | sort | head -n1)
 
-function loadkeys {
+function loadkbd {
     read -r -p "What is your local language? (default be-latin1)" lang
 
     if [[ "$lang" == "" ]]; then
@@ -129,7 +129,7 @@ if [[ "$entry" == "y" ]]; then
         
         sleep 5
         
-        loadkeys
+        loadkbd
         partition
         crypto
         format
