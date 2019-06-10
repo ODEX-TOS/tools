@@ -26,7 +26,7 @@ function loadkbd {
 
 
 function partition {
-    parted "$device" <<EOF
+    parted -s "$device" <<EOF
         mklabel gpt
         mkpart ESP fat32 1MiB 200MiB
         set 1 boot on
@@ -39,7 +39,7 @@ function partition {
         set 3 lvm on
         name 3 lvm
         print
-        exit
+        quit
 EOF
 }
 
@@ -52,7 +52,7 @@ function crypto {
     cryptsetup luksFormat -v -s 512 -h sha512 "$device"3
     
     echo "Opening encrypted drive"
-    cryptopen "$device"3 luks_lvm
+    cryptsetup open "$device"3 luks_lvm
 
     echo "Creating volumes"
 
