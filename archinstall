@@ -1,0 +1,145 @@
+#!/bin/bash
+
+echo "Build and maintained by Tom Meyers"
+
+echo "You are about to install arch using this automated script"
+
+echo "This install script will try to load the custom arch linux build by Tom"
+
+echo "Its features are LUKS encrypted drives, custom zsh, i3wm and more"
+
+read -r -p "Do you wish to continue? y/n" entry
+
+device="/dev/"$( ls /dev/sd* | grep -E 'sd[a-z]$' | sort | head -n1)
+
+function loadkeys {
+    read -r -p "What is your local language? (default be-latin1)" lang
+
+    if [[ "$lang" == "" ]]; then
+            lang="be-latin1"
+    fi
+    
+    echo "Setting up language"
+    loadkeys $lang
+
+}
+
+
+function partition {
+    parted "$device" <<EOF
+        mklabel gpt
+        mkpart ESP fat32 1MiB 200MiB
+        set 1 boot on
+        name 1 efi
+
+        mkpart primary 200MiB 800MiB
+        name 2 boot
+
+        mkpart primary 800MiB 100%
+        set 3 lvm on
+        name 3 lvm
+        print
+        exit
+EOF
+}
+
+function crypto {
+    echo "loading in crypto kernel modules"
+    modprobe dm-crypt
+    modprobe dm-mod
+
+    echo "Setting up the LUKS encryption"
+    cryptsetup luksFormat -v -s 512 -h sha512 "$device"3
+    
+    echo "Opening encrypted drive"
+    cryptopen "$device"3 luks_lvm
+
+    echo "Creating volumes"
+
+    pvcreate /dev/mapper/luks_lvm
+    vgcreate arch /dev/mapper/luks_lvm
+
+    lvcreate -n home -L 200G arch
+    lvcreate -n root -L 250G arch
+    lvcreate -n swap -L 8G -C y arch
+}
+
+# This function needs to be called after setting up the logic volumes
+function format {
+
+    echo "Formatting partitions"
+    
+    mkfs.fat -F32 "$device"1
+    mkfs.ext4 "$device"2
+    mkfs.ext4 -L root /dev/mapper/arch-root
+    mkfs.ext4 -L home /dev/mapper/arch-home
+    mkswap /dev/mapper/arch-swap
+
+}
+
+function mounting {
+        echo "Initiating mounting attempt"
+        
+        swapon /dev/mapper/arch-swap
+        swapon -a
+        swapon -s
+        mount /dev/mapper/arch-root /mnt
+        mkdir -p /mnt/{home,boot}
+        mount "$device"2 /mnt/boot
+        mount /dev/mapper/arch-home /mnt/home
+        mkdir /mnt/boot/efi
+        mount "$device"1 /mnt/boot/efi
+
+        echo "Verify if the mounting is succesfull"
+        lsblk -f
+        read -r -p "Press enter to continue"
+}
+
+function wifi {
+    echo "Trying to get network connection in order to complete the next steps"
+
+    wifi-menu
+}
+
+function basesystem {
+    pacstrap /mnt base base-devel efibootmgr vim dialog xterm grub --noconfirm
+    genfstav -U -p /mnt > /mnt/etc/fstab
+    arch-chroot /mnt /bin/bash
+    
+    #TODO instead of specifing the entire HOOKS array only append encrypt and lvm2 to it
+    echo "Changing mkinitcpio"
+    sed -i '/^HOOKS/c\HOOKS=(base udev autodetect modconf block encrypt lvm2 filesystems keyboard fsck)' /etc/mkinitcpio.conf    
+
+    mkinitcpio -v -p linux
+
+    pacman -s grub --noconfirm
+
+    grub-install --efi-directory /boot/efi
+
+    sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet resume=/dev/mapper/swa cryptdevice='$device'3:luks_lvm"' /etc/default/grub
+
+    grub-mkconfig -o /boot/grub/grub.cfg
+
+    grub-mkconfig -o /boot/efi/EFI/arch/grub.cfg
+}
+
+if [[ "$entry" == "y" ]]; then
+        echo "You have 5 seconds before we start altering the hard drive"
+        echo "If you wish to abort now use CTRL-C otherwise we will start to change the partition table and install a custom Arch Linux install"
+        
+        sleep 5
+        
+        loadkeys
+        partition
+        crypto
+        format
+        mounting
+        wifi
+        basesystem
+        
+        echo "Base arch Linux is installed"
+        read -r -p "Do you wish to install the custom version for arch?"
+fi
+
+
+
