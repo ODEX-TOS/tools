@@ -58,10 +58,14 @@ function crypto {
 
     pvcreate /dev/mapper/luks_lvm
     vgcreate arch /dev/mapper/luks_lvm
+    
+    read -r -p "How big should your home partition be? (in Gigabytes)" home
+    read -r -p "How big should your root partition be? (in Gigabytes)" root
+    read -r -p "How big should your swap partition be? (in Gigabytes)" swap
 
-    lvcreate -n home -L 200G arch
-    lvcreate -n root -L 250G arch
-    lvcreate -n swap -L 8G -C y arch
+    lvcreate -n home -L "$home"G arch
+    lvcreate -n root -L "$root"G arch
+    lvcreate -n swap -L "$swap"G -C y arch
 }
 
 # This function needs to be called after setting up the logic volumes
@@ -97,33 +101,39 @@ function mounting {
 
 function wifi {
     echo "Trying to get network connection in order to complete the next steps"
-
-    wifi-menu
+    if [[ $(ping -c1 1.1.1.1 | grep "0% packet loss") == "" ]]; then
+        wifi-menu
+    fi
 }
 
 function basesystem {
     pacstrap /mnt base base-devel efibootmgr vim dialog xterm grub --noconfirm
-    genfstav -U -p /mnt > /mnt/etc/fstab
+    genfstab -U -p /mnt > /mnt/etc/fstab
     arch-chroot /mnt /bin/bash
-    
+}
+
+function chrootfunc {
     #TODO instead of specifing the entire HOOKS array only append encrypt and lvm2 to it
     echo "Changing mkinitcpio"
     sed -i '/^HOOKS/c\HOOKS=(base udev autodetect modconf block encrypt lvm2 filesystems keyboard fsck)' /etc/mkinitcpio.conf    
 
     mkinitcpio -v -p linux
 
-    pacman -s grub --noconfirm
+    pacman -S grub --noconfirm
+    
 
-    grub-install --efi-directory /boot/efi
+    
 
     sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet resume=/dev/mapper/swa cryptdevice='$device'3:luks_lvm"' /etc/default/grub
-
+    
+    grub-install --efi-directory /boot/efi --force "$device"
+    
     grub-mkconfig -o /boot/grub/grub.cfg
 
-    grub-mkconfig -o /boot/efi/EFI/arch/grub.cfg
+
 }
 
-if [[ "$entry" == "y" ]]; then
+if [[ "$entry" == "y" && "$1" != "base" ]]; then
         echo "You have 5 seconds before we start altering the hard drive"
         echo "If you wish to abort now use CTRL-C otherwise we will start to change the partition table and install a custom Arch Linux install"
         
@@ -141,5 +151,7 @@ if [[ "$entry" == "y" ]]; then
         read -r -p "Do you wish to install the custom version for arch?"
 fi
 
-
+if [[ "$1" == "base" ]]; then
+        chrootfunc
+fi
 
