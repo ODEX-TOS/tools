@@ -33,15 +33,11 @@ function partition {
         mkpart ESP fat32 1MiB 200MiB
         set 1 boot on
         name 1 efi
-
         mkpart primary 200MiB 800MiB
         name 2 boot
-
         mkpart primary 800MiB 100%
         set 3 lvm on
         name 3 lvm
-        print
-        quit
 EOF
 }
 
@@ -114,7 +110,7 @@ function basesystem {
 
     #TODO: Don't hardcode this filename. Try to find it 
     cp archinstall /mnt/archinstall
-    arch-chroot /mnt /bin/bash archinstall
+    arch-chroot /mnt /bin/bash archinstall base
 }
 
 function chrootfunc {
@@ -146,7 +142,7 @@ function default {
    hwclock --systohc
    echo "Uncomment every local that you need in your system"
    sleep 5
-   nano /etc/local.gen
+   nano /etc/locale.gen
    locale-gen
    echo "LANG=<language.UTF_8> # give a language_region.UTF-8 here eq en_US.utf-8" > /etc/locale.conf
    nano /etc/locale.conf
@@ -164,17 +160,61 @@ function default {
 }
 
 
+function user {
+    pacman -Syu git sudo base-devel
+
+    echo "Uncomment the line containing %wheel"
+    sleep 3
+    EDITOR=nano visudo
+
+    read -r -p "What is your username?"
+    useradd -m -g users -G audio,lp,optical,storage,video,wheel,games, power, -s /bin/bash "$username"
+    passwd "$username"
+    su "$username" -c /archinstall user
+}
+
 function download {
     echo "Downloading"
+    #installing aur helper
+    cd
+    git clone https://aur.archlinux.org/yay.git
+    cd yay
+    makepkg -si
+    cd
+    rm -rf yay
+
+    #installing zsh packages
+    yay -Syu zsh zsh-autosuggestions zsh-syntax-highlighting
+    
+    #installing x-server
+    yay -Syu xorg-fonts-type1 xorg-server xorg-xbacklight xorg-xclipboard xorg-xinit xorg-xinput xorg-xprop xorg-xrandr xclip
+
+    #installing fonts
+    yay -Syu ttf-bitstream-vera ttf-computer-modern-fonts ttf-emojione ttf-fira-code ttf-fira-mono ttf-inconsolata ttf-liberation ttf-linux-libertine ttf-monoid ttf-symbola sdl_ttf siji-git noto-fonts nerd-fonts-complete font-bitstreal-speedo font-bh-ttf bdf-unifont
+
+    #installing i3 with graphical programs
+    yay -Syu vim bluez ccat compton docker docker-compose dunst feh firefox-developer-edition gimp glances i3-gaps i3lock-next-git lsd neofetch pavucontrol polybar-git pulseaudio python-pip r8152-dkms rofi screen xf86-input-mouse xf86-video-intel visual-studio-code-insiders zathura playerctl nm-connection-editor networkmanager netctl
+    #installing 
+
 }
 
 
 function gitclone {
     echo "Installing Tom's custom scripts"
+    cd
+    git clone https://github.com/F0xedb/helper-scripts.git bin
+    cd
+    git clone https://github.com/F0xedb/dotfiles .config
+    # TODO symlink these files don't move them
+    mv .config/.zshrc ~
+    mv .config/.vimrc ~
+    mv .config/.Xresources
 }
 
 function tom {
     echo "Executing Tom's custom scripts"
+    # TODO: Add i3 to the xinitrc startup script
+    # TODO: Explain basic functionality to the end user
 }
 
 if [[ "$entry" == "y" && "$1" != "base" ]]; then
@@ -202,9 +242,13 @@ if [[ "$1" == "base" ]]; then
 
         if [[ "$result" == "y" ]]; then
             default
-            download
-            gitclone
-            tom
+            user
         fi
+fi
+
+if [[ "$1" == "user" ]]; then
+    download
+    gitclone
+    tom
 fi
 
