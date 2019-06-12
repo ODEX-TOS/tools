@@ -165,13 +165,16 @@ function default {
 
 
 function download {
+    echo "Downloading"
 }
 
 
 function gitclone {
+    echo "Installing Tom's custom scripts"
 }
 
 function tom {
+    echo "Executing Tom's custom scripts"
 }
 
 if [[ "$entry" == "y" && "$1" != "base" ]]; then
