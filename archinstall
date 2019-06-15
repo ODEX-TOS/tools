@@ -228,6 +228,9 @@ function gitclone {
     mv .config/.Xresources ~
     cd ~/.oh-my-zsh
     git clone https://github.com/F0xedb/zsh-load load
+    cd
+    rmdir Pictures
+    git clone https://github.com/F0xedb/Pictures Pictures
 }
 
 function tom {
