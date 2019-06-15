@@ -163,14 +163,14 @@ function default {
 function user {
     pacman -Syu git sudo base-devel
 
-    echo "Uncomment the line containing %wheel"
+    echo "Uncomment the line containing %wheel NOPASSWD"
     sleep 3
     EDITOR=nano visudo
 
-    read -r -p "What is your username?"
-    useradd -m -g users -G audio,lp,optical,storage,video,wheel,games, power, -s /bin/bash "$username"
-    passwd "$username"
-    su "$username" -c /archinstall user
+    read -r -p "What is your username?" usrname
+    useradd -m -g users -G audio,lp,optical,storage,video,wheel,games, power, -s /bin/bash "$usrname"
+    passwd "$usrname"
+    su "$usrname" -c /archinstall user
 }
 
 function download {
@@ -194,7 +194,18 @@ function download {
 
     #installing i3 with graphical programs
     yay -Syu vim bluez ccat compton docker docker-compose dunst feh firefox-developer-edition gimp glances i3-gaps i3lock-next-git lsd neofetch pavucontrol polybar-git pulseaudio python-pip r8152-dkms rofi screen xf86-input-mouse xf86-video-intel visual-studio-code-insiders zathura playerctl nm-connection-editor networkmanager netctl
-    #installing 
+    
+    sudo systemctl enable NetworkManager
+
+    # installing st terminal
+
+    git clone https://github.com/F0xedb/sucklessterminal
+    cd sucklessterminal
+    make && sudo make install
+
+    # update font configuration
+
+    # install vim theme and plugins
 
 }
 
@@ -214,7 +225,13 @@ function gitclone {
 function tom {
     echo "Executing Tom's custom scripts"
     # TODO: Add i3 to the xinitrc startup script
+    echo "exec i3" >> ~/.xinitrc
     # TODO: Explain basic functionality to the end user
+    echo "You now have a complete arch linux install working as advertised."
+    echo "To use your computer log in via the terminal"
+    echo "After that is complete you can type in startx to start your graphical environment"
+    echo "To navigate around look in the dotfiles repo of F0xedb"
+    echo "Good luck on your arch linux journey!"
 }
 
 if [[ "$entry" == "y" && "$1" != "base" ]]; then
