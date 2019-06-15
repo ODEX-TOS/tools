@@ -188,6 +188,11 @@ function download {
 
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     
+    git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+    git clone https://github.com/zsh-users/zsh-completions.git ~/.oh-my-zsh/custom/plugins/zsh-completions
+
+
     #installing x-server
     yay -Syu xorg-fonts-type1 xorg-server xorg-xbacklight xorg-xclipboard xorg-xinit xorg-xinput xorg-xprop xorg-xrandr xclip
 
@@ -235,9 +240,13 @@ function gitclone {
 
 function tom {
     echo "Executing Tom's custom scripts"
-    # TODO: Add i3 to the xinitrc startup script
+    
     echo "xrdb ~/.Xresources\nexec i3" >> ~/.xinitrc
-    # TODO: Explain basic functionality to the end user
+    
+    mkdir -p ~/.vim/colors
+    touch ~/.vim.colors/badwolf.vim
+    curl https://bitbucket.org/sjl/badwolf/raw/tip/colors/badwolf.vim > ~/.vim/colors/badwolf.vim
+    
     echo "You now have a complete arch linux install working as advertised."
     echo "To use your computer log in via the terminal"
     echo "After that is complete you can type in startx to start your graphical environment"
