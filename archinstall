@@ -185,6 +185,8 @@ function download {
 
     #installing zsh packages
     yay -Syu zsh zsh-autosuggestions zsh-syntax-highlighting
+
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     
     #installing x-server
     yay -Syu xorg-fonts-type1 xorg-server xorg-xbacklight xorg-xclipboard xorg-xinit xorg-xinput xorg-xprop xorg-xrandr xclip
@@ -197,7 +199,8 @@ function download {
 
     #installing i3 with graphical programs
     yay -Syu vim bluez ccat compton docker docker-compose dunst feh firefox-developer-edition gimp glances i3-gaps i3lock-next-git lsd neofetch pavucontrol polybar-git pulseaudio python-pip r8152-dkms rofi screen xf86-input-mouse xf86-video-intel visual-studio-code-insiders zathura playerctl nm-connection-editor networkmanager netctl
-    
+
+    sudo pip install dbus-python    
     sudo systemctl enable NetworkManager
 
     # installing st terminal
@@ -222,13 +225,13 @@ function gitclone {
     # TODO symlink these files don't move them
     mv .config/.zshrc ~
     mv .config/.vimrc ~
-    mv .config/.Xresources
+    mv .config/.Xresources ~
 }
 
 function tom {
     echo "Executing Tom's custom scripts"
     # TODO: Add i3 to the xinitrc startup script
-    echo "exec i3" >> ~/.xinitrc
+    echo "xrdb ~/.Xresources\nexec i3" >> ~/.xinitrc
     # TODO: Explain basic functionality to the end user
     echo "You now have a complete arch linux install working as advertised."
     echo "To use your computer log in via the terminal"
