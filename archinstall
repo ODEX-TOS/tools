@@ -192,6 +192,9 @@ function download {
     #installing fonts
     yay -Syu ttf-bitstream-vera ttf-computer-modern-fonts ttf-emojione ttf-fira-code ttf-fira-mono ttf-inconsolata ttf-liberation ttf-linux-libertine ttf-monoid ttf-symbola sdl_ttf siji-git noto-fonts nerd-fonts-complete font-bitstreal-speedo font-bh-ttf bdf-unifont
 
+    # This needs to be installed for polybar-git to work
+    yay -Syu jsoncpp
+
     #installing i3 with graphical programs
     yay -Syu vim bluez ccat compton docker docker-compose dunst feh firefox-developer-edition gimp glances i3-gaps i3lock-next-git lsd neofetch pavucontrol polybar-git pulseaudio python-pip r8152-dkms rofi screen xf86-input-mouse xf86-video-intel visual-studio-code-insiders zathura playerctl nm-connection-editor networkmanager netctl
     
