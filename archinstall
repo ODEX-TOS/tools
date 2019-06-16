@@ -28,17 +28,15 @@ function loadkbd {
 
 
 function partition {
-    parted -s "$device" <<EOF
-        mklabel gpt
-        mkpart ESP fat32 1MiB 200MiB
-        set 1 boot on
-        name 1 efi
-        mkpart primary 200MiB 800MiB
-        name 2 boot
-        mkpart primary 800MiB 100%
-        set 3 lvm on
-        name 3 lvm
-EOF
+     parted --script "$device" 'mklabel gpt'
+     parted --script "$device" 'mkpart ESP fat32 1MiB 200MiB'
+     parted --script "$device" 'set 1 boot on'
+     parted --script "$device" 'name 1 efi'
+     parted --script "$device" 'mkpart primary 200MiB 800MiB'
+     parted --script "$device" 'name 2 boot'
+     parted --script "$device" 'mkpart primary 800MiB 100%'
+     parted --script "$device" 'set 3 lvm on'
+     parted --script "$device" 'name 3 lvm'
 }
 
 function crypto {

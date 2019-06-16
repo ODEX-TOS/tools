@@ -45,15 +45,15 @@ function loadkbd {
 
 function partition {
     prmpt "Setting up disk partition"
-    parted --script "device" 'mklabel gpt'  
-    parted --script "device" 'mkpart ESP fat32 1MiB 200MiB'  
-    parted --script "device" 'set 1 boot on'  
-    parted --script "device" 'name 1 efi'  
-    parted --script "device" 'mkpart primary 200MiB 800MiB'  
-    parted --script "device" 'name 2 boot'  
-    parted --script "device" 'mkpart primary 800MiB 100%'  
-    parted --script "device" 'set 3 lvm on'  
-    parted --script "device" 'name 3 lvm'  
+    parted --script "$device" 'mklabel gpt'  
+    parted --script "$device" 'mkpart ESP fat32 1MiB 200MiB'  
+    parted --script "$device" 'set 1 boot on'  
+    parted --script "$device" 'name 1 efi'  
+    parted --script "$device" 'mkpart primary 200MiB 800MiB'  
+    parted --script "$device" 'name 2 boot'  
+    parted --script "$device" 'mkpart primary 800MiB 100%'  
+    parted --script "$device" 'set 3 lvm on'  
+    parted --script "$device" 'name 3 lvm'  
 }
 
 function crypto {
