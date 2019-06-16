@@ -4,7 +4,7 @@ file="$1"
 ext=$(echo $file | awk -F. '{print $NF}')
 
 #if the input is the current directory open it in vs code
-if [[ "$file" == "." ]]; then
+if [[ "$file" == "." || -d "$file" ]]; then
     code-insiders "$file" &> /dev/null & exit 0
 fi
 
