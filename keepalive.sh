@@ -3,26 +3,15 @@
 while true
 do
     live=$(ps -ax | grep polybar | awk '{print $6}')
-    bisMain=false
-    bIsWorkspaces=false
     for item in $live
     do
         if [ "$item" == "main" ]; then
-            bisMain=true
+            nohup polybar main &> /dev/null &
         fi
 
         if [ "$item" == "workspaces" ];then
-            bIsWorkspaces=true
+            nohup polybar workspace &> /dev/null &
         fi
     done
-
-    if [ "$bisMain" = false ]; then
-        nohup polybar main &> /dev/null &
-    fi
-
-    if [ "$bIsWorkspaces" = false ]; then
-        nohup polybar workspaces &> /dev/null &
-    fi
     sleep 5
-
 done
