@@ -84,10 +84,20 @@ function update {
 
 function installarch {
     printf  "${RED}Installing arch${NC}\n"
+    if [[ ! -f archinstall ]]; then
+        curl https://raw.githubusercontent.com/F0xedb/helper-scripts/master/archinstall
+        chmod +x archinstall
+    fi
+    ./archinstall 
 }
 
 function installarchdialog {
     printf "${RED}Installing arch via a dialog${NC}\n"
+    if [[ ! -f dialogarchinstall ]]; then
+        curl https://raw.githubusercontent.com/F0xedb/helper-scripts/master/dialogarchinstall
+        chmod +x dialogarchinstall
+    fi
+    ./dialogarchinstall 
 }
 
 
