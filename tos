@@ -9,16 +9,21 @@ ORANGE='\033[1;33m'
 NC='\033[0m' # No Color
 
 export SUDO_ASKPASS='$HOME/bin/rofi/askpass'
-name="$0"
-printf "$name"
+name=$(basename "$0")
 
 function help {
     printf "${ORANGE}$name${NC} ${RED}OPTIONS:${NC} (-h|-u|-i)|(-iso| -iso -g)\n"
-    printf " -h | --help \t show this help message\n"
-    printf " -u | --update \t update the entire base system, including AUR packages, config scripts and binaries.\n"
-    printf " -g \t $name -iso -g will install arch onto this sytem with a graphical interface\n"
-    printf " -iso \t install arch onto this system\n"
-    printf " -i | --install \t install packages from the main repository and AUR\n"
+    printf " -h | --help \t\t\t show this help message\n"
+    printf " -u | --update \t\t\t update the entire base system, including AUR packages, config scripts and binaries.\n"
+    printf " -g \t\t\t\t $name -iso -g will install arch onto this sytem with a graphical interface\n"
+    printf " -iso \t\t\t\t install arch onto this system\n"
+    printf " -i | --install \t\t install packages from the main repository and AUR\n"
+    
+    printf "\n\n${ORANGE}USAGE:${NC}\n"
+    printf "$name -u \t\t\t\t This will update your system\n"
+    printf "$name -i -Syu spectacle \t\t This will install the program called spectacle\n"
+    printf "$name -iso \t\t\t This will install a fresh copy of arch linux on your system. ${RED}Must be ran as root${NC}\n"
+    printf "$name -iso -g\t\t\t Same as above but in a graphical environment. ${RED}Must be ran as root${NC}\n"
 }
 
 function installyay {
