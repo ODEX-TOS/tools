@@ -100,7 +100,6 @@ function installarchdialog {
     ./dialogarchinstall 
 }
 
-
 case "$1" in
     ""|"-h"|"--help")
         help

@@ -15,6 +15,10 @@ read -r -p "Do you wish to continue? y/n" entry
 device=$( ls /dev/sd* | grep -E 'sd[a-z]$' | sort | head -n1)
 device2=$( ls /dev/nvme?n* | grep -E 'nvme[a-z0-9]*$' | sort | head -n1)
 
+part1="1"
+part2="2"
+part3="3"
+
 function ask {
     exec 3>&1;
     result=$(dialog --inputbox "$1" 0 0 "$2" 2>&1 1>&3);
@@ -31,6 +35,14 @@ function getdev {
     first=$(fdisk -l "$2" | grep -e "Disk .[a-zA-Z/]*: [0-9][0-9]*" | awk '{print $3, $4}')
     second=$(fdisk -l "$3" | grep -e "Disk .[a-zA-Z/]*: [0-9][0-9]*" | awk '{print $3, $4}')
     device=$(dialog --menu "$1" 0 0 0 "$2" "$first" "$3" "$second" 2>&1 1>&3);
+    
+    # the device is an nvme drive
+    if [[ "$device" == "$device2" ]]; then
+        part1="p1"
+        part2="p2"
+        part3="p3"
+    fi
+    
     exec 3>&-;
 }
 
@@ -62,10 +74,10 @@ function crypto {
     modprobe dm-mod
 
     prmpt "Setting up the LUKS encryption"
-    cryptsetup luksFormat -v -s 512 -h sha512 "$device"3
+    cryptsetup luksFormat -v -s 512 -h sha512 "$device"$part3
     
     prmpt "Opening encrypted drive"
-    cryptsetup open "$device"3 luks_lvm
+    cryptsetup open "$device"$part3 luks_lvm
 
     prmpt "Creating volumes"
 
@@ -94,8 +106,8 @@ function format {
 
     prmpt "Formatting partitions"
     
-    mkfs.fat -F32 "$device"1
-    mkfs.ext4 "$device"2
+    mkfs.fat -F32 "$device"$part1
+    mkfs.ext4 "$device"$part2
     mkfs.ext4 -L root /dev/mapper/arch-root
     mkfs.ext4 -L home /dev/mapper/arch-home
     mkswap /dev/mapper/arch-swap
@@ -110,10 +122,10 @@ function mounting {
         swapon -s
         mount /dev/mapper/arch-root /mnt
         mkdir -p /mnt/{home,boot}
-        mount "$device"2 /mnt/boot
+        mount "$device"$part2 /mnt/boot
         mount /dev/mapper/arch-home /mnt/home
         mkdir /mnt/boot/efi
-        mount "$device"1 /mnt/boot/efi
+        mount "$device"$part1 /mnt/boot/efi
 
         prmpt "Verify if the mounting is succesfull"
         lsblk -f
@@ -148,7 +160,7 @@ function chrootfunc {
 
     
 
-    sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet resume=/dev/mapper/swa cryptdevice='$device'3:luks_lvm"' /etc/default/grub
+    sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet resume=/dev/mapper/swa cryptdevice='$device'$part3:luks_lvm"' /etc/default/grub
     
     grub-install --efi-directory /boot/efi --force "$device"
     
