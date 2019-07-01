@@ -191,7 +191,7 @@ case "$1" in
     ;;
     "-cw"|"--connect-wifi")
         if [[ "$2" != "" ]]; then
-            nmcli dev wifi connect $2
+            nmcli dev wifi connect -a "${@:2}"
         fi
 
     ;;
