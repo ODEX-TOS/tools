@@ -163,9 +163,9 @@ function update {
     cd ~/.oh-my-zsh/load && git pull origin master
     cd
 
-
-    if [[ ! -f "$fpath[1]"_tos ]]; then
-        curl https://raw.githubusercontent.com/F0xedb/tos-live/master/_tos -o "$fpath[1]"/_tos
+    tospath="$HOME/.oh-my-zsh/custom/plugins/zsh-completions/src/"
+    if [[ ! -f "$tospath"_tos ]]; then
+        curl https://raw.githubusercontent.com/F0xedb/tos-live/master/_tos -o "$tospath"_tos
     fi
     
 }
