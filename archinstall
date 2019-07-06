@@ -107,7 +107,7 @@ function basesystem {
     genfstab -U -p /mnt > /mnt/etc/fstab
 
     #TODO: Don't hardcode this filename. Try to find it 
-    cp archinstall /mnt/archinstall
+    cp "$0" /mnt/archinstall
     arch-chroot /mnt /bin/bash archinstall base
 }
 
@@ -201,7 +201,7 @@ function download {
     yay -Syu jsoncpp
 
     #installing i3 with graphical programs
-    yay -Syu vim bluez ccat compton docker docker-compose dunst feh firefox-developer-edition gimp glances i3-gaps i3lock-next-git lsd neofetch pavucontrol polybar-git pulseaudio python-pip r8152-dkms rofi screen xf86-input-mouse xf86-video-intel visual-studio-code-insiders zathura playerctl nm-connection-editor networkmanager netctl openssh arandr
+    yay -Syu vim bluez ccat compton docker docker-compose dunst feh firefox-developer-edition gimp glances i3-gaps i3lock-next-git lsd neofetch pavucontrol polybar-git pulseaudio python-pip r8152-dkms rofi screen xf86-input-mouse xf86-video-intel visual-studio-code-insiders zathura playerctl nm-connection-editor networkmanager netctl openssh arandr mono
 
     sudo pip install dbus-python    
     sudo systemctl enable NetworkManager
@@ -244,6 +244,15 @@ function tom {
     mkdir -p ~/.vim/colors
     touch ~/.vim/colors/badwolf.vim
     curl https://bitbucket.org/sjl/badwolf/raw/tip/colors/badwolf.vim > ~/.vim/colors/badwolf.vim
+
+    #installing vundle
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    
+    #Cloning plugin
+    git clone https://github.com/ycm-core/YouCompleteMe.git ~/.vim/bundle/YouCompleteMe
+    
+    cd ~/.vim/bundle/YouCompleteMe
+    python3 install.py --all
     
     echo "You now have a complete arch linux install working as advertised."
     echo "To use your computer log in via the terminal"
