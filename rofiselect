@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rofidir= "$HOME/bin/rofi"
+rofidir="$HOME/bin/rofi"
 prompt=$(ls $rofidir | awk "!/^askpass/" | sort)
 
 sol=$(echo -e "$prompt" | rofi -dmenu -p 'Select subscript' -font 'Fira Code 10')
