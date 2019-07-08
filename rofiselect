@@ -1,13 +1,14 @@
 #!/bin/bash
 
-prompt=$(ls /home/$USER/bin/rofi | awk "!/^askpass/" | sort)
+rofidir= "$HOME/bin/rofi"
+prompt=$(ls $rofidir | awk "!/^askpass/" | sort)
 
 sol=$(echo -e "$prompt" | rofi -dmenu -p 'Select subscript' -font 'Fira Code 10')
 
-for i in $(ls /home/$USER/bin/rofi)
+for i in $(ls $rofidir)
 do
     if [ "$i" == "$sol" ];
     then
-            eval "/home/$USER/bin/rofi/$i"
+            eval "$rofidir/$i"
     fi
 done
