@@ -261,6 +261,7 @@ function gitclone {
     cd
     git clone https://github.com/F0xedb/helper-scripts.git bin
     cd
+    rm -rf .config
     git clone https://github.com/F0xedb/dotfiles .config
     # TODO symlink these files don't move them
     mv .config/.zshrc ~
@@ -279,7 +280,6 @@ function tom {
     echo "xrdb ~/.Xresources\nexec i3" >> ~/.xinitrc
     
     mkdir -p ~/.vim/colors
-    touch ~/.vim.colors/badwolf.vim
     curl https://bitbucket.org/sjl/badwolf/raw/tip/colors/badwolf.vim > ~/.vim/colors/badwolf.vim
 
     #installing vundle
