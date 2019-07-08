@@ -3,6 +3,7 @@
 import sys
 import dbus
 import argparse
+from shutil import which
 
 
 parser = argparse.ArgumentParser()
@@ -119,5 +120,8 @@ except Exception as e:
     if isinstance(e, dbus.exceptions.DBusException):
         print('')
     else:
-        print(e)
+        if which("spotify") is not None:
+            print(e)
+        else:
+            print('')
 
