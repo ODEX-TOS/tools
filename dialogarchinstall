@@ -183,7 +183,7 @@ function default {
 
    ask "What is your local keymap?" "be-latin1"
    nano /etc/locale.conf
-   echo KEYMAP="$device" > /etc/vconsole.conf
+   echo KEYMAP="$result" > /etc/vconsole.conf
    nano /etc/vconsole.conf
 
    ask "What is your computer name?" "core"
@@ -204,7 +204,7 @@ function user {
     EDITOR=nano visudo
 
     ask "What is your username?" "alpha"
-    useradd -m -g users -G audio,lp,optical,storage,video,wheel,games, power, -s /bin/bash "$result"
+    useradd -m -g users -G audio,lp,optical,storage,video,wheel,games,power -s /bin/bash "$result"
     passwd "$result"
     su "$result" -c /archinstall user
 }
@@ -298,7 +298,7 @@ function tom {
     echo "Good luck on your arch linux journey!"
 }
 
-if [[ "$entry" == "y" && "$1" != "base" ]]; then
+if [[ "$entry" == "y" && "$1" != "base" && "$1" != "user" ]]; then
         echo "You have 5 seconds before we start altering the hard drive"
         echo "If you wish to abort now use CTRL-C otherwise we will start to change the partition table and install a custom Arch Linux install"
         

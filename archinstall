@@ -166,7 +166,7 @@ function user {
     EDITOR=nano visudo
 
     read -r -p "What is your username?" usrname
-    useradd -m -g users -G audio,lp,optical,storage,video,wheel,games, power, -s /bin/bash "$usrname"
+    useradd -m -g users -G audio,lp,optical,storage,video,wheel,games,power -s /bin/bash "$usrname"
     passwd "$usrname"
     su "$usrname" -c /archinstall user
 }
@@ -261,7 +261,7 @@ function tom {
     echo "Good luck on your arch linux journey!"
 }
 
-if [[ "$entry" == "y" && "$1" != "base" ]]; then
+if [[ "$entry" == "y" && "$1" != "base" && "$1" != "user" ]]; then
         echo "You have 5 seconds before we start altering the hard drive"
         echo "If you wish to abort now use CTRL-C otherwise we will start to change the partition table and install a custom Arch Linux install"
         
