@@ -19,7 +19,7 @@ name=$(basename "$0")
 themefile="$HOME/.config/tos/theme"
 
 function help {
-        printf "${ORANGE}$name${NC} ${RED}OPTIONS:${NC} (-h|-u|-i|-c|-dl|-lw|-r)|(-iso| -iso -g)|(-m device metric)|(-c <user>@<ip>)|(-cw <SSID>)\n"
+    printf "${ORANGE}$name${NC} ${RED}OPTIONS:${NC} (-h|-u|-i|-c|-dl|-lw|-r)|(-iso| -iso -g)|(-m device metric)|(-c <user>@<ip>)|(-cw <SSID>)\n"
     printf " -h | --help \t\t\t\t show this help message\n"
     printf " -u | --update \t\t\t\t update the entire base system, including AUR packages, config scripts and binaries.\n"
     printf " -g \t\t\t\t\t $name -iso -g will install arch onto this sytem with a graphical interface\n"
