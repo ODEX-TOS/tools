@@ -19,7 +19,7 @@ name=$(basename "$0")
 themefile="$HOME/.config/tos/theme"
 
 function help {
-    printf "${ORANGE}$name${NC} ${RED}OPTIONS:${NC} (-h|-u|-i|-c|-dl|-lw|-r)|(-iso| -iso -g)|(-m device metric)|(-c <user>@<ip>)|(-cw <SSID>)\n"
+        printf "${ORANGE}$name${NC} ${RED}OPTIONS:${NC} (-h|-u|-i|-c|-dl|-lw|-r)|(-iso| -iso -g)|(-m device metric)|(-c <user>@<ip>)|(-cw <SSID>)\n"
     printf " -h | --help \t\t\t\t show this help message\n"
     printf " -u | --update \t\t\t\t update the entire base system, including AUR packages, config scripts and binaries.\n"
     printf " -g \t\t\t\t\t $name -iso -g will install arch onto this sytem with a graphical interface\n"
@@ -143,11 +143,6 @@ function update {
         cd sucklessterminal && make && sudo make install       
     fi
 
-    ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
-    if [[ ! -f "$ZSH_CUSTOM/themes/spaceship.zsh-theme" ]]; then
-            git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
-            ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
-    fi
     #Finding all firefox profiles and loading in the custom css (it must be enabled in firefox)
     for profile in ~/.mozilla/firefox/*.dev-edition-default; do
             cd $profile
@@ -163,9 +158,8 @@ function update {
     cd ~/.oh-my-zsh/load && git pull origin master
     cd
 
-    tospath="$HOME/.oh-my-zsh/custom/plugins/zsh-completions/src/"
-    if [[ ! -f "$tospath"_tos ]]; then
-        curl https://raw.githubusercontent.com/F0xedb/tos-live/master/_tos -o "$tospath"_tos
+    if [[ ! -f "$fpath[1]"_tos ]]; then
+        curl https://raw.githubusercontent.com/F0xedb/tos-live/master/_tos -o "$fpath[1]"/_tos
     fi
     
 }
@@ -209,7 +203,7 @@ function listdevices {
 
 function theme {
     if [[ "$(which wal)" != "/usr/bin/wal" ]]; then
-        yay -Syu python-pywal
+        yay -Syu python-pywall
     fi
     wal -i $1
 }
@@ -264,6 +258,15 @@ function gettime {
             return
     fi
     echo -e -n "$1"
+}
+
+# When updating the screen we should reload all components so that the can adjust to the new display specs
+function screen-reload {
+    killall polybar # should restart with the keepalive script
+    nohup polybar main &> /dev/null &
+    nohup polybar workspaces &> /dev/null &
+    wal -R
+
 }
 
 case "$1" in
@@ -424,17 +427,22 @@ case "$1" in
     ;;
     "-sd"|"--screen-duplicate")
         screen-duplicate $2 $3
+        screen-reload
     ;;
     "-st"|"--screen-toggle")
         xrandr --output $2 --$3
+        screen-reload
     ;;
     "-sr"|"--screen-reset")
         xrandr --output $2 --auto
+        screen-reload
     ;;
     "-sres"|"--screen-resolution")
         xrandr --output $2 --mode $3
+        screen-reload
     ;;
     "-srate"|"--screen-refresh-rate")
         xrandr --output $2 --rate $3
+        screen-reload
     ;;
 esac
