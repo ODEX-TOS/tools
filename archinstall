@@ -242,7 +242,7 @@ function tom {
     echo "xrdb ~/.Xresources\nexec i3" >> ~/.xinitrc
     
     mkdir -p ~/.vim/colors
-    touch ~/.vim.colors/badwolf.vim
+    touch ~/.vim/colors/badwolf.vim
     curl https://bitbucket.org/sjl/badwolf/raw/tip/colors/badwolf.vim > ~/.vim/colors/badwolf.vim
 
     #installing vundle
