@@ -169,13 +169,16 @@ function basesystem {
 
     #TODO: Don't hardcode this filename. Try to find it 
     cp "$0" /mnt/archinstall
-    arch-chroot /mnt /bin/bash archinstall base
+    arch-chroot /mnt /bin/bash archinstall base $part3
 }
 
 function chrootfunc {
     #TODO instead of specifing the entire HOOKS array only append encrypt and lvm2 to it
     prmpt "Changing mkinitcpio"
     sed -i '/^HOOKS/c\HOOKS=(base udev autodetect modconf block encrypt lvm2 filesystems keyboard fsck)' /etc/mkinitcpio.conf    
+
+    pacman -Syu udev
+    pacman -S linux
 
     mkinitcpio -v -p linux
 
@@ -184,7 +187,8 @@ function chrootfunc {
 
     
 
-    sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet resume=/dev/mapper/arch-swap cryptdevice='$device$part3':luks_lvm"' /etc/default/grub
+    sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet resume=/dev/mapper/arch-swap cryptdevice='$device$1':luks_lvm"' /etc/default/grub
+    sed -i '/^#GRUB//"' /etc/default/grub
     
     if [[ "$msdos" == "" ]]; then
         grub-install --efi-directory /boot/efi --force "$device"
@@ -342,7 +346,7 @@ if [[ "$entry" == "y" && "$1" != "base" && "$1" != "user" ]]; then
 fi
 
 if [[ "$1" == "base" ]]; then
-        chrootfunc
+        chrootfunc $2
         
         echo "Base arch Linux is installed"
         
