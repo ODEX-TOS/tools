@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export SUDO_ASKPASS='/home/zeus/bin/rofi/askpass'
+export SUDO_ASKPASS='$HOME/bin/rofi/askpass'
 
 answer=$(echo -e "Yes\nNo" | rofi -dmenu -font 'Fira Code 10' -p "$1")
 
