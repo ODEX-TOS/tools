@@ -188,7 +188,7 @@ function chrootfunc {
     
 
     sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet resume=/dev/mapper/arch-swap cryptdevice='$device$1':luks_lvm"' /etc/default/grub
-    sed -i '/^#GRUB//"' /etc/default/grub
+    sed -i '/^#GRUB_ENABLE_CRYPTODISK=y/GRUB_ENABLE_CRYPTODISK=y/' /etc/default/grub
     
     if [[ "$msdos" == "" ]]; then
         grub-install --efi-directory /boot/efi --force "$device"
