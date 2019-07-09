@@ -19,6 +19,8 @@ part1="1"
 part2="2"
 part3="3"
 
+msdos=""
+
 function ask {
     exec 3>&1;
     result=$(dialog --inputbox "$1" 0 0 "$2" 2>&1 1>&3);
@@ -57,15 +59,28 @@ function loadkbd {
 
 function partition {
     prmpt "Setting up disk partition"
-    parted --script "$device" 'mklabel gpt'  
-    parted --script "$device" 'mkpart ESP fat32 1MiB 200MiB'  
-    parted --script "$device" 'set 1 boot on'  
-    parted --script "$device" 'name 1 efi'  
-    parted --script "$device" 'mkpart primary 200MiB 800MiB'  
-    parted --script "$device" 'name 2 boot'  
-    parted --script "$device" 'mkpart primary 800MiB 100%'  
-    parted --script "$device" 'set 3 lvm on'  
-    parted --script "$device" 'name 3 lvm'  
+    ask "Is your system EFI?" "Yes"
+    if [[ "$result" == "Yes" ]]; then
+        parted --script "$device" 'mklabel gpt'  
+        parted --script "$device" 'mkpart ESP fat32 1MiB 200MiB'  
+        parted --script "$device" 'set 1 boot on'  
+        parted --script "$device" 'name 1 efi'  
+        parted --script "$device" 'mkpart primary 200MiB 800MiB'  
+        parted --script "$device" 'name 2 boot'  
+        parted --script "$device" 'mkpart primary 800MiB 100%'  
+        parted --script "$device" 'set 3 lvm on'  
+        parted --script "$device" 'name 3 lvm'  
+    else
+        parted --script "$device" 'mklabel msdos'  
+        parted --script "$device" 'mkpart primary 1MiB 200MiB'  
+        parted --script "$device" 'set 1 boot on'  
+        parted --script "$device" 'name 1 boot'  
+        parted --script "$device" 'mkpart primary 800MiB 100%'  
+        parted --script "$device" 'set 2 lvm on'  
+        parted --script "$device" 'name 2 lvm'
+        msdos="1"  
+        part3=$part2
+    fi
 }
 
 function crypto {
@@ -96,7 +111,7 @@ function crypto {
 
     lvcreate -n root -L "$result"G arch
 
-    ask "How big should your root partition be? (in Gigabytes)" "$(echo $size | awk '{print ($0/80)*1}')"
+    ask "How big should your swap partition be? (in Gigabytes)" "$(echo $size | awk '{print ($0/80)*1}')"
     
     lvcreate -n swap -L "$result"G -C y arch
 }
@@ -105,9 +120,13 @@ function crypto {
 function format {
 
     prmpt "Formatting partitions"
-    
-    mkfs.fat -F32 "$device"$part1
-    mkfs.ext4 "$device"$part2
+   
+    if [[ "$msdos" == "" ]]; then 
+        mkfs.fat -F32 "$device"$part1
+        mkfs.ext4 "$device"$part2
+    else
+        mkfs.ext4 "$device"$part1
+    fi
     mkfs.ext4 -L root /dev/mapper/arch-root
     mkfs.ext4 -L home /dev/mapper/arch-home
     mkswap /dev/mapper/arch-swap
@@ -122,10 +141,15 @@ function mounting {
         swapon -s
         mount /dev/mapper/arch-root /mnt
         mkdir -p /mnt/{home,boot}
-        mount "$device"$part2 /mnt/boot
-        mount /dev/mapper/arch-home /mnt/home
-        mkdir /mnt/boot/efi
-        mount "$device"$part1 /mnt/boot/efi
+        if [[ "$msdos" == "" ]]; then
+            mount "$device"$part2 /mnt/boot
+            mount /dev/mapper/arch-home /mnt/home
+            mkdir /mnt/boot/efi
+            mount "$device"$part1 /mnt/boot/efi
+        else
+            mount "$device"$part1 /mnt/boot
+            mount /dev/mapper/arch-home /mnt/home
+        fi
 
         prmpt "Verify if the mounting is succesfull"
         lsblk -f
@@ -162,8 +186,11 @@ function chrootfunc {
 
     sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet resume=/dev/mapper/swa cryptdevice='$device'$part3:luks_lvm"' /etc/default/grub
     
-    grub-install --efi-directory /boot/efi --force "$device"
-    
+    if [[ "$msdos" == "" ]]; then
+        grub-install --efi-directory /boot/efi --force "$device"
+    else
+        grub-install --root-directory=/boot "$device"
+    fi 
     grub-mkconfig -o /boot/grub/grub.cfg
 
 
