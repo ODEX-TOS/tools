@@ -175,7 +175,7 @@ function update {
 function installarch {
     printf  "${RED}Installing arch${NC}\n"
     if [[ ! -f archinstall ]]; then
-        curl https://raw.githubusercontent.com/F0xedb/helper-scripts/master/archinstall
+        curl https://raw.githubusercontent.com/F0xedb/helper-scripts/master/archinstall -o archinstall
         chmod +x archinstall
     fi
     ./archinstall 
@@ -184,7 +184,7 @@ function installarch {
 function installarchdialog {
     printf "${RED}Installing arch via a dialog${NC}\n"
     if [[ ! -f dialogarchinstall ]]; then
-        curl https://raw.githubusercontent.com/F0xedb/helper-scripts/master/dialogarchinstall
+        curl https://raw.githubusercontent.com/F0xedb/helper-scripts/master/dialogarchinstall -o dialogarchinstall
         chmod +x dialogarchinstall
     fi
     ./dialogarchinstall 
