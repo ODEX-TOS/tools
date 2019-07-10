@@ -1,5 +1,7 @@
 #!/bin/bash
 
+function begin {
+
 echo "Build and maintained by Tom Meyers"
 
 echo "You are about to install arch using this automated script"
@@ -11,6 +13,8 @@ echo "Its features are LUKS encrypted drives, custom zsh, i3wm and more"
 echo "Note: This script assumes that you have a wireless card. If you don't you need to manually get a network connection. If you do you will be promted to connect to a network"
 
 read -r -p "Do you wish to continue? y/n" entry
+
+}
 
 device=$( ls /dev/sd* | grep -E 'sd[a-z]$' | sort | head -n1)
 device2=$( ls /dev/nvme?n* | grep -E 'nvme[a-z0-9]*$' | sort | head -n1)
@@ -339,7 +343,29 @@ function tom {
 
     cd ~/.vim/bundle/YouCompleteMe
     python3 install.py --all
+}
 
+# only supports intel, nvidia or amd
+function gpu {
+    gpu_cmd="$(lspci -mm | awk -F '\\"|\\" \\"|\\(' '/"Display|"3D|"VGA/ {a[$0] = $3 " " $4} END {for(i in a){if(!seen[a[i]]++) print a[i]}}')"
+
+    # TODO: Only install nvidia driver if the device is supported
+    if [[ "$gpu_cmd" == *NVIDIA* ]]; then
+        yay -Syu nvidia
+    fi
+
+    # TODO: Only install driver is card is supported otherwise install AMD catalyst
+    # TODO: check if gpu_cmd returns AMD or amd?
+    if [[ "$gpu_cmd" == *AMD* ]]; then
+        yay -Syu mesa lib32-mesa xf86-video-amdgpu vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-libva-mesa-driver 
+    fi
+
+    if [[ "$gpu_cmd" == *Intel* ]]; then
+        yay -Syu mesa lib32-mesa xf86-video-intel vulkan-intel
+    fi
+} 
+
+function end {
     echo "You now have a complete arch linux install working as advertised."
     echo "To use your computer log in via the terminal"
     echo "After that is complete you can type in startx to start your graphical environment"
@@ -348,6 +374,7 @@ function tom {
 }
 
 if [[ "$entry" == "y" && "$1" != "base" && "$1" != "user" ]]; then
+        begin
         echo "You have 5 seconds before we start altering the hard drive"
         echo "If you wish to abort now use CTRL-C otherwise we will start to change the partition table and install a custom Arch Linux install"
         
@@ -380,5 +407,7 @@ if [[ "$1" == "user" ]]; then
     download
     gitclone
     tom
+    gpu
+    end
 fi
 
