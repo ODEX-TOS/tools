@@ -193,7 +193,18 @@ function chrootfunc {
 
     sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet resume=/dev/mapper/arch-swap cryptdevice='$device$1':luks_lvm"' /etc/default/grub
     sed -i '/^#GRUB_ENABLE_CRYPTODISK=y/GRUB_ENABLE_CRYPTODISK=y/' /etc/default/grub
-    
+    sed -i '/^GRUB_DISTRIBUTOR="Arch"/GRUB_DISTRIBUTOR="TOS"/' /etc/default/grub
+    rm -rf /etc/issue /etc/os-release
+    echo "TOS Linux" > /etc/issue
+    printf 'NAME="Tos Linux"
+PRETTY_NAME="Tos Linux"
+ID=tos
+BUILD_ID=rolling
+ANSI_COLOR="0;36"
+HOME_URL="https://www.pbfp.xyz/"
+LOGO=toslinux' > /etc/os-release
+
+
     if [[ "$msdos" == "" ]]; then
         grub-install --efi-directory /boot/efi --force "$device"
     else
