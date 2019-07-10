@@ -287,6 +287,11 @@ function download {
     make
     sudo make install
 
+    ask "Do you want to install wayland(newer) or XORG?" "wayland"
+    if [[ "$result" == "wayland" ]]; then
+        yay -Syu wayland sway waybar xorg-server-xwayland
+    fi
+
 
 }
 
@@ -298,6 +303,9 @@ function gitclone {
     cd
     rm -rf .config
     git clone https://github.com/F0xedb/dotfiles .config
+    sed -i 's;$HOME /home/zeus;$HOME '$HOME';g' ~/.config/i3/config
+    sed -i 's;$HOME /home/zeus;$HOME '$HOME';g' ~/.config/sway/config
+
     # TODO symlink these files don't move them
     mv .config/.zshrc ~
     mv .config/.vimrc ~
