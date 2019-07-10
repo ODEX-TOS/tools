@@ -292,7 +292,16 @@ function download {
     sudo make install
 
     ask "Do you want to install wayland(newer) or XORG?" "wayland"
+    gpu_cmd="$(lspci -mm | awk -F '\\"|\\" \\"|\\(' '/"Display|"3D|"VGA/ {a[$0] = $3 " " $4} END {for(i in a){if(!seen[a[i]]++) print a[i]}}')"
+
     if [[ "$result" == "wayland" ]]; then
+        # Tell NVIDIA users that sway on wayland doesn't play nice with there graphics card. They better stay and use x-server
+        # Or they must use the open-source drivers instead of the propriotary drivers
+        if [[ "$gpu_cmd" == *NVIDIA* ]]; then
+            prmpt "You are using an NVIDIA card. NVIDIA doesn't support wayland and sway."
+            prmpt "We are going to install wayland for you anyway (if nvidia ever changes their mind)"
+            prmpt "But for now you will still need to use xorg (by typing startx in the terminal)"
+        fi
         yay -Syu wayland sway waybar xorg-server-xwayland
     fi
 
