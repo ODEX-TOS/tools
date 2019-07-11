@@ -176,7 +176,12 @@ function basesystem {
     arch-chroot /mnt /bin/bash archinstall base $part3
 }
 
+function tossify-pacman { 
+    printf "[tos]\nSigLevel = Optional TrustAll\nServer = https://repo.pbfp.xyz\n" >> /etc/pacman.conf
+}
+
 function chrootfunc {
+    tossify-pacman
     #TODO instead of specifing the entire HOOKS array only append encrypt and lvm2 to it
     prmpt "Changing mkinitcpio"
     sed -i '/^HOOKS/c\HOOKS=(base udev autodetect modconf block encrypt lvm2 filesystems keyboard fsck)' /etc/mkinitcpio.conf    
