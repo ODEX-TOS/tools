@@ -206,7 +206,7 @@ PRETTY_NAME="Tos Linux"
 ID=tos
 BUILD_ID=rolling
 ANSI_COLOR="0;36"
-HOME_URL="https://www.pbfp.xyz/"
+HOME_URL="https://tos.pbfp.xyz/"
 LOGO=toslinux' > /etc/os-release
 
 
