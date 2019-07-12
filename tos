@@ -360,11 +360,11 @@ case "$1" in
     "--theme-daemon")
         while true; do
                 file=$(shuf -n 1 $themefile)
-                while [ ! -f $file ] || [ "$file" == "" ]; do
-                        file=$(shuf -n 1 $themefile)
-                done
-                echo $(cat $themefile | head -n1)
                 if [[ "$(cat $themefile | head -n1)" == "on" ]]; then
+                    while [ ! -f $file ] || [ "$file" == "" ]; do
+                        file=$(shuf -n 1 $themefile)
+                    done
+                    echo $(cat $themefile | head -n1)
                     wal -i $file
                 fi
                 time=$(cat "$themefile" | head -n2 | tail -n1 | awk -F= '{print $2}')
