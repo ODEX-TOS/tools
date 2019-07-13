@@ -4,9 +4,9 @@ function begin {
 
 echo "Build and maintained by Tom Meyers"
 
-echo "You are about to install arch using this automated script"
+echo "You are about to install tos using this automated script"
 
-echo "This install script will try to load the custom arch linux build by Tom"
+echo "This install script will try to load the tos linux build by Tom"
 
 echo "Its features are LUKS encrypted drives, custom zsh, i3wm and more"
 
@@ -101,23 +101,23 @@ function crypto {
     prmpt "Creating volumes"
 
     pvcreate /dev/mapper/luks_lvm
-    vgcreate arch /dev/mapper/luks_lvm
+    vgcreate tos /dev/mapper/luks_lvm
     
     #TODO: If a disk is in the terabytes convert it into Gigs. Currently it won't break anything but this default values will be wrong 
     size=$(fdisk -l "$device" | grep -e "Disk .[a-zA-Z/]*: [0-9][0-9]*" | awk '{print
     $3}')
      
     ask "How big should your home partition be? (in Gigabytes)" "$(echo $size | awk '{print ($0/40)*26}')"
-    lvcreate -n home -L "$result"G arch
+    lvcreate -n home -L "$result"G tos
     
     ask "How big should your root partition be? (in Gigabytes)" "$(echo $size | awk
     '{print ($0/40)*12}')"
 
-    lvcreate -n root -L "$result"G arch
+    lvcreate -n root -L "$result"G tos
 
     ask "How big should your swap partition be? (in Gigabytes)" "$(echo $size | awk '{print ($0/80)*1}')"
     
-    lvcreate -n swap -L "$result"G -C y arch
+    lvcreate -n swap -L "$result"G -C y tos
 }
 
 # This function needs to be called after setting up the logic volumes
@@ -131,28 +131,28 @@ function format {
     else
         mkfs.ext4 "$device"$part1
     fi
-    mkfs.ext4 -L root /dev/mapper/arch-root
-    mkfs.ext4 -L home /dev/mapper/arch-home
-    mkswap /dev/mapper/arch-swap
+    mkfs.ext4 -L root /dev/mapper/tos-root
+    mkfs.ext4 -L home /dev/mapper/tos-home
+    mkswap /dev/mapper/tos-swap
 
 }
 
 function mounting {
         prmpt "Initiating mounting attempt"
         
-        swapon /dev/mapper/arch-swap
+        swapon /dev/mapper/tos-swap
         swapon -a
         swapon -s
-        mount /dev/mapper/arch-root /mnt
+        mount /dev/mapper/tos-root /mnt
         mkdir -p /mnt/{home,boot}
         if [[ "$msdos" == "" ]]; then
             mount "$device"$part2 /mnt/boot
-            mount /dev/mapper/arch-home /mnt/home
+            mount /dev/mapper/tos-home /mnt/home
             mkdir /mnt/boot/efi
             mount "$device"$part1 /mnt/boot/efi
         else
             mount "$device"$part1 /mnt/boot
-            mount /dev/mapper/arch-home /mnt/home
+            mount /dev/mapper/tos-home /mnt/home
         fi
 
         prmpt "Verify if the mounting is succesfull"
@@ -196,7 +196,7 @@ function chrootfunc {
 
     
 
-    sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet resume=/dev/mapper/arch-swap cryptdevice='$device$1':luks_lvm"' /etc/default/grub
+    sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet resume=/dev/mapper/tos-swap cryptdevice='$device$1':luks_lvm"' /etc/default/grub
     sed -i '/^#GRUB_ENABLE_CRYPTODISK=y/GRUB_ENABLE_CRYPTODISK=y/' /etc/default/grub
     sed -i '/^GRUB_DISTRIBUTOR="Arch"/GRUB_DISTRIBUTOR="TOS"/' /etc/default/grub
     rm -rf /etc/issue /etc/os-release
@@ -391,11 +391,11 @@ function gpu {
 } 
 
 function end {
-    echo "You now have a complete arch linux install working as advertised."
+    echo "You now have a complete tos linux install working as advertised."
     echo "To use your computer log in via the terminal"
     echo "After that is complete you can type in startx to start your graphical environment"
     echo "To navigate around look in the dotfiles repo of F0xedb"
-    echo "Good luck on your arch linux journey!"
+    echo "Good luck on your tos linux journey!"
 }
 
 if [[ "$entry" == "y" && "$1" != "base" && "$1" != "user" ]]; then
@@ -404,7 +404,7 @@ if [[ "$entry" == "y" && "$1" != "base" && "$1" != "user" ]]; then
         echo "If you wish to abort now use CTRL-C otherwise we will start to change the partition table and install a custom Arch Linux install"
         
         sleep 5
-        getdev "What device do you want to install arch on?" "$device" "$device2"
+        getdev "What device do you want to install tos on?" "$device" "$device2"
         loadkbd
         partition
         crypto
@@ -418,9 +418,9 @@ fi
 if [[ "$1" == "base" ]]; then
         chrootfunc $2
         
-        echo "Base arch Linux is installed"
+        echo "Base tos Linux is installed"
         
-        read -r -p "Do you wish to install the custom version for arch? (y/n) " result
+        read -r -p "Do you wish to install the custom version for arch (tos)? (y/n) " result
 
         if [[ "$result" == "y" ]]; then
             default
