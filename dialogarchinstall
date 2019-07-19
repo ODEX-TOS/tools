@@ -280,9 +280,12 @@ function download {
     cd sucklessterminal
     make && sudo make install
 
-    # update font configuration
-
-    # install vim theme and plugins
+    #enable wayland support
+    ask "Do you want to use XORG or wayland(more modern)" "wayland"
+    if [[ "$result" == "wayland"]]; then
+        # xorg-server-xwayland supports backward compatibility
+        yay -Syu wayland sway waybar xorg-server-xwayland
+    fi
 
 }
 
@@ -294,6 +297,10 @@ function gitclone {
     cd
     rm -rf .config
     git clone https://github.com/F0xedb/dotfiles .config
+    
+    sed -i 's;$HOME /home/zeus;$HOME '$HOME';g' .config/i3/config
+    sed -i 's;$HOME /home/zeus;$HOME '$HOME';g' .config/sway/config
+
     # TODO symlink these files don't move them
     mv .config/.zshrc ~
     mv .config/.vimrc ~
@@ -308,7 +315,7 @@ function gitclone {
 function tom {
     prmpt "Executing Tom's custom scripts"
     
-    echo "xrdb ~/.Xresources\nexec i3" >> ~/.xinitrc
+    printf "xrdb ~/.Xresources\nexec i3" >> ~/.xinitrc
     
     mkdir -p ~/.vim/colors
     curl https://bitbucket.org/sjl/badwolf/raw/tip/colors/badwolf.vim > ~/.vim/colors/badwolf.vim
@@ -324,7 +331,7 @@ function tom {
 
     echo "You now have a complete arch linux install working as advertised."
     echo "To use your computer log in via the terminal"
-    echo "After that is complete you can type in startx to start your graphical environment"
+    echo "After that is complete you can type in startx or sway to start your graphical environment"
     echo "To navigate around look in the dotfiles repo of F0xedb"
     echo "Good luck on your arch linux journey!"
 }
