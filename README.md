@@ -18,7 +18,7 @@
 
 > This repo contains helper scripts for the [dotfile](https://github.com/F0xedb/dotfiles) repo
 
-## Prerequesite
+## Prerequisite
 
 - bash
 - polybar
@@ -26,7 +26,7 @@
 - xrandr
 - emoji file found in this [repo](https://github.com/F0xedb/dotfiles)
 
-## Eplanation
+## Explanation
 
 - keepalive
 
