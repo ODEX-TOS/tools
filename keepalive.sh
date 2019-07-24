@@ -11,7 +11,7 @@ do
                 bIsMain=True
         fi
 
-        if [ "$item" == "workspaces" ];then
+        if [ "$item" == "workspaces" ]; then
                 bIsWorkspace=True
         fi
     done
