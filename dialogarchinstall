@@ -187,7 +187,7 @@ function chrootfunc {
     sed -i '/^HOOKS/c\HOOKS=(base udev autodetect modconf block encrypt lvm2 filesystems keyboard fsck)' /etc/mkinitcpio.conf    
 
     pacman -Syu udev
-    pacman -S linux
+    pacman -S linux linux-tos
 
     mkinitcpio -v -p linux
 
@@ -340,6 +340,11 @@ function gitclone {
     git clone https://github.com/F0xedb/dotfiles .config
     sed -i 's;$HOME /home/zeus;$HOME '$HOME';g' ~/.config/i3/config
     sed -i 's;$HOME /home/zeus;$HOME '$HOME';g' ~/.config/sway/config
+
+    #setup firefox
+    mkdir -p ~/.mozilla/firefox/tos.default
+    cp ~/.config/tos/profiles.ini ~/.mozilla/firefox/profiles.ini
+    cp -r ~/.config/tos/tos-firefox/* ~/.mozilla/firefox/tos-default
 
     # TODO symlink these files don't move them
     mv .config/.zshrc ~
