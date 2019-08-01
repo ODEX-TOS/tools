@@ -12,7 +12,7 @@ function installarchdialog {
     ./dialogarchinstall 
 }
 case "$1" in
-    "-izso")
+    "-iso")
         if [ "$(id -u)" == "0" ]; then
             installarchdialog
         else
