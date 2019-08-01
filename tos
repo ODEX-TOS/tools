@@ -16,8 +16,10 @@ NC='\033[0m' # No Color
 
 export SUDO_ASKPASS='$HOME/bin/rofi/askpass'
 name=$(basename "$0")
+directory=$(printf $0 | sed 's:'$name'::')
 themefile="$HOME/.config/tos/theme"
-extended="$HOME/bin/tos-helper"
+extended="$directory"tos-helper
+
 
 
 
