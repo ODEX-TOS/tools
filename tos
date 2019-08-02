@@ -14,9 +14,9 @@ BLUE='\033[0;35m'
 ORANGE='\033[1;33m'
 NC='\033[0m' # No Color
 
-export SUDO_ASKPASS='$HOME/bin/rofi/askpass'
+export SUDO_ASKPASS="$HOME/bin/rofi/askpass"
 name=$(basename "$0")
-directory=$(printf $0 | sed 's:'$name'::')
+directory=$(printf "$0" | sed 's:'$name'::')
 themefile="$HOME/.config/tos/theme"
 extended="$directory"tos-helper
 
