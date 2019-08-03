@@ -30,6 +30,18 @@ case "$1" in
     "-u"|"--update")
         source $extended/update.sh
     ;;
+    "-m"|"--mount")
+        cryptsetup open "$2"3 "$3"
+        mount /dev/mapper/tos-root /mnt
+        mount /dev/mapper/tos-home /mnt/home
+        if [[ "$4" == "" ]]; then
+                mount "$2"1 /mnt/boot/efi
+        else
+                mount "$2"1 /mnt/boot
+        fi
+        arch-chroot /mnt
+                
+    ;;
     "-S"*|"-R"*|"-Q"*)
         if [ "$(id -u)" != "0" ]; then
             if [[ "$(which yay)" != "/usr/bin/yay" ]]; then
