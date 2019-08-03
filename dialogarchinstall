@@ -352,10 +352,10 @@ function gitclone {
     cp -r ~/.config/tos/tos-firefox/* ~/.mozilla/firefox/tos.default
 
     # TODO symlink these files don't move them
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     mv .config/.zshrc ~
     mv .config/.vimrc ~
     mv .config/.Xresources ~
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     cd ~/.oh-my-zsh
     git clone https://github.com/F0xedb/zsh-load load
     cd
