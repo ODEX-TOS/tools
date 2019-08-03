@@ -311,6 +311,9 @@ function download {
     rm -rf build/
     mkdir -p build && cd build/
 
+    # install dependencies
+    yay -Syu xcb-util-keysyms xcb-util-wm libev yajl startup-notification pango perl xcb-util-cursor libxkbcommon-x11 xcb-util-xrm
+
     # Disabling sanitizers is important for release versions!
     # The prefix and sysconfdir are, obviously, dependent on the distribution.
     ../configure --prefix=/usr --sysconfdir=/etc --disable-sanitizers
