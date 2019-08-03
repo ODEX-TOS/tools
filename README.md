@@ -162,7 +162,7 @@ Distributed under the GPL License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - email
+Tom Meyers - tom@pbfp.xyz
 
 Project Link: [https://github.com/F0xedb/helper-scripts](https://github.com/F0xedb/helper-scripts)
 
