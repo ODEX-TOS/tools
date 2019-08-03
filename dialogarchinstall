@@ -259,13 +259,13 @@ function default {
 
 
 function user {
-    pacman -Syu git sudo base-devel
+    pacman -Syu git sudo base-devel zsh
 
     prmpt "Uncomment the line containing %wheel NOPASSWD"
     EDITOR=nano visudo
 
     ask "What is your username?" "alpha"
-    useradd -m -g users -G audio,lp,optical,storage,video,wheel,games,power -s /bin/bash "$result"
+    useradd -m -g users -G audio,lp,optical,storage,video,wheel,games,power -s /bin/zsh "$result"
     passwd "$result"
     su "$result" -c "/archinstall user"
 }
@@ -305,12 +305,6 @@ function download {
     cd sucklessterminal
     make && sudo make install
 
-    #enable wayland support
-    ask "Do you want to use XORG or wayland(more modern)" "wayland"
-    if [[ "$result" == "wayland" ]]; then
-        # xorg-server-xwayland supports backward compatibility
-        yay -Syu wayland sway waybar xorg-server-xwayland
-    fi
     git clone https://github.com/F0xedb/i3.git
     cd i3
     autoreconf --force --install
@@ -323,6 +317,7 @@ function download {
     make
     sudo make install
 
+    #enable wayland support
     ask "Do you want to install wayland(newer) or XORG?" "wayland"
     gpu_cmd="$(lspci -mm | awk -F '\\"|\\" \\"|\\(' '/"Display|"3D|"VGA/ {a[$0] = $3 " " $4} END {for(i in a){if(!seen[a[i]]++) print a[i]}}')"
 
@@ -354,12 +349,13 @@ function gitclone {
     #setup firefox
     mkdir -p ~/.mozilla/firefox/tos.default
     cp ~/.config/tos/profiles.ini ~/.mozilla/firefox/profiles.ini
-    cp -r ~/.config/tos/tos-firefox/* ~/.mozilla/firefox/tos-default
+    cp -r ~/.config/tos/tos-firefox/* ~/.mozilla/firefox/tos.default
 
     # TODO symlink these files don't move them
     mv .config/.zshrc ~
     mv .config/.vimrc ~
     mv .config/.Xresources ~
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     cd ~/.oh-my-zsh
     git clone https://github.com/F0xedb/zsh-load load
     cd
@@ -370,7 +366,6 @@ function gitclone {
 function tom {
     prmpt "Executing Tom's custom scripts"
     
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     
     git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
