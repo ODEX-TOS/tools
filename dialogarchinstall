@@ -109,11 +109,15 @@ function crypto {
      
     ask "How big should your home partition be? (in Gigabytes)" "$(echo $size | awk '{print ($0/40)*26}')"
     lvcreate -n home -L "$result"G tos
+
+    sleep 0.5
     
     ask "How big should your root partition be? (in Gigabytes)" "$(echo $size | awk
     '{print ($0/40)*12}')"
 
     lvcreate -n root -L "$result"G tos
+
+    sleep 0.5
 
     ask "How big should your swap partition be? (in Gigabytes)" "$(echo $size | awk '{print ($0/80)*1}')"
     
@@ -197,8 +201,8 @@ function chrootfunc {
     
 
     sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=/c\GRUB_CMDLINE_LINUX_DEFAULT="quiet resume=/dev/mapper/tos-swap cryptdevice='$device$1':luks_lvm"' /etc/default/grub
-    sed -i '/^#GRUB_ENABLE_CRYPTODISK=y/GRUB_ENABLE_CRYPTODISK=y/' /etc/default/grub
-    sed -i '/^GRUB_DISTRIBUTOR="Arch"/GRUB_DISTRIBUTOR="TOS"/' /etc/default/grub
+    sed -i 's/^#GRUB_ENABLE_CRYPTODISK=y/GRUB_ENABLE_CRYPTODISK=y/' /etc/default/grub
+    sed -i 's/^GRUB_DISTRIBUTOR="Arch"/GRUB_DISTRIBUTOR="TOS"/' /etc/default/grub
     rm -rf /etc/issue /etc/os-release
     echo "TOS Linux" > /etc/issue
     printf 'NAME="Tos Linux"
@@ -297,7 +301,7 @@ function download {
 
     #enable wayland support
     ask "Do you want to use XORG or wayland(more modern)" "wayland"
-    if [[ "$result" == "wayland"]]; then
+    if [[ "$result" == "wayland" ]]; then
         # xorg-server-xwayland supports backward compatibility
         yay -Syu wayland sway waybar xorg-server-xwayland
     fi
@@ -412,8 +416,9 @@ function end {
     echo "Good luck on your tos linux journey!"
 }
 
+begin
+
 if [[ "$entry" == "y" && "$1" != "base" && "$1" != "user" ]]; then
-        begin
         echo "You have 5 seconds before we start altering the hard drive"
         echo "If you wish to abort now use CTRL-C otherwise we will start to change the partition table and install a custom Arch Linux install"
         
