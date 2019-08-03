@@ -104,8 +104,14 @@ function crypto {
     vgcreate tos /dev/mapper/luks_lvm
     
     #TODO: If a disk is in the terabytes convert it into Gigs. Currently it won't break anything but this default values will be wrong 
-    size=$(fdisk -l "$device" | grep -e "Disk .[a-zA-Z/]*: [0-9][0-9]*" | awk '{print
+    size=$(fdisk -l "$device" | grep -e "Disk $device: [0-9][0-9]*" | awk '{print
     $3}')
+
+    data=$(fdisk -l "$device" | grep -e "Disk $device: [0-9][0-9]*" | tr ',' ' '| awk '{print $4}')
+
+    if [[ "$data" == "TiB" ]]; then
+        size=$(echo $size | awk '{print $0*1000}')
+    fi
      
     ask "How big should your home partition be? (in Gigabytes)" "$(echo $size | awk '{print ($0/40)*26}')"
     lvcreate -n home -L "$result"G tos
