@@ -15,16 +15,30 @@ function screen-duplicate  {
 
 # When updating the screen we should reload all components so that the can adjust to the new display specs
 function screen-reload {
-    killall polybar # should restart with the keepalive script
-    nohup polybar main &> /dev/null &
-    nohup polybar workspaces &> /dev/null &
+    killall polybar waybar # should restart with the keepalive script
+    nohup ~/bin/keepalive.sh &> /dev/null &
     wal -R
-
 }
+
+function add {
+    monitor="$1"
+    res="$2"
+    height=$(printf "$res" | awk -Fx '{print $1}')
+    width=$(printf "$res" | awk -Fx '{print $2}')
+    modeline=$(gtf "$height" "$width" 60 | head -n3 | tail -n1 | sed 's;.*Modeline ;;' | awk '{print $1}' | sed 's;";;g')
+    xrandr --newmode $modeline $(gtf "$height" "$width" 60 | head -n3 |  tail -n1 | sed 's;.*Modeline ".*"   ;;')
+    xrandr --addmode $monitor $modeline
+    xrandr --output $monitor --mode $modeline
+}
+
 
 case "$2" in
     "get"|"g")
         xrandr
+    ;;
+    "a"|"add")
+        add $3 $4
+        screen-reload
     ;;
     "d"|"duplicate")
         screen-duplicate $3 $4
