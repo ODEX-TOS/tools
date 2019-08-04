@@ -26,7 +26,7 @@ function add {
     height=$(printf "$res" | awk -Fx '{print $1}')
     width=$(printf "$res" | awk -Fx '{print $2}')
     modeline=$(gtf "$height" "$width" 60 | head -n3 | tail -n1 | sed 's;.*Modeline ;;' | awk '{print $1}' | sed 's;";;g')
-    xrandr --newmode $modeline $(gtf "$height" "$width" 60 | head -n3 |  tail -n1 | sed 's;.*Modeline ".*"   ;;')
+    xrandr --newmode $modeline $(gtf "$height" "$width" 60 | head -n3 |  tail -n1 | sed 's;.*Modeline ".*"  ;;')
     xrandr --addmode $monitor $modeline
     xrandr --output $monitor --mode $modeline
 }
