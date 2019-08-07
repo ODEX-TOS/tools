@@ -27,12 +27,12 @@ msdos=""
 
 function ask {
     exec 3>&1;
-    result=$(dialog --inputbox "$1" 0 0 "$2" 2>&1 1>&3);
+    result=$(dialog --title "TOS Installer" --inputbox "$1" 0 0 "$2" 2>&1 1>&3);
     exec 3>&-;
 }
 
 function prmpt {
-    dialog --yesno "$1" 0 0
+    dialog --title "TOS Installer" --yesno "$1" 0 0
 }
 
 # getdev "Select the device to install" "/dev/sda" "/dev/nvme"
@@ -40,7 +40,7 @@ function getdev {
     exec 3>&1;
     first=$(fdisk -l "$2" | grep -e "Disk .[a-zA-Z/]*: [0-9][0-9]*" | awk '{print $3, $4}')
     second=$(fdisk -l "$3" | grep -e "Disk .[a-zA-Z/]*: [0-9][0-9]*" | awk '{print $3, $4}')
-    device=$(dialog --menu "$1" 0 0 0 "$2" "$first" "$3" "$second" 2>&1 1>&3);
+    device=$(dialog --title "TOS installer" --menu "$1" 0 0 0 "$2" "$first" "$3" "$second" 2>&1 1>&3);
     
     # the device is an nvme drive
     if [[ "$device" == "$device2" ]]; then
