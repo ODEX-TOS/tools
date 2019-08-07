@@ -279,7 +279,6 @@ function default {
 function user {
     pacman -Syu --noconfirm git sudo base-devel zsh
 
-    prmpt "Uncomment the line containing %wheel NOPASSWD"
     echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
     ask "What is your username?" "alpha"
