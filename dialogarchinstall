@@ -196,8 +196,8 @@ function chrootfunc {
     prmpt "Changing mkinitcpio"
     sed -i '/^HOOKS/c\HOOKS=(base udev autodetect modconf block encrypt lvm2 filesystems keyboard fsck)' /etc/mkinitcpio.conf    
 
-    pacman -Syu udev
-    pacman -S linux linux-tos
+    pacman -Syu --noconfirm udev
+    pacman -S --noconfirm linux linux-tos
 
     mkinitcpio -v -p linux
 
@@ -230,22 +230,39 @@ LOGO=toslinux' > /etc/os-release
 
 }
 
+function locale-generator {
+   exec 3>&1;
+   language=$(dialog --title "TOS Installer" --backtitle "TOS" --menu "What is your language" 0 0 0  $(cat /etc/locale.gen | awk '$0 ~ /^#[a-zA-Z].*/' | sed 's:#::' | tr -d '\n') 2>&1 1>&3)
+   exec 3>&-;
+   sed -i "s:^#.*$language:$language:" /etc/locale.gen
+   locale-gen
+   echo "LANG=$language" > /etc/locale.conf
+}
+
+function keymap-generator {
+    exec 3>&1;
+    layout=$(dialog --title "TOS Installer" --backtitle "TOS" --menu "What is your keyboard layout" 0 0 0  $(/usr/bin/ls /usr/share/kbd/keymaps/**/*.map.gz | sed 's:.map.gz::' | xargs -n 1 basename | awk '{print $0, "keyboard"}') 2>&1 1>&3)
+    exec 3>&-;
+   echo KEYMAP="$result" > /etc/vconsole.conf
+}
+
+function location-generator {
+    exec 3>&1;
+    continent=$(dialog --title "TOS Installer" --backtitle "TOS" --menu "What is your continent" 0 0 0  $(/usr/bin/ls /usr/share/zoneinfo/ | sed 's:\n::' | awk '{print $0, " Continent"}') 2>&1 1>&3)
+    capital=$(dialog --title "TOS Installer" --backtitle "TOS" --menu "What is your Capital" 0 0 0  $(/usr/bin/ls /usr/share/zoneinfo/$continent | sed 's:\n::' | awk '{print $0, " Continent"}') 2>&1 1>&3)
+    exec 3>&-;
+   ln -sf /usr/share/zoneinfo/"$continent"/"$capital" /etc/localtime 
+}
+
+
 function default {
    timedatectl set-ntp true
-   ask "What is your continent?" "Europa"
-   continent=$result
-   ask "What is your capital?" "Brussels"
-   ln -sf /usr/share/zoneinfo/"$continent"/"$result" /etc/localtime 
+   location-generator
    hwclock --systohc
-   prmpt "Uncomment every local that you need in your system"
-   nano /etc/locale.gen
-   locale-gen
-   echo "LANG=<language.UTF_8> # give a language_region.UTF-8 here eq en_US.utf-8" > /etc/locale.conf
 
-   ask "What is your local keymap?" "be-latin1"
-   nano /etc/locale.conf
-   echo KEYMAP="$result" > /etc/vconsole.conf
-   nano /etc/vconsole.conf
+   locale-generator
+
+   keymap-generator
 
    ask "What is your computer name?" "core"
    echo "$result" > /etc/hostname
@@ -259,10 +276,10 @@ function default {
 
 
 function user {
-    pacman -Syu git sudo base-devel zsh
+    pacman -Syu --noconfirm git sudo base-devel zsh
 
     prmpt "Uncomment the line containing %wheel NOPASSWD"
-    EDITOR=nano visudo
+    echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
     ask "What is your username?" "alpha"
     useradd -m -g users -G audio,lp,optical,storage,video,wheel,games,power -s /bin/zsh "$result"
@@ -275,29 +292,30 @@ function download {
     cd
     git clone https://aur.archlinux.org/yay.git
     cd yay
-    makepkg -si
+    yes | makepkg -si
     cd
     rm -rf yay
 
     #installing zsh packages
-    yay -Syu zsh zsh-autosuggestions zsh-syntax-highlighting
+    yay -Syu --noconfirm zsh zsh-autosuggestions zsh-syntax-highlighting
 
 
 
     #installing x-server
-    yay -Syu xorg-fonts-type1 xorg-server xorg-xbacklight xorg-xclipboard xorg-xinit xorg-xinput xorg-xprop xorg-xrandr xclip
+    yay -Syu --noconfirm xorg-fonts-type1 xorg-server xorg-xbacklight xorg-xclipboard xorg-xinit xorg-xinput xorg-xprop xorg-xrandr xclip
 
     #installing fonts
-    yay -Syu ttf-bitstream-vera ttf-computer-modern-fonts ttf-emojione ttf-fira-code ttf-fira-mono ttf-inconsolata ttf-liberation ttf-linux-libertine ttf-monoid ttf-symbola sdl_ttf siji-git noto-fonts nerd-fonts-complete font-bh-ttf bdf-unifont ttf-dejavu
+    yay -Syu --noconfirm ttf-bitstream-vera ttf-computer-modern-fonts ttf-emojione ttf-fira-code ttf-fira-mono ttf-inconsolata ttf-liberation ttf-linux-libertine ttf-monoid ttf-symbola sdl_ttf siji-git noto-fonts nerd-fonts-complete font-bh-ttf bdf-unifont ttf-dejavu
 
     # This needs to be installed for polybar-git to work
-    yay -Syu jsoncpp
+    yay -Syu --noconfirm jsoncpp
 
     #installing i3 with graphical programs
-    yay -Syu vim bluez ccat compton docker docker-compose dunst feh firefox-developer-edition gimp glances i3lock-next-git lsd neofetch pavucontrol polybar-git pulseaudio python-pip r8152-dkms rofi screen xf86-input-mouse xf86-video-intel visual-studio-code-insiders zathura playerctl nm-connection-editor networkmanager netctl openssh arandr mono alsa-utils bluez-utils chafa xdotool xcursor-human mcmojave-circle-icon-theme-git breeze-gtk
+    yay -Syu --noconfirm vim bluez ccat compton docker docker-compose dunst feh firefox-developer-edition gimp glances i3lock-next-git lsd neofetch pavucontrol polybar-git pulseaudio python-pip r8152-dkms rofi screen xf86-input-mouse xf86-video-intel visual-studio-code-insiders zathura playerctl nm-connection-editor networkmanager netctl openssh arandr mono alsa-utils bluez-utils chafa xdotool xcursor-human mcmojave-circle-icon-theme-git breeze-gtk
 
     sudo pip install dbus-python    
     sudo systemctl enable NetworkManager
+    sudo systemctl enable dhcpcd
 
     # installing st terminal
 
@@ -312,7 +330,7 @@ function download {
     mkdir -p build && cd build/
 
     # install dependencies
-    yay -Syu xcb-util-keysyms xcb-util-wm libev yajl startup-notification pango perl xcb-util-cursor libxkbcommon-x11 xcb-util-xrm
+    yay -Syu --noconfirm xcb-util-keysyms xcb-util-wm libev yajl startup-notification pango perl xcb-util-cursor libxkbcommon-x11 xcb-util-xrm
 
     # Disabling sanitizers is important for release versions!
     # The prefix and sysconfdir are, obviously, dependent on the distribution.
@@ -332,7 +350,7 @@ function download {
             prmpt "We are going to install wayland for you anyway (if nvidia ever changes their mind)"
             prmpt "But for now you will still need to use xorg (by typing startx in the terminal)"
         fi
-        yay -Syu wayland sway waybar xorg-server-xwayland
+        yay -Syu --noconfirm wayland sway waybar xorg-server-xwayland
     fi
 
 
@@ -354,7 +372,6 @@ function gitclone {
     cp ~/.config/tos/profiles.ini ~/.mozilla/firefox/profiles.ini
     cp -r ~/.config/tos/tos-firefox/* ~/.mozilla/firefox/tos.default
 
-    # TODO symlink these files don't move them
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     ln .config/.zshrc ~/.zshrc
     ln .config/.vimrc ~/.vimrc
