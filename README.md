@@ -128,7 +128,7 @@ A simple installer to install tos (an arch based distro)
 This is a very large tool that is not going to be explained here.
 See below for more information
 
-_For more examples, please refer to the [Documentation](https://tos.pbfp.xyz/blog)_
+_For more examples, please refer to the [Documentation](https://github.com/F0xedb/helper-scripts/wiki)_
 
 
 
