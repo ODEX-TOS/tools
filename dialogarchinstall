@@ -12,8 +12,9 @@ echo "Its features are LUKS encrypted drives, custom zsh, i3wm and more"
 
 echo "Note: This script assumes that you have a wireless card. If you don't you need to manually get a network connection. If you do you will be promted to connect to a network"
 
-read -r -p "Do you wish to continue? y/n" entry
-
+if [[ "$1" == "" ]]; then
+    read -r -p "Do you wish to continue? y/n" entry
+fi
 }
 
 device=$( ls /dev/sd* | grep -E 'sd[a-z]$' | sort | head -n1)
@@ -244,7 +245,7 @@ function keymap-generator {
     exec 3>&1;
     layout=$(dialog --title "TOS Installer" --backtitle "TOS" --menu "What is your keyboard layout" 0 0 0  $(/usr/bin/ls /usr/share/kbd/keymaps/i386/**/*.map.gz | sed 's:.map.gz::' | xargs -n 1 basename | awk '{print $0, "keyboard"}') 2>&1 1>&3)
     exec 3>&-;
-   echo KEYMAP="$result" > /etc/vconsole.conf
+   echo KEYMAP="$layout" > /etc/vconsole.conf
 }
 
 function location-generator {
@@ -311,7 +312,7 @@ function download {
     yay -Syu --noconfirm jsoncpp
 
     #installing i3 with graphical programs
-    yay -Syu --noconfirm vim bluez ccat compton docker docker-compose dunst feh firefox-developer-edition gimp glances i3lock-next-git lsd neofetch pavucontrol polybar-git pulseaudio python-pip r8152-dkms rofi screen xf86-input-mouse xf86-video-intel visual-studio-code-insiders zathura playerctl nm-connection-editor networkmanager netctl openssh arandr mono alsa-utils bluez-utils chafa xdotool xcursor-human mcmojave-circle-icon-theme-git breeze-gtk
+    yay -Syu --noconfirm vim bluez ccat compton docker docker-compose dunst feh firefox-developer-edition gimp glances i3lock-next-git lsd neofetch pavucontrol polybar-git pulseaudio python-pip r8152-dkms rofi screen xf86-input-mouse xf86-video-intel visual-studio-code-insiders zathura playerctl nm-connection-editor networkmanager netctl openssh arandr mono alsa-utils bluez-utils chafa xdotool xcursor-human mcmojave-circle-icon-theme-git breeze-gtk python-pywal wget
 
     sudo pip install dbus-python    
     sudo systemctl enable NetworkManager
@@ -322,6 +323,7 @@ function download {
     git clone https://github.com/F0xedb/sucklessterminal
     cd sucklessterminal
     make && sudo make install
+    cd
 
     git clone https://github.com/F0xedb/i3.git
     cd i3
@@ -372,7 +374,12 @@ function gitclone {
     cp ~/.config/tos/profiles.ini ~/.mozilla/firefox/profiles.ini
     cp -r ~/.config/tos/tos-firefox/* ~/.mozilla/firefox/tos.default
 
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    rm -rf ~/.oh-my.zsh
+    curl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -o install.sh
+    export RUNZSH=no
+    sh install.sh
+    rm install.sh
+    sleep 5
     ln .config/.zshrc ~/.zshrc
     ln .config/.vimrc ~/.vimrc
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -442,7 +449,7 @@ function end {
     echo "Good luck on your tos linux journey!"
 }
 
-begin
+begin "$1"
 
 if [[ "$entry" == "y" && "$1" != "base" && "$1" != "user" ]]; then
         echo "You have 5 seconds before we start altering the hard drive"
