@@ -441,6 +441,17 @@ function gpu {
     fi
 } 
 
+function install-something {
+    while true; do
+            ask "Do you want to install some software" "yes"
+            if [[ "$result" == "yes" ]]; then
+                    $HOME/bin/tos i
+            else
+                    break
+            fi
+    done
+}
+
 function end {
     echo "You now have a complete tos linux install working as advertised."
     echo "To use your computer log in via the terminal"
@@ -485,7 +496,7 @@ if [[ "$1" == "user" ]]; then
     gitclone
     tom
     gpu
-    $HOME/bin/tos i
+    install-something
     end
 fi
 
