@@ -485,6 +485,7 @@ if [[ "$1" == "user" ]]; then
     gitclone
     tom
     gpu
+    $HOME/bin/tos i
     end
 fi
 
