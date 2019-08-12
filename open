@@ -1,7 +1,7 @@
 #!/bin/bash
 file="$1"
 
-ext=$(echo $file | awk -F. '{print $NF}')
+ext=$(echo "$file" | awk -F. '{print $NF}')
 
 #if the input is the current directory open it in vs code
 if [[ "$file" == "." || -d "$file" ]]; then
