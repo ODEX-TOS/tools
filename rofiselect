@@ -1,11 +1,11 @@
 #!/bin/bash
 
 rofidir="$HOME/bin/rofi"
-prompt=$(ls $rofidir | awk "!/^askpass/" | sort)
+prompt=$(find ~/bin/rofi -exec basename {} \; | awk "!/^askpass/" | sort)
 
 sol=$(echo -e "$prompt" | rofi -dmenu -p 'Select subscript' -font 'Fira Code 10')
 
-for i in $(ls $rofidir)
+for i in "$rofidir"/*
 do
     if [ "$i" == "$sol" ];
     then
