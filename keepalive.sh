@@ -1,6 +1,6 @@
 #!/bin/bash
 function xorg {
-    live=$(ps -ax | grep polybar | awk '{print $6}')
+    live=$(pgrep --list-full polybar | awk '{print $3}')
     bIsMain=False
     bIsWorkspace=False
     for item in $live
@@ -23,11 +23,10 @@ function xorg {
 }
 
 function wayland { 
-    live=$(ps -ax | grep waybar | awk '{print $5}')
+    live=$(pgrep --list-name waybar | awk '{print $2}')
     bIsAlive=False
     for item in $live
     do
-        echo $item
         if [ "$item" == "waybar" ]; then
                 bIsAlive=True
         fi
@@ -39,9 +38,8 @@ function wayland {
 
 while true
 do
-    display=$(ps -ax | grep sway)
-    display=$(echo $display | awk '{print $5}')
-    echo $display
+    display=$(pgrep --list-name sway | awk '{print $2}')
+    echo "$display"
     if [[ "$display" == "sway" ]]; then
             wayland
     else

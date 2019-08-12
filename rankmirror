@@ -5,11 +5,11 @@ mirrors=273
 mirrorfile=$(curl https://www.archlinux.org/mirrorlist/all/)
 mirrors=$(echo "$mirrorfile" | awk '$0 ~ /^Server|^#Server/{print $0}' | wc -l)
 
-echo "You have $(cat /etc/pacman.d/mirrorlist | awk '$0 ~ /^Server|^#Server/{print $0}' | wc -l) servers in your /etc/pacmand.d/mirrorlist"
-read -p "You need to manually make sure your mirrorlist contains all servers otherwise copy over a backup found in /etc/pacman.d/*.backup. Understood (Y/N)"  
+echo "You have $(awk '$0 ~ /^Server|^#Server/{print $0}' /etc/pacman.d/mirrorlist | wc -l) servers in your /etc/pacmand.d/mirrorlist"
+read -r -p "You need to manually make sure your mirrorlist contains all servers otherwise copy over a backup found in /etc/pacman.d/*.backup. Understood (Y/N)"  
 datetime=$(date| tr ' ' '-')
 
-sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist$datetime.backup
+sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist"$datetime".backup
 
 ls /etc/pacman.d/mirrorlist*
 
