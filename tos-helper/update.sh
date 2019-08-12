@@ -1,27 +1,27 @@
 #!/bin/bash
 
 function installyay {
-    cd
+    cd || exit 1
     git clone https://aur/archlinux.org/yay.git
-    cd yay
+    cd yay || exit 1
     makepkg -si
-    cd
+    cd || exit 1
     rm -rf yay
 }
 
 function update {
     printf "${GREEN} Checking all packages and repo's${NC}\n"
-    if [[ "$(which yay)" != "/usr/bin/yay" ]]; then
+    if [[ ! "$(command -v yay)" ]]; then
         installyay
     fi
 
     yay -Syu
     
-    if [[ "$(which git)" != "/usr/bin/git" ]]; then
+    if [[ ! $(command -v git) ]]; then
         yay -Syu git
     fi
 
-    if [[ "$(which wal)" != "/usr/bin/wal" ]]; then
+    if [[ ! $(command -v wal) ]]; then
         yay -Syu python-pywal
     fi
     
@@ -44,10 +44,10 @@ function update {
         git clone https://github.com/F0xedb/Pictures.git ~/Pictures
     fi
 
-    if [[ "$(which st)" != "/usr/local/bin/st" ]]; then
-        cd /tmp
+    if [[ "$(command -v st)" ]]; then
+        cd /tmp || exit 1
         git clone https://github.com/F0xedb/sucklessterminal.git
-        cd sucklessterminal && make && sudo make install       
+        cd sucklessterminal && make && sudo make install || exit 1 
     fi
 
     ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
@@ -58,30 +58,30 @@ function update {
 
     #Finding all firefox profiles and loading in the custom css (it must be enabled in firefox)
     for profile in ~/.mozilla/firefox/*.dev-edition-default; do
-            cd $profile
-            cp -r ~/.config/.mozilla/firefox/profile/ $profile
-            echo $profile
+            cd "$profile" || exit 1
+            cp -r ~/.config/.mozilla/firefox/profile/ "$profile"
+            echo "$profile" || exit 1 
     done
 
     printf "${RED}If your repo's contain uncommited changes pleas commit them\n git add . && git commit -m \"Data about change\"${NC}\n"
     
-    cd ~/bin && git pull origin master
-    cd ~/.config && git pull origin master
-    cd ~/Pictures && git pull origin master
-    cd ~/.oh-my-zsh/load && git pull origin master
-    cd
+    cd ~/bin && git pull origin master || exit 1
+    cd ~/.config && git pull origin master || exit 1
+    cd ~/Pictures && git pull origin master || exit 1
+    cd ~/.oh-my-zsh/load && git pull origin master || exit 1
+    cd || exit 1
 
     tospath="$HOME/.oh-my-zsh/custom/plugins/zsh-completions/src/"
     if [[ ! -f "$tospath"_tos ]]; then
             curl https://raw.githubusercontent.com/F0xedb/tos-live/master/_tos -o "$tospath"_tos
     fi
     
-    if [[ "$(which chafa)" != "/usr/bin/chafa" ]]; then
+    if [[ ! "$(command -v chafa)" ]]; then
         yay -Syu chafa
     fi
 
     
-    if [[ "$(which neofetch)" != "/usr/bin/neofetch" ]]; then
+    if [[ ! "$(command -v neofetch)" ]]; then
         yay -Syu neofetch
     fi
 }

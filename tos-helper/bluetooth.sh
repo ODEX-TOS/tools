@@ -4,11 +4,11 @@ case "$2" in
    "s"|"set")
             bluetoothctl power "$3"
     ;;
-   "list"|"list")
+   "l"|"list")
             if [[ $3 == "scan" ]]; then
                     bluetoothctl scan on &
                     printf "${RED}Press enter if you want to stop scanning${NC}\n"
-                    read
+                    read -r 
                     kill %%
             fi
             bluetooth

@@ -6,7 +6,7 @@ case "$2" in
     ;;
     "c"|"change")
             num=$(echo -e "$3" | tr '-' ' ' | tr '+' ' ' | sed 's/\s*//g')
-            echo $num, $3
+            echo "$num, $3"
             if [[ "$2" == *-* ]]; then
                 amixer -q sset Master "$num"%-
             else

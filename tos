@@ -16,7 +16,7 @@ NC='\033[0m' # No Color
 
 export SUDO_ASKPASS="$HOME/bin/rofi/askpass"
 name=$(basename "$0")
-directory=$(printf "$0" | sed 's:'$name'::')
+directory=$(printf "%s" "$0" | sed 's:'"$name"'::')
 themefile="$HOME/.config/tos/theme"
 extended="$directory"tos-helper
 export location="$directory"installer
@@ -27,10 +27,10 @@ export framework="$location"/framework.sh
 
 case "$1" in
     ""|"-h"|"--help")
-        source $extended/help.sh
+        source "$extended"/help.sh
     ;;
     "-u"|"--update")
-        source $extended/update.sh
+        source "$extended"/update.sh
     ;;
     "-m"|"--mount")
         cryptsetup open "$2"3 "$3"
@@ -46,42 +46,42 @@ case "$1" in
     ;;
     "-S"*|"-R"*|"-Q"*)
         if [ "$(id -u)" != "0" ]; then
-            if [[ "$(which yay)" != "/usr/bin/yay" ]]; then
-            installyay
+            if [[ ! $(command -v yay) ]]; then
+                installyay
             fi
             yay "${@:1}"
         else
-            printf "${RED} Package management as root is very dangerous${NC}\n"
+            printf "%s Package management as root is very dangerous%s\n" "${RED}" "${NC}"
         fi
 
     ;;
     "-iso")
-            source $extended/installer.sh
+            source "$extended"/installer.sh
     ;;
     "-c"|"--crypto")
-            source $extended/etc.sh
+            source "$extended"/etc.sh
     ;;
     "n"|"network")
-            source $extended/network.sh
+            source "$extended"/network.sh
     ;;
     "-rs"|"--repair-system")
-        source $extended/update.sh
+        source "$extended"/update.sh
     ;;
     "t"|"theme")
-        source $extended/theme.sh
+        source "$extended"/theme.sh
     ;;    
     "b"|"bluetooth")
-        source $extended/bluetooth.sh
+        source "$extended"/bluetooth.sh
     ;;
     "v"|"volume")
-        source $extended/volume.sh
+        source "$extended"/volume.sh
     ;;
     "s"|"screen")
-        source $extended/screen.sh
+        source "$extended"/screen.sh
     ;;
     "install"|"installer"|"i")
             exec 3>&1;
-            executable=$(dialog --title "TOS Installer" --backtitle "TOS" --menu "What do you want to install?" 0 0 0 $(/usr/bin/ls $location/*.sh | sed 's:^.*framework.sh$::' | xargs -n 1 basename | sed 's:.sh::' | awk '{print $0, "Install"}') 2>&1 1>&3)
+            executable=$(dialog --title "TOS Installer" --backtitle "TOS" --menu "What do you want to install?" 0 0 0 $(/usr/bin/ls "$location"/*.sh | sed 's:^.*framework.sh$::' | xargs -n 1 basename | sed 's:.sh::' | awk '{print $0, "Install"}') 2>&1 1>&3)
             exec 3>&-;
             source "$location"/"$executable".sh
     ;;
