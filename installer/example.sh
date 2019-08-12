@@ -1,6 +1,6 @@
 #!/bin/bash
 # This source statement must be present at the top of this file
-source $framework
+source "$framework"
 
 # Informe the user of whats about to happen
 prmpt "Installing some software"
@@ -21,6 +21,6 @@ fi
 # download repo.pbfp.xyz to $HOME/test/testfile
 # If the directory doesn't exist it will be created
 # important dont end the directory with a /
-download $HOME/test testfile "https://repo.pbfp.xyz" 
+download "$HOME"/test testfile "https://repo.pbfp.xyz" 
 
 prmpt "The installation is done!!"

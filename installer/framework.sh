@@ -1,15 +1,15 @@
 #!/bin/bash
 
 function packages {
-    if [[ "$(which yay)" != "/usr/bin/yay" ]]; then
-        cd
+    if [[ ! "$(command -v yay)" ]]; then
+        cd || exit 1
         git clone https://aur.archlinux.org/yay.git
-        cd yay
+        cd yay || exit 1
         yes | makepkg -si
-        cd
+        cd || exit 1
         rm -rf yay
     fi
-    yay -Syu $@
+    yay -Syu "$@"
 }
 
 function ask {
