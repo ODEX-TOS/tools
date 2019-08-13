@@ -1,4 +1,14 @@
 #!/bin/bash
+function help {
+        subname="network"
+        printf "${ORANGE} $name $subname ${NC}OPTIONS: metric | restart | connect | list | help\n\n" 
+        printf "${ORANGE}USAGE:${NC}\n"
+        printf "$name $subname help \t\t\t\t Show this help message\n"
+        printf "$name $subname metric <route> <value> \t\t Change the metric of a route to said value\n"
+        printf "$name $subname restart \t\t\t\t Restart the network stack\n"
+        printf "$name $subname connect <ssid> \t\t\t Connect to a wifi network based on its ssid\n"
+        printf "$name $subname list \t\t\t\t Show a list of all wifi networks found\n"
+}
 
 function changemetric {
         if [ "$(id -u)" == "0" ]; then
@@ -42,4 +52,7 @@ case "$2" in
     "l"|"list")
         nmcli d wifi list
     ;;
+    "-h"|"--help"|"help"|"h")
+        help
+    ;;   
 esac

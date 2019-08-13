@@ -1,4 +1,17 @@
 #!/bin/bash
+function help {
+        subname="screen"
+        printf "${ORANGE} $name $subname ${NC}OPTIONS: get | add | duplicate | toggle | reset | refresh | resolution | help\n\n" 
+        printf "${ORANGE}USAGE:${NC}\n"
+        printf "$name $subname help \t\t\t\t\t Show this help message\n"
+        printf "$name $subname get  \t\t\t\t\t Get the current screen information\n"
+        printf "$name $subname add <screen> <size> \t\t\t\t Add a size to the current screen. In case the size wasn't detected eg eDP1 1920x1080\n"
+        printf "$name $subname duplicate <in> <out> \t\t\t Duplicate the screen in to screen out\n"
+        printf "$name $subname toggle <screen> <on|off>\t\t\t Toggle a display on or off\n"
+        printf "$name $subname reset <screen> \t\t\t\t Reset screen to it's default values\n"
+        printf "$name $subname refresh <screen> <Hz> \t\t\t Change the refresh rate of the screen\n"
+        printf "$name $subname resolution <screen> <width>x<height> \t Set the resolution of screen to certain WidthxHeight \n"
+}
 
 function screen-duplicate  {
     primary=$1
@@ -60,4 +73,7 @@ case "$2" in
         xrandr --output "$3" --rate "$4"
         screen-reload
     ;;
+    "-h"|"--help"|"help"|"h")
+        help
+    ;;   
 esac

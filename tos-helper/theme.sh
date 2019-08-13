@@ -1,5 +1,17 @@
 #!/bin/bash
 themefile="$HOME/.config/tos/theme"
+function help {
+        subname="theme"
+        printf "${ORANGE} $name $subname ${NC}OPTIONS: set | add | delete | random | list | time | help\n\n" 
+        printf "${ORANGE}USAGE:${NC}\n"
+        printf "$name $subname help \t\t\t\t Show this help message\n"
+        printf "$name $subname set <picture>\t\t\t set the current theme based on a picture\n"
+        printf "$name $subname add <picture>\t\t\t Add a theme to the randomizer\n"
+        printf "$name $subname delete <picture>\t\t Delete a theme from the randomizer\n"
+        printf "$name $subname random <on|off>\t\t Set random theme on or off\n"
+        printf "$name $subname list\t\t\t\t List all pictures used for the random theme generator\n"
+        printf "$name $subname time <seconds>\t\t Set the timeout between random themes\n"
+}
 
 function theme {
     if [[ ! "$(command -v wal)" ]]; then
@@ -97,4 +109,7 @@ case "$2" in
         total=$(($(gettime "$day") + $(gettime "$hour") + $(gettime "$minute") + $(gettime "$second")))
         sed -i 's/^time=[0-9]*/time='"$total"'/g' "$themefile"
     ;;
+    "-h"|"--help"|"help"|"h")
+        help
+    ;;   
 esac
