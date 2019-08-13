@@ -1,0 +1,28 @@
+# Testing tos tool
+
+
+# Testing help functions
+function Test_help_main {
+    AssertNotEquals "$(tos -h)" ""
+    AssertNotEquals "$(tos --help)" ""
+}
+
+function Test_help_bluetooth {
+    AssertNotEquals "$(tos b -h)" ""
+    AssertNotEquals "$(tos bluetooth --help)" ""
+}
+
+function Test_help_screen {
+    AssertNotEquals "$(tos s -h)" ""
+    AssertNotEquals "$(tos screen --help)" ""
+}
+
+function Test_help_volume {
+    AssertNotEquals "$(tos v -h)" ""
+    AssertNotEquals "$(tos volume --help)" ""
+}
+
+function Test_help_theme {
+    AssertNotEquals "$(tos t -h)" ""
+    AssertNotEquals "$(tos theme --help)" ""
+}
