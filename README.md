@@ -28,6 +28,8 @@
     <a href="https://github.com/F0xedb/helper-scripts/issues">Report Bug</a>
     ·
     <a href="https://github.com/F0xedb/helper-scripts/issues">Request Feature</a>
+    ·
+    <a href="https://github.com/F0xedb/tos-live">TOS</a>
   </p>
 </p>
 
