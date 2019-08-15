@@ -2,7 +2,7 @@
 
 function installyay {
     cd || exit 1
-    git clone https://aur/archlinux.org/yay.git
+    git clone https://aur.archlinux.org/yay.git
     cd yay || exit 1
     makepkg -si
     cd || exit 1
@@ -57,7 +57,7 @@ function update {
     fi
 
     #Finding all firefox profiles and loading in the custom css (it must be enabled in firefox)
-    for profile in ~/.mozilla/firefox/*.dev-edition-default; do
+    for profile in ~/.mozilla/firefox/tos.*; do
             cd "$profile" || exit 1
             cp -r ~/.config/.mozilla/firefox/profile/ "$profile"
             echo "$profile" || exit 1 
