@@ -23,7 +23,7 @@
     <a href="https://github.com/F0xedb/helper-scripts"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/F0xedb/helper-scripts">View Demo</a>
+    <a href="https://tos.pbfp.xyz/download">View Demo</a>
     ·
     <a href="https://github.com/F0xedb/helper-scripts/issues">Report Bug</a>
     ·
