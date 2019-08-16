@@ -9,7 +9,7 @@ function packages {
         cd || exit 1
         rm -rf yay
     fi
-    yay -Syu "$@"
+    yes | yay -Syu "$@"
 }
 
 function ask {
