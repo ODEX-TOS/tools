@@ -45,9 +45,11 @@ function update {
     fi
 
     if [[ "$(command -v st)" ]]; then
-        cd /tmp || exit 1
-        git clone https://github.com/F0xedb/sucklessterminal.git
-        cd sucklessterminal && make && sudo make install || exit 1 
+            yay -Syu st-tos
+    fi
+
+    if [[ "$(command -v i3)" ]]; then
+            yay -Syu i3-gaps-tos
     fi
 
     ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
