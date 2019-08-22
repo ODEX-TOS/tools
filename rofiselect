@@ -5,10 +5,5 @@ prompt=$(find ~/bin/rofi -exec basename {} \; | awk "!/^askpass/" | sort)
 
 sol=$(echo -e "$prompt" | rofi -dmenu -p 'Select subscript' -font 'Fira Code 10')
 
-for i in "$rofidir"/*
-do
-    if [ "$i" == "$sol" ];
-    then
-            eval "$rofidir/$i"
-    fi
-done
+echo "$rofidir/$sol"
+eval "$rofidir/$sol"
