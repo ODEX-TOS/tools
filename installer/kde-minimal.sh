@@ -28,7 +28,7 @@ if [[ "$result" == "yes" ]]; then
     if [[ "$wayland" == "yes" ]]; then
         printf 'if [[ "%s(tty)" == "/dev/tty1" ]]; then \n\tXDG_SESSION_TYPE=wayland dbus-run-session startplasmacompositor\nfi\n' "$" >> .profile
     else
-        echo "exec startkde" > .xinitrc
+        echo "exec startkde" > "$HOME"/.xinitrc
     fi
 fi
 
