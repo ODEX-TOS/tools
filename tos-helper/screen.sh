@@ -36,10 +36,14 @@ function screen-reload {
 function add {
     monitor="$1"
     res="$2"
+    freq="$3"
+    if [[ "$freq" == "" ]]; then
+            freq="60"
+    fi
     height=$(printf "%s" "$res" | awk -Fx '{print $1}')
     width=$(printf "%s" "$res" | awk -Fx '{print $2}')
-    modeline=$(gtf "$height" "$width" 60 | head -n3 | tail -n1 | sed 's;.*Modeline ;;' | awk '{print $1}' | sed 's;";;g')
-    xrandr --newmode "$modeline" $(gtf "$height" "$width" 60 | head -n3 |  tail -n1 | sed 's;.*Modeline ".*"  ;;')
+    modeline=$(gtf "$height" "$width" "$freq" | head -n3 | tail -n1 | sed 's;.*Modeline ;;' | awk '{print $1}' | sed 's;";;g')
+    xrandr --newmode "$modeline" $(gtf "$height" "$width" "$freq" | head -n3 |  tail -n1 | sed 's;.*Modeline ".*"  ;;')
     xrandr --addmode "$monitor" "$modeline"
     xrandr --output "$monitor" --mode "$modeline"
 }
@@ -50,7 +54,7 @@ case "$2" in
         xrandr
     ;;
     "a"|"add")
-        add "$3" "$4"
+        add "$3" "$4" "$5"
         screen-reload
     ;;
     "d"|"duplicate")
