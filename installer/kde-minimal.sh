@@ -26,7 +26,7 @@ ask "Do you want kde as the default DE during boot" "yes"
 
 if [[ "$result" == "yes" ]]; then
     if [[ "$wayland" == "yes" ]]; then
-        printf 'if [[ "$(tty)" == "/dev/tty1" ]]; then \n\tXDG_SESSION_TYPE=wayland dbus-run-session startplasmacompositor\nfi ' >> .profile
+        printf 'if [[ "%s(tty)" == "/dev/tty1" ]]; then \n\tXDG_SESSION_TYPE=wayland dbus-run-session startplasmacompositor\nfi\n' "$" >> .profile
     else
         echo "exec startkde" > .xinitrc
     fi
