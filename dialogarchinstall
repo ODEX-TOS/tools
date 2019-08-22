@@ -454,9 +454,9 @@ function gpu {
     fi
 } 
 
-function install-something {
+function install-extra {
     while true; do
-            ask "Do you want to install some software" "yes"
+            ask "Do you want to install extra software" "yes"
             if [[ "$result" == "yes" ]]; then
                     $HOME/bin/tos i
             else
@@ -509,7 +509,7 @@ if [[ "$1" == "user" ]]; then
     gitclone
     tom
     gpu
-    install-something
+    install-extra
     end
 fi
 
