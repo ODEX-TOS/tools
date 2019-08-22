@@ -17,7 +17,7 @@ if [[ "$result" == "yes" ]]; then
     prmpt "Themes have been setup"
 fi
 
-ask "Do you want openbox as the defaulti window manager?" "yes"
+ask "Do you want openbox as the default window manager?" "yes"
 if [[ "$result" == "yes" ]]; then
     echo "exec openbox-session" > "$HOME/.xinitrc"
 fi
