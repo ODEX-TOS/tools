@@ -19,7 +19,7 @@ case "$2" in
             gpg --list-secret-keys --keyid-format LONG
     ;;
     "k"|"key")
-            gpg --list-secret-keys --keyid-format LONG | egrep '^sec' | awk '{print $2}' | cut -d/ -f2
+            gpg --list-secret-keys --keyid-format LONG | grep -E '^sec' | awk '{print $2}' | cut -d/ -f2
     ;;
     "e"|"export")
         if [[ "$4" != "" ]]; then
@@ -43,7 +43,7 @@ case "$2" in
     ;;
     "gi"|"git")
             git config --global user.signingkey "$3"
-            mail=$(gpg --list-secret-keys --keyid-format LONG "$3" | egrep '^uid' | awk -F\< '{print $2}' | tr '>' ' ')
+            mail=$(gpg --list-secret-keys --keyid-format LONG "$3" | grep -E '^uid' | awk -F\< '{print $2}' | tr '>' ' ')
             git config --global user.email "$mail"
     ;;
     "-h"|"--help"|"help"|"h")
