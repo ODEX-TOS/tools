@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # TOS is the Tom OS update script. This script manages everything for maintaining and upgrading.
-# To understand how to install the software go to https://github.com/F0Xedb/helper-scripts
+# To understand how to install the software go to https://github.com/ODEX-TOS/tools
 # Archinstall and dialogarchinstall are scripts that install arch from scratch and also install custom software to more personalise the os
 # Once you have installed arch and have cloned the helper-scripts into a $PATH file you will have the tool TOS.
 # This tool is a wrapper around arch based tools.
