@@ -4,14 +4,14 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![GPL License][license-shield]][license-url]
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FF0xedb%2Fhelper-scripts.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FF0xedb%2Fhelper-scripts?ref=badge_shield)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FODEX-TOS%2Ftools.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FODEX-TOS%2Ftools?ref=badge_shield)
 
 
 
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/F0xedb/helper-scripts">
+  <a href="https://github.com/ODEX-TOS/tools">
     <img src="https://tos.pbfp.xyz/images/logo.svg" alt="Logo" width="150" height="200">
   </a>
 
@@ -20,16 +20,16 @@
   <p align="center">
     This repo contains helper scripts for the TOS project
     <br />
-    <a href="https://github.com/F0xedb/helper-scripts"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/ODEX-TOS/tools"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://tos.pbfp.xyz/download">View Demo</a>
     ·
-    <a href="https://github.com/F0xedb/helper-scripts/issues">Report Bug</a>
+    <a href="https://github.com/ODEX-TOS/tools/issues">Report Bug</a>
     ·
-    <a href="https://github.com/F0xedb/helper-scripts/issues">Request Feature</a>
+    <a href="https://github.com/ODEX-TOS/tools/issues">Request Feature</a>
     ·
-    <a href="https://github.com/F0xedb/tos-live">TOS</a>
+    <a href="https://github.com/ODEX-TOS/tos-live">TOS</a>
   </p>
 </p>
 
@@ -76,7 +76,7 @@ You need the following packages
  
 1. Clone the helper-scripts
 ```sh
-git clone https:://github.com/F0xedb/helper-scripts.git ~/bin
+git clone https:://github.com/ODEX-TOS/tools.git ~/bin
 ```
 2. Install packages
 ```sh
@@ -84,7 +84,7 @@ pacman -Syu bash polybar-git rofi xorg-xrandr
 ```
 3. Get emoji file
 ```sh
-curl https://raw.githubusercontent.com/F0xedb/dotfiles/master/emoji -o ~/.config/emoji
+curl https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/emoji -o ~/.config/emoji
 ```
 
 Make sure this repo is inside your path evnironment variable
@@ -131,14 +131,14 @@ A simple installer to install tos (an arch based distro)
 This is a very large tool that is not going to be explained here.
 See below for more information
 
-_For more examples, please refer to the [Documentation](https://github.com/F0xedb/helper-scripts/wiki)_
+_For more examples, please refer to the [Documentation](https://github.com/ODEX-TOS/tools/wiki)_
 
 
 
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/F0xedb/helper-scripts/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/ODEX-TOS/tools/issues) for a list of proposed features (and known issues).
 
 
 
@@ -164,20 +164,20 @@ Distributed under the GPL License. See `LICENSE` for more information.
 
 <!-- CONTACT -->
 
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FF0xedb%2Fhelper-scripts.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FF0xedb%2Fhelper-scripts?ref=badge_large)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FF0xedb%2Fhelper-scripts.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FODEX-TOS%2Ftools?ref=badge_large)
 
 ## Contact
 
 Tom Meyers - tom@pbfp.xyz
 
-Project Link: [https://github.com/F0xedb/helper-scripts](https://github.com/F0xedb/helper-scripts)
+Project Link: [https://github.com/ODEX-TOS/tools](https://github.com/ODEX-TOS/tools)
 
 
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 
-* [F0xedb](https://github.com/F0xedb/helper-scripts)
+* [F0xedb](https://github.com/ODEX-TOS/tools)
 
 
 
