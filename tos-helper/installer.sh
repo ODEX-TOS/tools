@@ -6,7 +6,7 @@ source tos-helper/color.sh
 function installtosdialog {
     printf "${RED}Installing arch via a dialog${NC}\n"
     if [[ ! -f dialogarchinstall ]]; then
-        curl https://raw.githubusercontent.com/F0xedb/helper-scripts/master/tosinstall -o tosinstall
+        curl https://raw.githubusercontent.com/ODEX-TOS/tools/master/tosinstall -o tosinstall
         chmod +x tosinstall
     fi
     ./tosinstall 

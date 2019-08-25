@@ -10,10 +10,10 @@ packages openbox-patched obconf
 ask "Do you want the tos openbox config?" "yes"
 
 if [[ "$result" == "yes" ]]; then
-    download "$HOME/.themes/tos/openbox-3" bullet.xbm "https://raw.githubusercontent.com/F0xedb/dotfiles/master/.themes/tos/openbox-3/bullet.xbm" 
-    download "$HOME/.themes/tos/openbox-3" close.xbm "https://raw.githubusercontent.com/F0xedb/dotfiles/master/.themes/tos/openbox-3/close.xbm" 
-    download "$HOME/.themes/tos/openbox-3" max.xbm "https://raw.githubusercontent.com/F0xedb/dotfiles/master/.themes/tos/openbox-3/max.xbm" 
-    download "$HOME/.themes/tos/openbox-3" themerc "https://raw.githubusercontent.com/F0xedb/dotfiles/master/.themes/tos/openbox-3/themerc" 
+    download "$HOME/.themes/tos/openbox-3" bullet.xbm "https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/.themes/tos/openbox-3/bullet.xbm" 
+    download "$HOME/.themes/tos/openbox-3" close.xbm "https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/.themes/tos/openbox-3/close.xbm" 
+    download "$HOME/.themes/tos/openbox-3" max.xbm "https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/.themes/tos/openbox-3/max.xbm" 
+    download "$HOME/.themes/tos/openbox-3" themerc "https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/.themes/tos/openbox-3/themerc" 
     prmpt "Themes have been setup"
 fi
 

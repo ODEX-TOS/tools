@@ -334,11 +334,6 @@ function download {
     # install dependencies
     yay -Syu --noconfirm xcb-util-keysyms xcb-util-wm libev yajl startup-notification pango perl xcb-util-cursor libxkbcommon-x11 xcb-util-xrm
 
-    # Disabling sanitizers is important for release versions!
-    # The prefix and sysconfdir are, obviously, dependent on the distribution.
-    ../configure --prefix=/usr --sysconfdir=/etc --disable-sanitizers
-    make
-    sudo make install
 
     #enable wayland support
     ask "Do you want to install wayland(newer) or XORG?" "wayland"
@@ -361,12 +356,12 @@ function download {
 
 
 function gitclone {
-    prmpt "Installing Tom's custom scripts"
+    prmpt "Installing TOSs custom scripts"
     cd
-    git clone https://github.com/F0xedb/helper-scripts.git bin
+    git clone https://github.com/ODEX-TOS/tools.git bin
     cd
     rm -rf .config
-    git clone https://github.com/F0xedb/dotfiles .config
+    git clone https://github.com/ODEX-TOS/dotfiles .config
     sed -i 's;$HOME /home/zeus;$HOME '$HOME';g' $HOME/.config/i3/config
     sed -i 's;$HOME /home/zeus;$HOME '$HOME';g' $HOME/.config/sway/config
 
@@ -393,10 +388,10 @@ function gitclone {
     mkdir -p $HOME/.icons/default
     ln .config/index.theme $HOME/.icons/default/index.theme
     cd $HOME/.oh-my-zsh
-    git clone https://github.com/F0xedb/zsh-load load
+    git clone https://github.com/ODEX-TOS/zsh-load load
     cd
     rmdir Pictures
-    git clone https://github.com/F0xedb/Pictures Pictures
+    git clone https://github.com/ODEX-TOS/Pictures Pictures
 }
 
 function tom {
