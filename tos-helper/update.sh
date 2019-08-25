@@ -27,21 +27,21 @@ function update {
     
     if [[ ! -d ~/.oh-my-zsh ]]; then
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-        git clone https://github.com/F0xedb/zsh-load.git ~/.oh-my-zsh/load
+        git clone https://github.com/ODEX-TOS/zsh-load.git ~/.oh-my-zsh/load
     fi
 
     if [[ ! -d ~/bin ]]; then
-        git clone https://github.com/F0xedb/helper-scripts.git ~/bin 
+        git clone https://github.com/ODEX-TOS/tools.git ~/bin 
     fi
 
 
     if [[ ! -f ~/.config/emoji ]]; then
-        git clone https://github.com/F0xedb/dotfiles.git ~/.config
+        git clone https://github.com/ODEX-TOS/dotfiles.git ~/.config
     fi
 
     if [[ ! -d ~/Pictures ]]; then
         mkdir ~/Pictures
-        git clone https://github.com/F0xedb/Pictures.git ~/Pictures
+        git clone https://github.com/ODEX-TOS/Pictures.git ~/Pictures
     fi
 
     if [[ "$(command -v st)" ]]; then
@@ -75,7 +75,7 @@ function update {
 
     tospath="$HOME/.oh-my-zsh/custom/plugins/zsh-completions/src/"
     if [[ ! -f "$tospath"_tos ]]; then
-            curl https://raw.githubusercontent.com/F0xedb/tos-live/master/_tos -o "$tospath"_tos
+            curl https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/_tos -o "$tospath"_tos
     fi
     
     if [[ ! "$(command -v chafa)" ]]; then
