@@ -86,7 +86,7 @@ function update {
     if [[ ! "$(command -v neofetch)" ]]; then
         yay -Syu neofetch
     fi
-    sudo sh -c 'curl https://raw.githubusercontent.com/F0xedb/tos-live/master/toslive/version-edit.txt > /etc/version'
+    sudo sh -c 'curl https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/toslive/version-edit.txt > /etc/version'
 }
 
 function repair {
