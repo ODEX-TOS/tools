@@ -418,7 +418,7 @@ function tom {
 
     cd ~/.vim/bundle/YouCompleteMe
     python3 install.py --all
-    sudo sh -c 'curl https://raw.githubusercontent.com/F0xedb/tos-live/master/toslive/version-edit.txt > /etc/version'
+    sudo sh -c 'curl https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/toslive/version-edit.txt > /etc/version'
     
 }
 
