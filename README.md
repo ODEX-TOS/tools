@@ -76,7 +76,7 @@ You need the following packages
  
 1. Clone the helper-scripts
 ```sh
-git clone https:://github.com/ODEX-TOS/tools.git ~/bin
+git clone https://github.com/ODEX-TOS/tools.git ~/bin
 ```
 2. Install packages
 ```sh
@@ -168,7 +168,7 @@ Distributed under the GPL License. See `LICENSE` for more information.
 
 ## Contact
 
-Tom Meyers - tom@pbfp.xyz
+Tom Meyers - tom@odex.be
 
 Project Link: [https://github.com/ODEX-TOS/tools](https://github.com/ODEX-TOS/tools)
 
