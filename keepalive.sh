@@ -38,7 +38,7 @@ function wayland {
 
 while true
 do
-    display=$(pgrep --list-name sway | awk '{print $2}')
+    display=$(pgrep --list-name sway | awk '$2 ~ /^sway$/{print $2}')
     echo "$display"
     if [[ "$display" == "sway" ]]; then
             wayland
