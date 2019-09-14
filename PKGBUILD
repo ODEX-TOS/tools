@@ -1,6 +1,6 @@
 # Maintainer: Tom Meyers tom@odex.be
 pkgname=tos-tools
-pkgver=r22.9273531
+pkgver=r237.f667287
 pkgrel=1
 pkgdesc="A lot of tools used to make life easier on tos"
 arch=(any)
@@ -40,19 +40,21 @@ package() {
         
         # copy subdir from rofi
         mkdir -p "$pkgdir"/usr/share/tos-rofi
-        for file in rofi/* ; do
-            install -Dm755 "$file" "$pkgdir"/usr/share/tos-rofi/"$file"
+        mv rofi tos-rofi
+        for file in tos-rofi/* ; do
+            install -Dm755 "$file" "$pkgdir"/usr/share/"$file"
         done
 
         # installer
         mkdir -p "$pkgdir"/usr/share/tos-installer
-        for file in installer/* ; do
-            install -Dm755 "$file" "$pkgdir"/usr/share/tos-installer/"$file"
+        mv installer tos-installer
+        for file in tos-installer/* ; do
+            install -Dm755 "$file" "$pkgdir"/usr/share/"$file"
         done
 
         # tos-helper
         mkdir -p "$pkgdir"/usr/share/tos-helper
         for file in tos-helper/* ; do
-            install -Dm755 "$file" "$pkgdir"/usr/share/tos-helper/"$file"
+            install -Dm755 "$file" "$pkgdir"/usr/share/"$file"
         done
 }
