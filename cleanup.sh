@@ -95,6 +95,67 @@ pacman -Rsc gnome-boxes --noconfirm
 
 }
 
+do_user_setup(){
+    cd /home/$NEW_USER
+    rm -rf .config
+    git clone https://github.com/ODEX-TOS/dotfiles .config
+    sed -i 's;/home/zeus;'/home/$NEW_USER';g' /home/$NEW_USER/.config/i3/config
+    sed -i 's;/home/zeus;'/home/$NEW_USER';g' /home/$NEW_USER/.config/sway/config_azerty
+    sed -i 's;/home/zeus;'/home/$NEW_USER';g' /home/$NEW_USER/.config/sway/config_qwerty
+    #setup firefox
+    mkdir -p /home/$NEW_USER/.mozilla/firefox/tos.default
+    cp /home/$NEW_USER/.config/tos/profiles.ini /home/$NEW_USER/.mozilla/firefox/profiles.ini
+    cp -r /home/$NEW_USER/.config/tos/tos-firefox/* /home/$NEW_USER/.mozilla/firefox/tos.default
+
+    yay -Syu --noconfirm zsh
+    sudo chsh $NEW_USER -s /bin/zsh
+    rm -rf /home/$NEW_USER/.oh-my.zsh
+    curl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -o install.sh
+    export RUNZSH=no
+    export ZSH=/home/$NEW_USER/.oh-my-zsh
+    sh install.sh
+    rm install.sh
+    rm /home/$NEW_USER/.zshrc /home/$NEW_USER/.vimrc /home/$NEW_USER/.profile
+
+    ln .config/.zshrc /home/$NEW_USER/.zshrc
+    ln .config/.profile /home/$NEW_USER/.profile
+    ln .config/.vimrc /home/$NEW_USER/.vimrc
+    curl -fLo /home/$NEW_USER/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    git clone https://github.com/VundleVim/Vundle.vim.git /home/$NEW_USER/.vim/bundle/Vundle.vim
+    ln .config/.Xresources /home/$NEW_USER/.Xresources
+    mkdir -p /home/$NEW_USER/.icons/default
+    ln .config/index.theme /home/$NEW_USER/.icons/default/index.theme
+    git clone https://github.com/ODEX-TOS/zsh-load /home/$NEW_USER/.oh-my-zsh/load
+    cd /home/$NEW_USER
+    rmdir Pictures
+    git clone https://github.com/ODEX-TOS/Pictures Pictures
+
+    git clone https://github.com/zsh-users/zsh-autosuggestions /home/$NEW_USER/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/$NEW_USER/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+    git clone https://github.com/zsh-users/zsh-completions.git /home/$NEW_USER/.oh-my-zsh/custom/plugins/zsh-completions
+    git clone https://github.com/denysdovhan/spaceship-prompt.git /home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship-prompt
+    ln -s ~/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme /home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship.zsh-theme
+    curl https://github.com/ODEX-TOS/tools/blob/master/_tos -o  /home/$NEW_USER/.oh-my-zsh/custom/plugins/zsh-completions
+
+    printf "xrdb ~/.Xresources\nexec i3" >> /home/$NEW_USER/.xinitrc
+
+    mkdir -p /home/$NEW_USER/.vim/colors
+    curl https://bitbucket.org/sjl/badwolf/raw/tip/colors/badwolf.vim > /home/$NEW_USER/.vim/colors/badwolf.vim
+    #installing vundle
+    git clone https://github.com/VundleVim/Vundle.vim.git /home/$NEW_USER/.vim/bundle/Vundle.vim
+    #Cloning plugin
+    git clone https://github.com/ycm-core/YouCompleteMe.git /home/$NEW_USER/.vim/bundle/YouCompleteMe
+    cd ~/.vim/bundle/YouCompleteMe
+    python3 install.py --all
+    sudo sh -c 'curl https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/toslive/version-edit.txt > /etc/version'
+
+
+    sudo systemctl enable bluetooth
+    sudo systemctl enable sshd
+
+    chown -R $NEW_USER:users /home$NEW_USER
+}
+
 do_tos(){
 
 rm -rf /home/$NEW_USER/{.xinitrc,.xsession} 2>>/tmp/.errlog
@@ -104,6 +165,8 @@ sed -i "/if/,/fi/"'s/^/#/' /home/$NEW_USER/.bash_profile
 sed -i "/if/,/fi/"'s/^/#/' /home/$NEW_USER/.zprofile
 sed -i "/if/,/fi/"'s/^/#/' /root/.bash_profile
 sed -i "/if/,/fi/"'s/^/#/' /root/.zprofile
+
+do_user_setup
 
 do_display_manager
 
