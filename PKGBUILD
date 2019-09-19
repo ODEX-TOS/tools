@@ -37,6 +37,7 @@ package() {
         install -Dm755 swayfig.sh "$pkgdir"/usr/bin/swayfig.sh
         install -Dm755 tos "$pkgdir"/usr/bin/tos
         install -Dm755 touchpad.sh "$pkgdir"/usr/bin/touchpad.sh
+        install -Dm755 cleanup.sh "$pkgdir"/usr/bin/cleanup.sh
         
         # copy subdir from rofi
         mkdir -p "$pkgdir"/usr/share/tos-rofi
