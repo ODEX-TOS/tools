@@ -29,6 +29,15 @@ case "$1" in
     ""|"-h"|"--help")
         source "$extended"/help.sh
     ;;
+    "c"|"calamares")
+        calamares
+    ;;
+    "i"|"installer")
+            tos-gui-installer
+    ;;
+    "is"|"installer-server")
+            tos-cli-installer
+    ;;
     "-u"|"--update")
         source "$extended"/update.sh
     ;;
