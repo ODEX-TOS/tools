@@ -151,10 +151,11 @@ do_user_setup(){
     sudo sh -c 'curl https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/toslive/version-edit.txt > /etc/version'
 
 
-    sudo systemctl enable bluetooth
-    sudo systemctl enable sshd
+    systemctl enable bluetooth
+    systemctl enable sshd
+    systemctl enable tlp
 
-    chown -R $NEW_USER:users /home$NEW_USER
+    chown -R $NEW_USER:users /home/$NEW_USER
 }
 
 do_tos(){
