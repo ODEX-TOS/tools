@@ -136,9 +136,13 @@ do_user_setup(){
     git clone https://github.com/zsh-users/zsh-completions.git /home/$NEW_USER/.oh-my-zsh/custom/plugins/zsh-completions
     git clone https://github.com/denysdovhan/spaceship-prompt.git /home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship-prompt
     ln -s /home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme /home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship.zsh-theme
-    curl https://github.com/ODEX-TOS/tools/blob/master/_tos -o  /home/$NEW_USER/.oh-my-zsh/custom/plugins/zsh-completions
+    curl https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos >  /home/$NEW_USER/.oh-my-zsh/custom/plugins/zsh-completions/src/_tos
 
-    printf "xrdb ~/.Xresources\nexec i3" >> /home/$NEW_USER/.xinitrc
+    if [[ "$(command -v startkde)" ]]; then
+        printf "xrdb ~/.Xresources\nexec startkde" >> /home/$NEW_USER/.xinitrc
+    else 
+        printf "xrdb ~/.Xresources\nexec i3" >> /home/$NEW_USER/.xinitrc
+    fi
 
     mkdir -p /home/$NEW_USER/.vim/colors
     curl https://bitbucket.org/sjl/badwolf/raw/tip/colors/badwolf.vim > /home/$NEW_USER/.vim/colors/badwolf.vim
