@@ -160,6 +160,8 @@ do_user_setup(){
     systemctl enable tlp
 
     chown -R $NEW_USER:users /home/$NEW_USER
+
+    printf 'GRUB_THEME="/boot/grub/themes/tos/theme.txt"' >> /etc/default/grub
 }
 
 do_tos(){
