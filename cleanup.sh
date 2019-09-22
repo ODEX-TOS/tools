@@ -135,7 +135,7 @@ do_user_setup(){
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/$NEW_USER/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
     git clone https://github.com/zsh-users/zsh-completions.git /home/$NEW_USER/.oh-my-zsh/custom/plugins/zsh-completions
     git clone https://github.com/denysdovhan/spaceship-prompt.git /home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship-prompt
-    ln -s ~/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme /home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship.zsh-theme
+    ln -s /home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme /home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship.zsh-theme
     curl https://github.com/ODEX-TOS/tools/blob/master/_tos -o  /home/$NEW_USER/.oh-my-zsh/custom/plugins/zsh-completions
 
     printf "xrdb ~/.Xresources\nexec i3" >> /home/$NEW_USER/.xinitrc
