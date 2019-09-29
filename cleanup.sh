@@ -88,9 +88,9 @@ fi
 
 do_display_manager(){
 # no problem if any of them fails
-systemctl -f enable gdm
-systemctl -f enable lightdm
-systemctl -f enable sddm
+systemctl -f enable gdm || echo "gmd display manager is not present"
+systemctl -f enable lightdm || echo "lightdm display manager is not present"
+systemctl -f enable sddm || echo "sddm display manager is not present"
 pacman -R gnome-software --noconfirm
 pacman -Rsc gnome-boxes --noconfirm
 
