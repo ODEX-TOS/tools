@@ -162,6 +162,8 @@ do_user_setup(){
     chown -R $NEW_USER:users /home/$NEW_USER
 
     printf 'GRUB_THEME="/boot/grub/themes/tos/theme.txt"' >> /etc/default/grub
+    # set the lightdm theme to the tos theme
+    sed  's:#greeter-session=.*$:greeter-session=lightdm-webkit2-greeter:' /etc/lightdm/lightdm.conf
 }
 
 do_tos(){
