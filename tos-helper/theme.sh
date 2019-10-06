@@ -2,8 +2,8 @@
 themefile="$HOME/.config/tos/theme"
 function help {
         subname="theme"
-        printf "${ORANGE} $name $subname ${NC}OPTIONS: set | add | delete | random | list | time | help\n\n" 
-        printf "${ORANGE}USAGE:${NC}\n"
+        printf "$ORANGE $name $subname ${NC}OPTIONS: set | add | delete | random | list | time | help\n\n" 
+        printf "${ORANGE}USAGE:$NC\n"
         printf "$name $subname help \t\t\t\t Show this help message\n"
         printf "$name $subname set <picture>\t\t\t set the current theme based on a picture\n"
         printf "$name $subname add <picture>\t\t\t Add a theme to the randomizer\n"
