@@ -63,20 +63,20 @@ function gettime() {
   echo -e -n "$1"
 }
 
-function daemon {
-    while true; do
-                file=$(shuf -n 1 "$themefile")
-                if [[ "$(head -n1 "$themefile")" == "on" ]]; then
-                    while [ ! -f "$file" ] || [ "$file" == "" ]; do
-                        file=$(shuf -n 1 "$themefile")
-                    done
-                    head -n1 "$themefile"
-                    wal -i "$file"
-                    feh --bg-scale "$file"
-                fi
-                time=$(head -n2 "$themefile" | tail -n1 | awk -F= '{print $2}')
-                sleep "$time"
-        done
+function daemon() {
+  while true; do
+    file=$(shuf -n 1 "$themefile")
+    if [[ "$(head -n1 "$themefile")" == "on" ]]; then
+      while [ ! -f "$file" ] || [ "$file" == "" ]; do
+        file=$(shuf -n 1 "$themefile")
+      done
+      head -n1 "$themefile"
+      wal -i "$file"
+      feh --bg-scale "$file"
+    fi
+    time=$(head -n2 "$themefile" | tail -n1 | awk -F= '{print $2}')
+    sleep "$time"
+  done
 }
 
 case "$2" in
