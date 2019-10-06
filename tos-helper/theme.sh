@@ -18,6 +18,9 @@ function theme {
         yay -Syu python-pywal
     fi
     wal -i "$1"
+    if [[ "$(command -v feh)" ]]; then
+        feh --bg-scale "$1"
+    fi
 }
 
 function theme-check {
