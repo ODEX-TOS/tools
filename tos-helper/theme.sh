@@ -72,6 +72,7 @@ function daemon {
                     done
                     head -n1 "$themefile"
                     wal -i "$file"
+                    feh --bg-scale "$file"
                 fi
                 time=$(head -n2 "$themefile" | tail -n1 | awk -F= '{print $2}')
                 sleep "$time"
