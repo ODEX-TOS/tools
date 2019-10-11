@@ -22,76 +22,73 @@ extended="$directory"tos-helper
 export location="$directory"tos-installer
 export framework="$location"/framework.sh
 
-
-
-
 case "$1" in
-    ""|"-h"|"--help")
-        source "$extended"/help.sh
+  "" | "-h" | "--help")
+    source "$extended"/help.sh
     ;;
-    "c"|"calamares")
-        calamares
+  "c" | "calamares")
+    calamares
     ;;
-    "is"|"installer-server")
-            tos-cli-installer
+  "is" | "installer-server")
+    tos-cli-installer
     ;;
-    "-u"|"--update")
-        source "$extended"/update.sh
+  "-u" | "--update")
+    source "$extended"/update.sh
     ;;
-    "-m"|"--mount")
-        cryptsetup open "$2"3 "$3"
-        mount /dev/mapper/tos-root /mnt
-        mount /dev/mapper/tos-home /mnt/home
-        if [[ "$4" == "" ]]; then
-                mount "$2"1 /mnt/boot/efi
-        else
-                mount "$2"1 /mnt/boot
-        fi
-        arch-chroot /mnt
-                
-    ;;
-    "-S"*|"-R"*|"-Q"*)
-        if [ "$(id -u)" != "0" ]; then
-            if [[ ! $(command -v yay) ]]; then
-                installyay
-            fi
-            yay "${@:1}"
-        else
-            printf "%s Package management as root is very dangerous%s\n" "${RED}" "${NC}"
-        fi
+  "-m" | "--mount")
+    cryptsetup open "$2"3 "$3"
+    mount /dev/mapper/tos-root /mnt
+    mount /dev/mapper/tos-home /mnt/home
+    if [[ "$4" == "" ]]; then
+      mount "$2"1 /mnt/boot/efi
+    else
+      mount "$2"1 /mnt/boot
+    fi
+    arch-chroot /mnt
 
     ;;
-    "-iso")
-            source "$extended"/installer.sh
+  "-S"* | "-R"* | "-Q"*)
+    if [ "$(id -u)" != "0" ]; then
+      if [[ ! $(command -v yay) ]]; then
+        installyay
+      fi
+      yay "${@:1}"
+    else
+      printf "%s Package management as root is very dangerous%s\n" "$RED" "$NC"
+    fi
+
     ;;
-    "-c"|"--crypto")
-            source "$extended"/etc.sh
+  "-iso")
+    source "$extended"/installer.sh
     ;;
-    "g"|"gpg")
-            source "$extended"/gpg.sh
+  "-c" | "--crypto")
+    source "$extended"/etc.sh
     ;;
-    "n"|"network")
-            source "$extended"/network.sh
+  "g" | "gpg")
+    source "$extended"/gpg.sh
     ;;
-    "-rs"|"--repair-system")
-        source "$extended"/update.sh
+  "n" | "network")
+    source "$extended"/network.sh
     ;;
-    "t"|"theme")
-        source "$extended"/theme.sh
-    ;;    
-    "b"|"bluetooth")
-        source "$extended"/bluetooth.sh
+  "-rs" | "--repair-system")
+    source "$extended"/update.sh
     ;;
-    "v"|"volume")
-        source "$extended"/volume.sh
+  "t" | "theme")
+    source "$extended"/theme.sh
     ;;
-    "s"|"screen")
-        source "$extended"/screen.sh
+  "b" | "bluetooth")
+    source "$extended"/bluetooth.sh
     ;;
-    "install"|"installer"|"i")
-            exec 3>&1;
-            executable=$(dialog --title "TOS Installer" --backtitle "TOS" --menu "What do you want to install?" 0 0 0 $(/usr/bin/ls "$location"/*.sh | sed 's:^.*framework.sh$::' | xargs -n 1 basename | sed 's:.sh::' | awk '{print $0, "Install"}') 2>&1 1>&3)
-            exec 3>&-;
-            source "$location"/"$executable".sh
+  "v" | "volume")
+    source "$extended"/volume.sh
+    ;;
+  "s" | "screen")
+    source "$extended"/screen.sh
+    ;;
+  "install" | "installer" | "i")
+    exec 3>&1
+    executable=$(dialog --title "TOS Installer" --backtitle "TOS" --menu "What do you want to install?" 0 0 0 "$(/usr/bin/ls "$location"/*.sh | sed 's:^.*framework.sh$::' | xargs -n 1 basename | sed 's:.sh::' | awk '{print $0, "Install"}')" 2>&1 1>&3)
+    exec 3>&-
+    source "$location"/"$executable".sh
     ;;
 esac
