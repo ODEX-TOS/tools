@@ -164,6 +164,7 @@ do_user_setup(){
     printf 'GRUB_THEME="/boot/grub/themes/tos/theme.txt"' >> /etc/default/grub
     # set the lightdm theme to the tos theme
     sed  's:#greeter-session=.*$:greeter-session=lightdm-webkit2-greeter:' /etc/lightdm/lightdm.conf
+    printf "off\n1800\n/home/$NEW_USER/Pictures/drawing/cabin.png" > /home/$NEW_USER/.config/tos/theme
 }
 
 do_tos(){
