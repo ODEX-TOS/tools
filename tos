@@ -32,9 +32,6 @@ case "$1" in
     "c"|"calamares")
         calamares
     ;;
-    "i"|"installer")
-            tos-gui-installer
-    ;;
     "is"|"installer-server")
             tos-cli-installer
     ;;
