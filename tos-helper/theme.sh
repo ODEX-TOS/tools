@@ -40,18 +40,18 @@ function theme-check() {
   fi
 }
 
-function theme-add {
-        if [[ -f "$1" ]]; then
-            readlink -f "$1" >> "$themefile"
-        fi
-        if [[ -d "$1" ]]; then
-                # loop through all files recursivly
-                for file in $(find "$1" -type f); do
-                        if [[ "$file" == *".jpg" || "$file" == *".jpeg" || "$file" == *".png" ]]; then
-                            readlink -f "$file" >> "$themefile"
-                        fi
-                done
-        fi
+function theme-add() {
+  if [[ -f "$1" ]]; then
+    readlink -f "$1" >>"$themefile"
+  fi
+  if [[ -d "$1" ]]; then
+    # loop through all files recursivly
+    for file in $(find "$1" -type f); do
+      if [[ "$file" == *".jpg" || "$file" == *".jpeg" || "$file" == *".png" ]]; then
+        readlink -f "$file" >>"$themefile"
+      fi
+    done
+  fi
 }
 
 function theme-delete() {
@@ -82,6 +82,7 @@ function daemon() {
       done
       head -n1 "$themefile"
       wal -i "$file"
+      feh --bg-scale "$file"
     fi
     time=$(head -n2 "$themefile" | tail -n1 | awk -F= '{print $2}')
     sleep "$time"
