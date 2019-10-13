@@ -172,6 +172,7 @@ do_user_setup(){
         sed -i 's:#user-session=default:user-session=awesome:' /etc/lightdm/lightdm.conf
         mkdir -p /var/cache/lightdm/dmrc
         printf "[Desktop]\nSession=awesome" > /var/cache/lightdm/dmrc/"$NEW_USER".dmrc
+        sed -i 's:backend = "xrender";::' /home/"$NEW_USER"/.config/awesome/configuration/compton.conf
     fi
 }
 
