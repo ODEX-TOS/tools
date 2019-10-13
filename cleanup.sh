@@ -170,6 +170,8 @@ do_user_setup(){
     # set awesomewm as the default launcher for lightdm (only if it exists)
     if [[ "$(command -v awesome)" ]]; then
         sed -i 's:#user-session=default:user-session=awesome:' /etc/lightdm/lightdm.conf
+        mkdir -p /var/cache/lightdm/dmrc
+        printf "[Desktop]\nSession=awesome" > /var/cache/lightdm/dmrc/"$NEW_USER".dmrc
     fi
 }
 
