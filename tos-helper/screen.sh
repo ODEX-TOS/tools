@@ -1,7 +1,7 @@
 #!/bin/bash
 function help {
         subname="screen"
-        printf "${ORANGE} $name $subname ${NC}OPTIONS: get | add | duplicate | toggle | reset | refresh | resolution | help\n\n" 
+        printf "${ORANGE} $name $subname ${NC}OPTIONS: get | add | duplicate | dpi | toggle | reset | refresh | resolution | help\n\n" 
         printf "${ORANGE}USAGE:${NC}\n"
         printf "$name $subname help \t\t\t\t\t Show this help message\n"
         printf "$name $subname get  \t\t\t\t\t Get the current screen information\n"
