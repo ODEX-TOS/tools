@@ -88,6 +88,29 @@ function blue() {
 
 }
 
+# setting the dpi of your screen through tos
+function dpi() {
+        for screen in $(grep "scale=" "$HOME"/.config/tos/theme); do
+            out=(printf "$screen" | cut -d " " -f1)
+            size=(printf "$screen" | cut -d " " -f2)
+            xrandr --output "$out" --scale "$size" 
+        done 
+
+        if pgrep awesome; then
+            echo 'awesome.restart()' | awesome-client
+        fi
+
+        if pgrep i3; then
+            i3-msg reload
+            i3-msg restart
+        fi
+
+        if pgrep sway; then
+            swaymsg reload
+            swaymsg restart
+        fi
+}
+
 # this daemon also handles bluetooth power mode
 function daemon() {
   while true; do
