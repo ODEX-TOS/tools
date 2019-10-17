@@ -73,8 +73,25 @@ function gettime() {
   echo -e -n "$1"
 }
 
+# toggle the bluetooth power mode
+function blue() {
+    if grep -q 'bluetooth=' "$themefile"; then
+        printf "\nbluetooth=false\n" >> "themefile"
+    fi
+
+    state=$(grep "bluetooth=" "$themefile" | cut -d= -f2)
+    if [[ "$state" == "true" ]]; then
+            nohup bluetoothctl power on &>/dev/null &
+    else
+            nohup bluetoothctl power off &>/dev/null &
+    fi
+
+}
+
+# this daemon also handles bluetooth power mode
 function daemon() {
   while true; do
+    blue
     file=$(shuf -n 1 "$themefile")
     if [[ "$(head -n1 "$themefile")" == "on" ]]; then
       while [ ! -f "$file" ] || [ "$file" == "" ]; do
