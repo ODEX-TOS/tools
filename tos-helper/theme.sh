@@ -75,7 +75,7 @@ function gettime() {
 
 # toggle the bluetooth power mode
 function blue() {
-    if grep -q 'bluetooth=' "$themefile"; then
+    if ! grep -q 'bluetooth=' "$themefile"; then
         printf "\nbluetooth=false\n" >> "themefile"
     fi
 
