@@ -20,8 +20,7 @@ case "$2" in
                 touch "$themefile"
                 printf "off\ntime=1000\nbluetooth=false\n" >>"$themefile"
             fi
-            sed -i 's/^bluetooth=false$/'"bluetooth=$1"'/' "$themefile"
-            sed -i 's/^bluetooth=true$/'"bluetooth=$1"'/' "$themefile"
+            sed -i 's/^bluetooth=.*$/'"bluetooth=$1"'/' "$themefile"
     ;;
    "l"|"list")
             if [[ $3 == "scan" ]]; then
