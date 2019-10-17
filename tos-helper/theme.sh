@@ -76,14 +76,15 @@ function gettime() {
 # toggle the bluetooth power mode
 function blue() {
     if ! grep -q 'bluetooth=' "$themefile"; then
-        printf "\nbluetooth=false\n" >> "themefile"
+        printf "\nbluetooth=false\n" >> "$themefile"
     fi
-
-    state=$(grep "bluetooth=" "$themefile" | cut -d= -f2)
-    if [[ "$state" == "true" ]]; then
-            nohup bluetoothctl power on &>/dev/null &
-    else
-            nohup bluetoothctl power off &>/dev/null &
+    if systemctl status --no-pager bluetooth | grep -q "Active: active (running)"; then
+        state=$(grep "bluetooth=" "$themefile" | cut -d= -f2)
+        if [[ "$state" == "true" ]]; then
+            bluetoothctl power on
+        else
+            bluetoothctl power off
+        fi
     fi
 
 }
