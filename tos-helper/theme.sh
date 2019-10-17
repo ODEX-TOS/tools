@@ -27,7 +27,7 @@ function theme-check() {
   if [[ ! -f "$themefile" ]]; then
     mkdir -p "$HOME"/.config/tos
     touch "$themefile"
-    printf "off\ntime=1000\n" >>"$themefile"
+    printf "off\ntime=1000\nbluetooth=false\n" >>"$themefile"
   else
     sed -i -r '/^\s*$/d' "$themefile"
   fi
@@ -90,12 +90,14 @@ function blue() {
 
 # setting the dpi of your screen through tos
 function dpi() {
+        origIFS="$IFS"
+        IFS="\n"
         for screen in $(grep "scale=" "$HOME"/.config/tos/theme); do
-            out=(printf "$screen" | cut -d " " -f1)
-            size=(printf "$screen" | cut -d " " -f2)
+            out=$(printf "$screen" | cut -d= -f2 | cut -d " " -f1)
+            size=$(printf "$screen" | cut -d= -f2 | cut -d " " -f2)
             xrandr --output "$out" --scale "$size" 
         done 
-
+        IFS=$origIFS
         if pgrep awesome; then
             echo 'awesome.restart()' | awesome-client
         fi
@@ -113,6 +115,8 @@ function dpi() {
 
 # this daemon also handles bluetooth power mode
 function daemon() {
+  # only set the dpi on launch
+  dpi
   while true; do
     blue
     file=$(shuf -n 1 "$themefile")

@@ -223,6 +223,7 @@ _tos_screen_subcommands() {
     {get,g}": Get information about current screen config"
     {add,a}": Add a new resolution config to the screen modes"
     {duplicate,d}": Duplicate your screen"
+    {dpi,dp}": Change the dpi/scaling of your screen"
     {toggle,t}": Turn screen on or off"
     {reset,r}": Reset screen to original version"
     {res,resolution}": Change resolution"
@@ -244,6 +245,9 @@ function _tos_screen {
     case $line[1] in
         "d"|"duplicate")
             _tos_screen_duplicate
+            ;;
+        "dp"|"dpi")
+            _tos_screen_dpi
             ;;
         "a"|"add")
             _tos_screen_add
@@ -346,6 +350,10 @@ function _tos_screen_duplicate {
     "1: :($list)"\
     "*::arg:->args"
 
+    _tos_screen_select
+}
+
+function _tos_screen_dpi {
     _tos_screen_select
 }
 

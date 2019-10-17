@@ -11,6 +11,7 @@ function help {
         printf "$name $subname reset <screen> \t\t\t\t Reset screen to it's default values\n"
         printf "$name $subname refresh <screen> <Hz> \t\t\t Change the refresh rate of the screen\n"
         printf "$name $subname resolution <screen> <width>x<height> \t Set the resolution of screen to certain WidthxHeight \n"
+        printf "$name $subname dpi <screen> <scaleX>x<scaleY> \t\t Scale the screen dpi to match your taste if scaleX = 1 then no scaling happens. To make everything twice as big do 0.5x0.5 \n"
 }
 
 function screen-duplicate  {
@@ -31,6 +32,23 @@ function screen-reload {
     killall polybar waybar # should restart with the keepalive script
     nohup ~/bin/keepalive.sh &> /dev/null &
     wal -R
+    if pgrep awesome; then
+     echo 'awesome.restart()' | awesome-client
+    fi
+}
+
+function screen-dpi {
+    xrandr --output "$1" --scale "$2"
+    if [[ ! -d "$HOME/.config/tos" ]]; then
+        mkdir -p "$HOME/.config/tos"
+    fi
+
+    if [[ ! -f "$themefile" ]]; then
+        printf "off\ntime=1000\nbluetooth=false\nscale=$1 $2\n" >>"$themefile"
+    else
+        sed -i 's:scale='$1'.*$:scale='$1' '$2':' "$HOME"/.config/tos/theme
+    fi
+
 }
 
 function add {
@@ -59,6 +77,10 @@ case "$2" in
     ;;
     "d"|"duplicate")
         screen-duplicate "$3" "$4"
+        screen-reload
+    ;;
+    "dp"|"dpi")
+        screen-dpi "$3" "$4"
         screen-reload
     ;;
     "t"|"toggle")
