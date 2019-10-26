@@ -22,6 +22,15 @@ extended="$directory"tos-helper
 export location="$directory"tos-installer
 export framework="$location"/framework.sh
 
+function installyay {
+    cd || exit 1
+    git clone https://aur.archlinux.org/yay.git
+    cd yay || exit 1
+    makepkg -si
+    cd || exit 1
+    rm -rf yay
+}
+
 case "$1" in
   "" | "-h" | "--help")
     source "$extended"/help.sh
