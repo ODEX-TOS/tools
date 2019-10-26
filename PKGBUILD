@@ -1,6 +1,6 @@
 # Maintainer: Tom Meyers tom@odex.be
 pkgname=tos-tools
-pkgver=r283.0792d31
+pkgver=r291.e3ad5be
 pkgrel=1
 pkgdesc="A lot of tools used to make life easier on tos"
 arch=(any)
