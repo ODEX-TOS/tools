@@ -1,0 +1,177 @@
+#!/bin/bash
+
+# MIT License
+# 
+# Copyright (c) 2019 Meyers Tom
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# Maintained by Tom Meyers <tom@odex.be>
+# USAGE: -s <percentage> sets the backlight to x percent
+# USAGE: -a <percentage> adds x to the current percentage
+# USAGE: -d <percentage> decreases x from the current percentage
+# USAGE: -g get the current screen brightness is percentage
+# USAGE: -D add debug logging (this should be the last option)
+# USAGE: -F Force brightness by adjusting the maximum pixel value instead of the actual backlight (this should be the last option)
+# USAGE: -h Print help message
+
+debug="0" # enable debugging logs
+
+function help {
+    printf "This script detects the ideal way of monitoring your brightness. It even supports OLED\n"
+    printf "USAGE:\n"
+    printf "%s -h \t\t\t Print this help message\n" "$(basename $0)"
+    printf "%s -s <x> \t\t\t Sets the brightness to x percent\n" "$(basename $0)"
+    printf "%s -a <x> \t\t\t Increases the brightness by x percent\n" "$(basename $0)"
+    printf "%s -d <x> \t\t\t Decreases the brightness by x percent\n" "$(basename $0)"
+    printf "%s -g \t\t\t Get the current light value\n" "$(basename $0)"
+    printf "%s -D \t\t\t Enable debugging messages (supply this as the last option)\n" "$(basename $0)"
+    printf "%s -F \t\t\t Force hardcore setting (If all else fails try this) PS: supply this as the last option\n" "$(basename $0)"
+}
+
+# directly modify the files in the filesystem responsible for the backlight
+function modifypath {
+        bright="/sys/class/backlight/intel_backlight/brightness"
+        max="/sys/class/backlight/intel_backlight/max_brightness"
+        if [[ ! "$debug" == "0" ]]; then
+            printf "Modifying $bright\n"
+        fi
+        max_brightness="$(cat $max)"
+
+        if [[ "$1" == "-s" || "$1" == "--set" ]]; then
+                awk -v "percent=$2" -v "total=$max_brightness" '{print (total/100)*percent}' "$bright" > "$bright"
+        elif [[ "$1" == "-a" || "$1" == "--add" ]]; then
+                awk -v "percent=$2" -v "total=$max_brightness" '{print ((total/100)*percent)+$1}' "$bright" > "$bright"
+        elif [[ "$1" == "-d" || "$1" == "--decrease" ]]; then
+                awk -v "percent=$2" -v "total=$max_brightness" '{print $1-((total/100)*percent)}' "$bright" > "$bright"
+        elif [[ "$1" == "-g" || "$1" == "--get" ]]; then
+                awk -v "total=$max_brightness" '{print ($1/total)*100}' "$bright"
+        else
+                printf "Couldn't understand command $2\n"
+                help
+        fi
+}
+
+# handle the light command
+function handleLight {
+        if [[ ! "$debug" == "0" ]]; then
+            printf "Parsing commands to $(command -v light)\n"
+        fi
+
+        if [[ "$1" == "-s" || "$1" == "--set" ]]; then
+                light -S "$2"
+        elif [[ "$1" == "-a" || "$1" == "--add" ]]; then
+                light -A "$2"
+        elif [[ "$1" == "-d" || "$1" == "--decrease" ]]; then
+                light -U "$2"
+        elif [[ "$1" == "-g" || "$1" == "--get" ]]; then
+                light -G
+        else
+                printf "Couldn't understand command $2\n"
+                help
+        fi
+}
+
+# handle the xbacklight command
+function handleX {
+        if [[ ! "$debug" == "0" ]]; then
+            printf "Parsing commands to $(command -v xbacklight)\n"
+        fi
+
+        if [[ "$1" == "-s" || "$1" == "--set" ]]; then
+                xbacklight -set "$2"
+        elif [[ "$1" == "-a" || "$1" == "--add" ]]; then
+                xbacklight -inc "$2"
+        elif [[ "$1" == "-d" || "$1" == "--decrease" ]]; then
+                xbacklight -dec "$2"
+        elif [[ "$1" == "-g" || "$1" == "--get" ]]; then
+                xbacklight -get
+        else
+                printf "Couldn't understand command $2\n"
+                help
+        fi
+}
+
+# handle xrandr
+function handleScreen {
+        if [[ ! "$debug" == "0" ]]; then
+            printf "Parsing commands to $(command -v xrandr)\n"
+        fi
+        file=~/.cache/xrandr-brightness
+        if [[ ! -f "$file" ]]; then
+            printf "1" > "$file"
+        fi
+        for screen in $(xrandr | grep " connected" | cut -d " " -f1); do
+            if [[ "$1" == "-s" || "$1" == "--set" ]]; then
+                val=$(printf "%s" "$2" | awk '{printf $1/100}') 
+                printf "%s" "$val" > "$file"
+                xrandr --output "$screen" --brightness "$val"
+            elif [[ "$1" == "-a" || "$1" == "--add" ]]; then
+                orig="$(awk '{printf $1}' $file)"
+                val=$(printf "%s" "$2" | awk -v "orig=$orig" '{printf ($1/100)+orig}') 
+                printf "%s" "$val" > "$file"
+                xrandr --output "$screen" --brightness "$val"
+            elif [[ "$1" == "-d" || "$1" == "--decrease" ]]; then
+                orig="$(awk '{printf $1}' $file)"
+                val=$(printf "%s" "$2" | awk -v "orig=$orig" '{printf orig-($1/100)}') 
+                printf "%s" "$val" > "$file"
+                xrandr --output "$screen" --brightness "$val"
+            elif [[ "$1" == "-g" || "$1" == "--get" ]]; then
+                awk '{print $1*100}' "$file"
+            else
+                printf "Couldn't understand command $2\n"
+                help
+            fi
+    done
+}
+
+
+# detect the most supported option there is
+function detect {
+        #Exit with 1 if $DISPLAY env isn't set. Helps when using the start up script below
+        [ -z "$DISPLAY" ] && printf "No graphical environment found. Aborting now" &&exit 1;
+        if [[ ! "$(command -v light)" == "" ]]; then 
+            handleLight "$1" "$2"
+        elif [[ ! "$(command -v xbacklight)" == "" ]]; then
+            handleX "$1" "$2"
+        elif [[ ! "$(command -v xrandr)" == "" ]]; then
+            handleScreen "$1" "$2"
+        else
+            modifypath "$1" "$2"
+        fi 
+}
+
+if [[ "$@" == *"-D"* || "$@" == *"--debug"* ]]; then
+        debug="1"
+fi
+
+if [[ "$@" == *"-F"* || "$@" == *"--force"* ]]; then
+        handleScreen "$1" "$2" # control the rgb brightness directly
+        exit 0
+fi
+
+case "$1" in
+    "-h"|"--help")
+        help
+        exit 0
+    ;;
+esac
+
+detect "$1" "$2" 
+
