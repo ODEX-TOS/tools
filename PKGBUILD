@@ -1,6 +1,6 @@
 # Maintainer: Tom Meyers tom@odex.be
 pkgname=tos-tools
-pkgver=r293.4ddbfa7
+pkgver=r294.9cfe489
 pkgrel=1
 pkgdesc="A lot of tools used to make life easier on tos"
 arch=(any)
@@ -45,7 +45,7 @@ package() {
 
         # enable systemctl service for new users
         mkdir -p "$pkgdir"/etc/skel/.config/systemd/user/suspend.target.wants
-        ln /etc/systemd/user/tos-resume.service "$pkgdir"/etc/skel/.config/systemd/user/suspend.target.wants/tos-resume.service        
+        ln -s /etc/systemd/user/tos-resume.service "$pkgdir"/etc/skel/.config/systemd/user/suspend.target.wants/tos-resume.service        
 
         # copy subdir from rofi
         mkdir -p "$pkgdir"/usr/share/tos-rofi
