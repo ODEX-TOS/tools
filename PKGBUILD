@@ -1,6 +1,6 @@
 # Maintainer: Tom Meyers tom@odex.be
 pkgname=tos-tools
-pkgver=r291.e3ad5be
+pkgver=r293.4ddbfa7
 pkgrel=1
 pkgdesc="A lot of tools used to make life easier on tos"
 arch=(any)
@@ -39,6 +39,9 @@ package() {
         install -Dm755 touchpad.sh "$pkgdir"/usr/bin/touchpad.sh
         install -Dm755 cleanup.sh "$pkgdir"/usr/bin/cleanup.sh
         install -Dm755 brightness "$pkgdir"/usr/bin/brightness
+
+        # systemctl services
+        install -Dm664 tos-resume.service "$pkgdir"/etc/systemd/system/tos-resume.service
         
         # copy subdir from rofi
         mkdir -p "$pkgdir"/usr/share/tos-rofi

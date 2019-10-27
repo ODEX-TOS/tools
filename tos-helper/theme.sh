@@ -136,10 +136,20 @@ function dpi() {
         fi
 }
 
+function kill-daemons() {
+    for pid in $(pgrep tos); do
+        if [[ "$pid" != "$$" ]]; then
+                kill "$pid"
+        fi
+    done
+}
+
 # this daemon also handles bluetooth power mode
 function daemon() {
   # only set the dpi on launch
   dpi
+  kill-daemons
+  echo "Killed daemons $$"
   while true; do
     blue
     file=$(shuf -n 1 "$themefile")
