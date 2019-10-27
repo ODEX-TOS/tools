@@ -180,7 +180,9 @@ do_user_setup(){
     systemctl enable bluetooth
     systemctl enable sshd
     systemctl enable tlp
-    systemctl enable tos-resume # used to relaunch the tos daemon
+    su $NEW_USER <<EOF
+        systemctl --user enable tos-resume # used to relaunch the tos daemon
+EOF
 
     chown -R $NEW_USER:users /home/$NEW_USER
 

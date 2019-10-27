@@ -41,8 +41,12 @@ package() {
         install -Dm755 brightness "$pkgdir"/usr/bin/brightness
 
         # systemctl services
-        install -Dm664 tos-resume.service "$pkgdir"/etc/systemd/system/tos-resume.service
-        
+        install -Dm664 tos-resume.service "$pkgdir"/etc/systemd/user/tos-resume.service
+
+        # enable systemctl service for new users
+        mkdir -p "$pkgdir"/etc/skel/.config/systemd/user/suspend.target.wants
+        ln /etc/systemd/user/tos-resume.service "$pkgdir"/etc/skel/.config/systemd/user/suspend.target.wants/tos-resume.service        
+
         # copy subdir from rofi
         mkdir -p "$pkgdir"/usr/share/tos-rofi
         mv rofi tos-rofi
