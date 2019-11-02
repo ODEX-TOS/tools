@@ -137,7 +137,7 @@ function dpi() {
 }
 
 function kill-daemons() {
-    for pid in $(pgrep tos); do
+    for pid in $(pgrep -f tos); do
         if [[ "$pid" != "$$" ]]; then
                 kill "$pid"
         fi

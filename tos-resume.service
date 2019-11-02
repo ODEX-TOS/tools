@@ -4,7 +4,7 @@ After=suspend.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/tos theme daemon
+ExecStart=/bin/bash /usr/bin/tos theme daemon
 
 [Install]
 WantedBy=suspend.target
