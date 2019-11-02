@@ -198,6 +198,7 @@ EOF
         mkdir -p /var/cache/lightdm/dmrc
         printf "[Desktop]\nSession=awesome" > /var/cache/lightdm/dmrc/"$NEW_USER".dmrc
         sed -i 's:backend = "xrender";::' /home/"$NEW_USER"/.config/awesome/configuration/compton.conf
+        sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /etc/xdg/awesome/configuration/compton.conf # enable blur after installation
     fi
 }
 
