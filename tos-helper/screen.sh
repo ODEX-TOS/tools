@@ -60,7 +60,11 @@ function screen-reload {
 }
 
 function screen-dpi {
-    xrandr --output "$1" --scale "$2"
+    dpi=$(echo "$2" | cut -dx -f1 | awk '{print (100* 1/$0)}')
+    sed -i 's/Xft.dpi: .*$/Xft.dpi: '$dpi'/g' ~/.Xresources
+    xrdb ~/.Xresources
+    # TODO: figure out why xrandr scaling no longer works
+    # xrandr --output "$1" --scale "$2"
     if [[ ! -d "$HOME/.config/tos" ]]; then
         mkdir -p "$HOME/.config/tos"
     fi
