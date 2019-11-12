@@ -212,6 +212,10 @@ sed -i "/if/,/fi/"'s/^/#/' /home/$NEW_USER/.zprofile
 sed -i "/if/,/fi/"'s/^/#/' /root/.bash_profile
 sed -i "/if/,/fi/"'s/^/#/' /root/.zprofile
 
+if [[ "/home/$NEW_USER/.config/awesome" ]]; then
+    rm -rf "/home/$NEW_USER/.config/awesome"
+fi
+
 do_user_setup
 
 do_display_manager
