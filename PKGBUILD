@@ -66,8 +66,4 @@ package() {
         for file in tos-helper/* ; do
             install -Dm755 "$file" "$pkgdir"/usr/share/"$file"
         done
-
-        # tos version
-        mkdir -p "$pkgdir"/etc
-        curl "https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/toslive/version-edit.txt" -o "$pkgdir"/etc/version
 }
