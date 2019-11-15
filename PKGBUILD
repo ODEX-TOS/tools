@@ -39,6 +39,7 @@ package() {
         install -Dm755 touchpad.sh "$pkgdir"/usr/bin/touchpad.sh
         install -Dm755 cleanup.sh "$pkgdir"/usr/bin/cleanup.sh
         install -Dm755 brightness "$pkgdir"/usr/bin/brightness
+        install -Dm755 checkupdates-tos "$pkgdir"/usr/bin/checkupdates-tos
 
         # systemctl services
         install -Dm664 tos-resume.service "$pkgdir"/etc/systemd/user/tos-resume.service
