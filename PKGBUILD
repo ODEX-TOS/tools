@@ -11,7 +11,7 @@ license=('GPL')
 source=(
 "git+https://github.com/ODEX-TOS/tools.git")
 md5sums=('SKIP')
-depends=('git' 'bash' 'python' 'rofi' 'feh' 'bluez-utils' 'gnupg' 'networkmanager' 'python-pywal')
+depends=('git' 'bash' 'python' 'rofi' 'feh' 'bluez-utils' 'gnupg' 'networkmanager' 'python-pywal' 'checkupdates' 'checkupdates-aur-tos')
 makedepends=('git')
 
 pkgver() {
