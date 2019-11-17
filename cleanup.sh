@@ -197,7 +197,13 @@ EOF
         sed -i 's:#user-session=default:user-session=awesome:' /etc/lightdm/lightdm.conf
         mkdir -p /var/cache/lightdm/dmrc
         printf "[Desktop]\nSession=awesome" > /var/cache/lightdm/dmrc/"$NEW_USER".dmrc
-        sed -i 's:backend = "xrender";::' /home/"$NEW_USER"/.config/awesome/configuration/compton.conf
+        if [[ "/home/$NEW_USER/.config/awesome" ]]; then
+            sed -i 's:backend = "xrender";::' /home/"$NEW_USER"/.config/awesome/configuration/compton.conf
+        fi
+        if [[ "/home/$NEW_USER/.config/compton.conf" ]]; then
+            sed -i 's:backend = "xrender";::' /home/"$NEW_USER"/.config/compton.conf
+            sed -i 's:backend="xrender";::' /home/"$NEW_USER"/.config/compton.conf
+        fi
         sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /etc/xdg/awesome/configuration/compton.conf # enable blur after installation
     fi
 }
