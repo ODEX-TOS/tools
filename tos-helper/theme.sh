@@ -191,7 +191,7 @@ case "$2" in
     ;;
   "l" | "list")
     theme-check
-    awk '$0 !~ /^off|^on|^\n|time=[0-9]*/{print $0}' "$themefile" | sed -r '/^\s*$/d'
+    awk '$0 ~ /^\/.*png|^\/.*jpg|^\/.*jpeg/' "$themefile" | sed -r '/^\s*$/d'
     ;;
   "t" | "time")
     theme-check
