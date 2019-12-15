@@ -61,6 +61,9 @@ function screen-reload {
 
 function screen-dpi {
     dpi=$(echo "$2" | cut -dx -f1 | awk '{print (100* 1/$0)}')
+    DEFAULT_FONT_SIZE="16"
+    CALCULATED_FONT_SIZE=$(printf "$DEFAULT_FONT_SIZE" | awk -v "value=$dpi" '{printf ($0 / 100 ) * value}')
+    sed -i 's:pixelsize=[0-9]*:pixelsize='$CALCULATED_FONT_SIZE':' ~/.Xresources
     sed -i 's/Xft.dpi: .*$/Xft.dpi: '$dpi'/g' ~/.Xresources
     xrdb ~/.Xresources
     # TODO: figure out why xrandr scaling no longer works
