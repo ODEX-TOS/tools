@@ -118,7 +118,7 @@ function dpi() {
         for screen in $(grep "scale=" "$HOME"/.config/tos/theme); do
             out=$(printf "$screen" | cut -d= -f2 | cut -d " " -f1)
             size=$(printf "$screen" | cut -d= -f2 | cut -d " " -f2)
-            xrandr --output "$out" --scale "$size" 
+            #xrandr --output "$out" --scale "$size" 
         done 
         IFS=$origIFS
         if pgrep awesome; then
