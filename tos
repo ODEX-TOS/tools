@@ -22,13 +22,13 @@ extended="$directory"tos-helper
 export location="$directory"tos-installer
 export framework="$location"/framework.sh
 
-function installyay {
-    cd || exit 1
-    git clone https://aur.archlinux.org/yay.git
-    cd yay || exit 1
-    makepkg -si
-    cd || exit 1
-    rm -rf yay
+function installyay() {
+  cd || exit 1
+  git clone https://aur.archlinux.org/yay.git
+  cd yay || exit 1
+  makepkg -si
+  cd || exit 1
+  rm -rf yay
 }
 
 case "$1" in
@@ -37,6 +37,22 @@ case "$1" in
     ;;
   "c" | "calamares")
     calamares
+    ;;
+  "-p" | "--profile")
+    if [[ "$2" == "" ]]; then
+      printf "${RED}Please supply an image as input $NC\n"
+      exit 1
+    fi
+    if [[ "$2" == *".png" ]]; then
+      convert "$2" "$USER".jpg
+      sudo mv "$USER".jpg "/var/lib/AccountsService/icons/$USER"
+    else
+      sudo cp "$2" "/var/lib/AccountsService/icons/$USER"
+    fi
+    # update the cache
+    if [[ -f "$HOME/.cache/tos/user-icons/user.jpg" ]]; then
+      cp "/var/lib/AccountsService/icons/$USER" "$HOME/.cache/tos/user-icons/user.jpg"
+    fi
     ;;
   "is" | "installer-server")
     tos-cli-installer
@@ -63,7 +79,7 @@ case "$1" in
       fi
       yay "${@:1}"
     else
-      printf "%s Package management as root is very dangerous%s\n" "$RED" "$NC"
+      printf "${RED}Package management as root is very dangerous$NC\n"
     fi
 
     ;;
