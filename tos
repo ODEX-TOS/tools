@@ -22,13 +22,13 @@ extended="$directory"tos-helper
 export location="$directory"tos-installer
 export framework="$location"/framework.sh
 
-function installyay {
-    cd || exit 1
-    git clone https://aur.archlinux.org/yay.git
-    cd yay || exit 1
-    makepkg -si
-    cd || exit 1
-    rm -rf yay
+function installyay() {
+  cd || exit 1
+  git clone https://aur.archlinux.org/yay.git
+  cd yay || exit 1
+  makepkg -si
+  cd || exit 1
+  rm -rf yay
 }
 
 case "$1" in
@@ -40,8 +40,8 @@ case "$1" in
     ;;
   "-p" | "--profile")
     if [[ "$2" == "" ]]; then
-        printf "${RED}Please supply an image as input $NC\n"
-        exit 1
+      printf "${RED}Please supply an image as input $NC\n"
+      exit 1
     fi
     if [[ "$2" == *".png" ]]; then
       convert "$2" "$USER".jpg
@@ -51,7 +51,7 @@ case "$1" in
     fi
     # update the cache
     if [[ -f "$HOME/.cache/tos/user-icons/user.jpg" ]]; then
-        cp "/var/lib/AccountsService/icons/$USER" "$HOME/.cache/tos/user-icons/user.jpg" 
+      cp "/var/lib/AccountsService/icons/$USER" "$HOME/.cache/tos/user-icons/user.jpg"
     fi
     ;;
   "is" | "installer-server")
