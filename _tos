@@ -29,10 +29,10 @@ function _tos {
     typeset -A opt_args
 
     local ret=1
-    
+
     _arguments -C \
         '1: :_tos_subcommands' \
-        '*::arg:->args' 
+        '*::arg:->args'
 
     case $line[1] in
         "-iso")
@@ -68,7 +68,7 @@ function _tos {
         "s"|"screen")
             _tos_screen
             ;;
-        
+
     esac
 }
 
@@ -90,10 +90,10 @@ function _tos_gpg {
     typeset -A opt_args
 
     local ret=1
-    
+
     _arguments -C \
         '1: :_tos_gpg_subcommands' \
-        '*::arg:->args' 
+        '*::arg:->args'
 
     case $line[1] in
         "export"|"e")
@@ -133,10 +133,10 @@ function _tos_network {
     typeset -A opt_args
 
     local ret=1
-    
+
     _arguments -C \
         '1: :_tos_network_subcommands' \
-        '*::arg:->args' 
+        '*::arg:->args'
 
     case $line[1] in
         "m"|"metric")
@@ -165,10 +165,10 @@ function _tos_theme {
     typeset -A opt_args
 
     local ret=1
-    
+
     _arguments -C \
         '1: :_tos_theme_subcommands' \
-        '*::arg:->args' 
+        '*::arg:->args'
 
     case $line[1] in
         "s"|"set")
@@ -203,10 +203,10 @@ function _tos_bluetooth {
     typeset -A opt_args
 
     local ret=1
-    
+
     _arguments -C \
         '1: :_tos_bluetooth_subcommands' \
-        '*::arg:->args' 
+        '*::arg:->args'
 
     case $line[1] in
         "c"|"connect")
@@ -218,7 +218,7 @@ function _tos_bluetooth {
         "p"|"pair")
             _tos_blue_pair
             ;;
-        
+
     esac
 }
 
@@ -241,10 +241,10 @@ function _tos_screen {
     typeset -A opt_args
 
     local ret=1
-    
+
     _arguments -C \
         '1: :_tos_screen_subcommands' \
-        '*::arg:->args' 
+        '*::arg:->args'
 
     case $line[1] in
         "d"|"duplicate")
@@ -287,10 +287,10 @@ function _tos_volume {
     typeset -A opt_args
 
     local ret=1
-    
+
     _arguments -C \
         '1: :_tos_volume_subcommands' \
-        '*::arg:->args' 
+        '*::arg:->args'
 }
 
 function _tos_gpg_file {
@@ -419,7 +419,7 @@ function _tos_wifi_connect {
 }
 
 function _tos_metric {
-    list=$(ip link show up | awk '$1 ~ /[0-9]*:.*/{printf $2}' | tr ':' ' ') 
+    list=$(ip link show up | awk '$1 ~ /[0-9]*:.*/{printf $2}' | tr ':' ' ')
     _arguments -C \
     "1: :($list)"
 }
