@@ -32,6 +32,7 @@ function help {
         printf "$name -c | --cypto \t\t generate a crypto key \n"
         printf "$name -c | --cypto <user@ip> \t copy over your ssh key to a remote computer \n"
         printf "$name -h | --help \t\t Show this help message \n"
+        printf "$name -p | --profile <picture>\t Set the user profile picture \n"
         printf "$name -rs | --repair-system \t Perform a basic system repair attempt \n"
         printf "$name -u | --update \t\t Update your system  \n"
         printf "$name -Q \t\t\t\t Query the local database of packages  \n"
