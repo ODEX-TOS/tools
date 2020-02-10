@@ -22,8 +22,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 function help {
-        printf "${ORANGE} $name ${NC}OPTIONS: bluetooth|network|screen|theme|volume -c -h -rs -u -Q -R- -S -iso\n\n" "${ORANGE}" "$name" "${NC}"
-        printf "${ORANGE}USAGE:${NC}\n"
+        printf "$ORANGE $name ${NC}OPTIONS: bluetooth|network|screen|theme|volume -c -h -rs -u -Q -R- -S -iso\n\n" "$ORANGE" "$name" "$NC"
+        printf "${ORANGE}USAGE:$NC\n"
         printf "$name bluetooth \t\t\t Control all bluetooth settings \n"
         printf "$name network \t\t\t Control all network related settings\n"
         printf "$name screen \t\t\t Control all screen related settings\n"

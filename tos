@@ -40,7 +40,7 @@ case "$1" in
     ;;
   "-p" | "--profile")
     if [[ "$2" == "" ]]; then
-        printf "${RED}Please supply an image as input ${NC}\n"
+        printf "${RED}Please supply an image as input $NC\n"
         exit 1
     fi
     if [[ "$2" == *".png" ]]; then
@@ -79,7 +79,7 @@ case "$1" in
       fi
       yay "${@:1}"
     else
-      printf "${RED}Package management as root is very dangerous${NC}\n"
+      printf "${RED}Package management as root is very dangerous$NC\n"
     fi
 
     ;;
