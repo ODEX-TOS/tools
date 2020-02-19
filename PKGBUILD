@@ -47,7 +47,7 @@ package() {
 
         # enable systemctl service for new users
         mkdir -p "$pkgdir"/etc/skel/.config/systemd/user/suspend.target.wants
-        ln -s /etc/systemd/user/tos-resume.service "$pkgdir"/etc/skel/.config/systemd/user/suspend.target.wants/tos-resume.service        
+        ln -s /etc/systemd/user/tos-resume.service "$pkgdir"/etc/skel/.config/systemd/user/suspend.target.wants/tos-resume.service
 
         # copy subdir from rofi
         mkdir -p "$pkgdir"/usr/share/tos-rofi
