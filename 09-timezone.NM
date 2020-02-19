@@ -2,7 +2,7 @@
 
 # automatically set the timezone depending on the ip address
 case "$2" in
-    up)
-        timedatectl set-timezone "$(curl --fail https://ipapi.co/timezone)"
+  up)
+    timedatectl set-timezone "$(curl --fail https://ipapi.co/timezone)"
     ;;
 esac
