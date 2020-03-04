@@ -39,9 +39,17 @@ function theme() {
   if [[ ! "$(command -v wal)" ]]; then
     yay -Syu python-pywal
   fi
-  wal -i "$1"
+  pywal "$1"
   if [[ "$(command -v feh)" ]]; then
     feh --bg-scale "$1"
+  fi
+}
+
+function pywal() {
+  option="$(grep ^full=.* $themefile | cut -d= -f2)"
+  # if the option is not set or set to true then we perform a full style change
+  if [[ "$option" == "" || "$option" == "true" ]]; then
+    wal -i "$1"
   fi
 }
 
@@ -161,7 +169,7 @@ function daemon() {
         file=$(shuf -n 1 "$themefile")
       done
       head -n1 "$themefile"
-      wal -i "$file"
+      pywal "$file"
       feh --bg-scale "$file"
     fi
     time=$(head -n2 "$themefile" | tail -n1 | awk -F= '{print $2}')

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 rofidir="/usr/share/tos-rofi"
-prompt=$(find "$rofidir" -exec basename {} \; | awk "!/^askpass/" | sort)
+prompt=$(find "$rofidir" -exec basename {} \; | awk '!/^askpass|tos-rofi/' | sort)
 
 sol=$(echo -e "$prompt" | rofi -dmenu -p 'Select subscript' -font 'Fira Code 10')
 

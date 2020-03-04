@@ -6,7 +6,13 @@ mirrorfile=$(curl https://www.archlinux.org/mirrorlist/all/)
 mirrors=$(echo "$mirrorfile" | awk '$0 ~ /^Server|^#Server/{print $0}' | wc -l)
 
 echo "You have $(awk '$0 ~ /^Server|^#Server/{print $0}' /etc/pacman.d/mirrorlist | wc -l) servers in your /etc/pacmand.d/mirrorlist"
-read -r -p "You need to manually make sure your mirrorlist contains all servers otherwise copy over a backup found in /etc/pacman.d/*.backup. Understood (Y/N)"  
+read -r -p "You need to manually make sure your mirrorlist contains all servers otherwise copy over a backup found in /etc/pacman.d/*.backup. Understood (Y/n)" result
+
+# abort if the user requests it
+if [[ "$result" == "n" || "$result" == "N" ]]; then
+    exit 0
+fi  
+
 datetime=$(date| tr ' ' '-')
 
 sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist"$datetime".backup
@@ -18,7 +24,7 @@ sudo mv moment /etc/pacman.d/
 
 sudo sed -i 's/^#Server/Server/' /etc/pacman.d/moment
 
-echo "Finding the top $mirrors mirrors and moving them too the top"
+echo "Finding the top $mirrors mirrors and moving them to the top"
 
 sudo sh -c "rankmirrors -n $mirrors /etc/pacman.d/moment > /etc/pacman.d/mirrorlist"
 
