@@ -1,4 +1,4 @@
-[![Build Status](https://jenkins.pbfp.xyz/buildStatus/icon?job=tos-iso&style=flat-square&subject=iso+build)](https://jenkins.pbfp.xyz/job/tos-iso/)
+[![Build Status](https://jenkins.odex.be/buildStatus/icon?job=tos-iso&style=flat-square&subject=iso+build)](https://jenkins.odex.be/job/tos-iso/)
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -6,13 +6,11 @@
 [![GPL License][license-shield]][license-url]
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FODEX-TOS%2Ftools.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FODEX-TOS%2Ftools?ref=badge_shield)
 
-
-
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
   <a href="https://github.com/ODEX-TOS/tools">
-    <img src="https://tos.pbfp.xyz/images/logo.svg" alt="Logo" width="150" height="200">
+    <img src="https://tos.odex.be/images/logo.svg" alt="Logo" width="150" height="200">
   </a>
 
   <h3 align="center">TOS scripts</h3>
@@ -23,7 +21,7 @@
     <a href="https://github.com/ODEX-TOS/tools"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://tos.pbfp.xyz/download">View Demo</a>
+    <a href="https://tos.odex.be/download">View Demo</a>
     ·
     <a href="https://github.com/ODEX-TOS/tools/issues">Report Bug</a>
     ·
@@ -33,30 +31,28 @@
   </p>
 </p>
 
-
-
 <!-- TABLE OF CONTENTS -->
+
 ## Table of Contents
 
-* [About the Project](#about-the-project)
-  * [Built With](#built-with)
-* [Getting Started](#getting-started)
-  * [Prerequisites](#prerequisites)
-  * [Installation](#installation)
-* [Usage](#usage)
-* [Roadmap](#roadmap)
-* [Contributing](#contributing)
-* [License](#license)
-* [Contact](#contact)
-* [Acknowledgements](#acknowledgements)
-
-
+- [About the Project](#about-the-project)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+- [Acknowledgements](#acknowledgements)
 
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
-
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 To get a local copy up and running follow these simple steps.
@@ -65,24 +61,35 @@ To get a local copy up and running follow these simple steps.
 
 You need the following packages
 
-* bash
-* polybar
-* pacman
-* rofi
-* xrandr
-
+- git
+- bash
+- python
+- rofi
+- feh
+- bluez-utils
+- gnupg
+- networkmanager
+- python-pywal
+- pacman-contrib
+- checkupdates-aur-tos
+- imagemagick
 
 ### Installation
- 
+
 1. Clone the helper-scripts
+
 ```sh
 git clone https://github.com/ODEX-TOS/tools.git ~/bin
 ```
+
 2. Install packages
+
 ```sh
 pacman -Syu bash polybar-git rofi xorg-xrandr
 ```
+
 3. Get emoji file
+
 ```sh
 curl https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/emoji -o ~/.config/emoji
 ```
@@ -94,15 +101,16 @@ eg
 export PATH=$HOME/bin:$PATH
 ```
 
-
-
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
 We have a few usefull script in this repo
 
 #### open
+
 A small wrapper around xdg-open to launch applications for you.
+
 ```bash
 open . # open current directory in vscode
 open index.html # opens html pages in the browser
@@ -111,12 +119,15 @@ open README.md # opens in typora a readme editor
 ```
 
 #### rankmirror
+
 A simple utility that will scan the arch repo servers and will reorder them based on speed. This way your updates will happen faster
+
 ```
 rankmirror
 ```
 
 #### rofiquestion
+
 Ask the user if they want to reboot. If the answer is yes then execute the second parameter as a command
 
 ```
@@ -124,6 +135,7 @@ rofiquestion "Do you want to reboot" "sudo -A systemctl reboot"
 ```
 
 #### dialogarchinstall
+
 A simple installer to install tos (an arch based distro)
 
 #### tos
@@ -133,16 +145,14 @@ See below for more information
 
 _For more examples, please refer to the [Documentation](https://github.com/ODEX-TOS/tools/wiki)_
 
-
-
 <!-- ROADMAP -->
+
 ## Roadmap
 
 See the [open issues](https://github.com/ODEX-TOS/tools/issues) for a list of proposed features (and known issues).
 
-
-
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -153,14 +163,11 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
-
 
 <!-- CONTACT -->
 
@@ -172,19 +179,15 @@ Tom Meyers - tom@odex.be
 
 Project Link: [https://github.com/ODEX-TOS/tools](https://github.com/ODEX-TOS/tools)
 
-
-
 <!-- ACKNOWLEDGEMENTS -->
+
 ## Acknowledgements
 
-* [F0xedb](https://github.com/ODEX-TOS/tools)
-
-
-
-
+- [F0xedb](https://github.com/ODEX-TOS/tools)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/F0xedb/helper-scripts.svg?style=flat-square
 [contributors-url]: https://github.com/F0xedb/helper-scripts/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/F0xedb/helper-scripts.svg?style=flat-square
@@ -195,4 +198,4 @@ Project Link: [https://github.com/ODEX-TOS/tools](https://github.com/ODEX-TOS/to
 [issues-url]: https://github.com/F0xedb/helper-scripts/issues
 [license-shield]: https://img.shields.io/github/license/F0xedb/helper-scripts.svg?style=flat-square
 [license-url]: https://github.com/F0xedb/helper-scripts/blob/master/LICENSE.txt
-[product-screenshot]: https://tos.pbfp.xyz/images/logo.svg
+[product-screenshot]: https://tos.odex.be/images/logo.svg

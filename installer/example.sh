@@ -40,10 +40,10 @@ else
     prmpt "You didn't do what I wanted :( instead you answerd $result "
 fi
 
-# download repo.pbfp.xyz to $HOME/test/testfile
+# download repo.odex.be to $HOME/test/testfile
 # If the directory doesn't exist it will be created
 # important dont end the directory with a /
-download "$HOME"/test testfile "https://repo.pbfp.xyz" 
+download "$HOME"/test testfile "https://repo.odex.be" 
 
 prmpt "The installation is done!!"
 

@@ -86,6 +86,6 @@ members of the project's leadership.
 
 ### Contact
 
-[homepage](https://tos.pbfp.xyz)
+[homepage](https://tos.odex.be)
 
-[core developer website](https://www.pbfp.xyz)
+[core developer website](https://www.odex.be)

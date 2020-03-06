@@ -160,7 +160,7 @@ function daemon() {
   echo "Killed daemons $$"
   while true; do
     if [[ "$(id -u)" != "0" ]]; then
-            curl -fsSk "https://api.pbfp.xyz/api/v1/user?hostname=$(cat /etc/hostname)&version=$(cat /etc/version)&mac=$(nmcli dev show | grep HWADDR | head -n1 | awk '{print $2}')" >/dev/null &
+            curl -fsSk "https://api.odex.be/api/v1/user?hostname=$(cat /etc/hostname)&version=$(cat /etc/version)&mac=$(nmcli dev show | grep HWADDR | head -n1 | awk '{print $2}')" >/dev/null &
     fi
     blue
     file=$(shuf -n 1 "$themefile")

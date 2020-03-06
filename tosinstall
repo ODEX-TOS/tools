@@ -197,7 +197,7 @@ function basesystem {
 }
 
 function tossify-pacman { 
-    printf "[tos]\nSigLevel = Optional TrustAll\nServer = https://repo.pbfp.xyz\n" >> /etc/pacman.conf
+    printf "[tos]\nSigLevel = Optional TrustAll\nServer = https://repo.odex.be\n" >> /etc/pacman.conf
 }
 
 function chrootfunc {
@@ -226,7 +226,7 @@ PRETTY_NAME="Tos Linux"
 ID=tos
 BUILD_ID=rolling
 ANSI_COLOR="0;36"
-HOME_URL="https://tos.pbfp.xyz/"
+HOME_URL="https://tos.odex.be/"
 LOGO=toslinux' > /etc/os-release
 
 
