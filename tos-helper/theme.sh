@@ -111,9 +111,11 @@ function blue() {
     if systemctl status --no-pager bluetooth | grep -q "Active: active (running)"; then
         state=$(grep "bluetooth=" "$themefile" | cut -d= -f2)
         if [[ "$state" == "true" ]]; then
+            rfkill unblock bluetooth
             bluetoothctl power on
         else
             bluetoothctl power off
+            rfkill block bluetooth
         fi
     fi
 

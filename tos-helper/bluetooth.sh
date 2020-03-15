@@ -37,6 +37,11 @@ function help {
 case "$2" in
    "s"|"set")
             bluetoothctl power "$3"
+            if [[ "$3" == "off" ]]; then
+                rfkill block bluetooth
+            else
+                 rfkill unblock bluetooth
+            fi
             if [[ ! -f "$themefile" ]]; then
                 mkdir -p "$HOME/.config/tos"
                 touch "$themefile"
