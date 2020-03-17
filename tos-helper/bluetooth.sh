@@ -40,7 +40,7 @@ case "$2" in
             if [[ "$3" == "off" ]]; then
                 rfkill block bluetooth
             else
-                 rfkill unblock bluetooth
+                rfkill unblock bluetooth
             fi
             if [[ ! -f "$themefile" ]]; then
                 mkdir -p "$HOME/.config/tos"

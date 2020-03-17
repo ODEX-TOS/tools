@@ -41,6 +41,10 @@ function installtosdialog() {
 case "$1" in
 "-iso")
 	if [ "$(id -u)" == "0" ]; then
+		printf "${RED} This installer is outdated and no longer works${NC}\n"
+		printf "${RED} Use ${GREEN}tos calamares${RED} to install tos the correct way${NC}\n"
+		exit 1
+		# this function no longer works as expected
 		installtosdialog
 	else
 		printf "${RED} Only root user can install TOS${NC}\n"
