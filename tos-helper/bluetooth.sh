@@ -79,7 +79,7 @@ case "$2" in
     "f"|"full")
             bluetoothctl
     ;;  
-    "-h"|"--help"|"help"|"h")
+    "-h"|"--help"|"help"|"h"|"")
         help
     ;;
 esac

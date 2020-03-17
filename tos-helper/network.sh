@@ -74,7 +74,7 @@ case "$2" in
     "l"|"list")
         nmcli d wifi list
     ;;
-    "-h"|"--help"|"help"|"h")
+    "-h"|"--help"|"help"|"h"|"")
         help
     ;;   
 esac

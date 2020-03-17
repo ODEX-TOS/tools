@@ -68,7 +68,7 @@ case "$2" in
             mail=$(gpg --list-secret-keys --keyid-format LONG "$3" | grep -E '^uid' | awk -F\< '{print $2}' | tr '>' ' ')
             git config --global user.email "$mail"
     ;;
-    "-h"|"--help"|"help"|"h")
+    "-h"|"--help"|"help"|"h"|"")
         help
     ;;   
 esac

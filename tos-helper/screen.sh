@@ -128,7 +128,7 @@ case "$2" in
         xrandr --output "$3" --rate "$4"
         screen-reload
     ;;
-    "-h"|"--help"|"help"|"h")
+    "-h"|"--help"|"help"|"h"|"")
         help
     ;;   
 esac

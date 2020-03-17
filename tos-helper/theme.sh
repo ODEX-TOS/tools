@@ -212,7 +212,7 @@ case "$2" in
     total=$(($(gettime "$day") + $(gettime "$hour") + $(gettime "$minute") + $(gettime "$second")))
     sed -i 's/^time=[0-9]*/time='"$total"'/g' "$themefile"
     ;;
-  "-h" | "--help" | "help" | "h")
+  "-h" | "--help" | "help" | "h"|"")
     help
     ;;
 esac

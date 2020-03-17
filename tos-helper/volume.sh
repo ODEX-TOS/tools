@@ -51,7 +51,7 @@ case "$2" in
     "t"|"toggle")
         amixer -q set Master toggle
     ;;
-    "-h"|"--help"|"help"|"h")
+    "-h"|"--help"|"help"|"h"|"")
         help
     ;;   
 esac
