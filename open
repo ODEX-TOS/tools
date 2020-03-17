@@ -5,7 +5,13 @@ ext=$(echo "$file" | awk -F. '{print $NF}')
 
 #if the input is the current directory open it in vs code
 if [[ "$file" == "." || -d "$file" ]]; then
-    code-insiders "$file" &> /dev/null & exit 0
+    # If the insiders version is installed open that one.
+    # Otherwise open in normal vscode
+    if [[ "$(command -v code-insiders)"]]; then
+      code-insiders "$file" &> /dev/null & exit 0
+    else
+      code "$file" &> /dev/null & exit 0
+    fi
 fi
 
 # Open uri's with xdg-open
