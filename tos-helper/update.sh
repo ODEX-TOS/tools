@@ -120,6 +120,10 @@ function repair {
 
 case "$1" in
     "-u"|"--update")
+        printf "${RED} This way of updating is deprecated.${NC}\n"
+		printf "${RED} Use ${GREEN}tos -Syu${RED} to update to the latest version${NC}\n"
+        printf "${RED} If that doesn't work use ${GREEN}system-updater${RED}${NC}\n"
+		exit 1
         update
     ;;
     "-rs"|"--repair-system")
