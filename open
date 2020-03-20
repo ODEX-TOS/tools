@@ -7,7 +7,7 @@ ext=$(echo "$file" | awk -F. '{print $NF}')
 if [[ "$file" == "." || -d "$file" ]]; then
     # If the insiders version is installed open that one.
     # Otherwise open in normal vscode
-    if [[ "$(command -v code-insiders)"]]; then
+    if [[ "$(command -v code-insiders)" ]]; then
       code-insiders "$file" &> /dev/null & exit 0
     else
       code "$file" &> /dev/null & exit 0
