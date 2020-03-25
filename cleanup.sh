@@ -120,15 +120,9 @@ pacman -Rsc gnome-boxes --noconfirm
 
 do_user_setup(){
     cd /home/$NEW_USER
-    rm -rf .config
-    git clone https://github.com/ODEX-TOS/dotfiles .config
-    sed -i 's;/home/zeus;'/home/$NEW_USER';g' /home/$NEW_USER/.config/i3/config
-    sed -i 's;/home/zeus;'/home/$NEW_USER';g' /home/$NEW_USER/.config/sway/config_azerty
-    sed -i 's;/home/zeus;'/home/$NEW_USER';g' /home/$NEW_USER/.config/sway/config_qwerty
-    #setup firefox
-    mkdir -p /home/$NEW_USER/.mozilla/firefox/tos.default
-    cp /home/$NEW_USER/.config/tos/profiles.ini /home/$NEW_USER/.mozilla/firefox/profiles.ini
-    cp -r /home/$NEW_USER/.config/tos/tos-firefox/* /home/$NEW_USER/.mozilla/firefox/tos.default
+    if [[ -d .config/awesome ]]; then
+        rm -rf .config/awesome
+    fi
 
     yay -Syu --noconfirm zsh
     sudo chsh $NEW_USER -s /bin/zsh
@@ -149,16 +143,16 @@ do_user_setup(){
     mkdir -p /home/$NEW_USER/.icons/default
     ln .config/index.theme /home/$NEW_USER/.icons/default/index.theme
     git clone https://github.com/ODEX-TOS/zsh-load /home/$NEW_USER/.oh-my-zsh/load
-    cd /home/$NEW_USER
-    rmdir Pictures
+    cd /home/"$NEW_USER"
+    rm -rf Pictures
     git clone https://github.com/ODEX-TOS/Pictures Pictures
 
-    git clone https://github.com/zsh-users/zsh-autosuggestions /home/$NEW_USER/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/$NEW_USER/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-    git clone https://github.com/zsh-users/zsh-completions.git /home/$NEW_USER/.oh-my-zsh/custom/plugins/zsh-completions
-    git clone https://github.com/denysdovhan/spaceship-prompt.git /home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship-prompt
-    ln -s /home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme /home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship.zsh-theme
-    curl https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos >  /home/$NEW_USER/.oh-my-zsh/custom/plugins/zsh-completions/src/_tos
+    git clone https://github.com/zsh-users/zsh-autosuggestions /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+    git clone https://github.com/zsh-users/zsh-completions.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-completions
+    git clone https://github.com/denysdovhan/spaceship-prompt.git /home/"$NEW_USER"/.oh-my-zsh/custom/themes/spaceship-prompt
+    ln -s /home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme /home/"$NEW_USER"/.oh-my-zsh/custom/themes/spaceship.zsh-theme
+    curl https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos >  /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-completions/src/_tos
 
     if [[ "$(command -v startkde)" ]]; then
         printf "xrdb ~/.Xresources\nexec startkde" >> /home/$NEW_USER/.xinitrc
@@ -170,10 +164,6 @@ do_user_setup(){
     curl https://bitbucket.org/sjl/badwolf/raw/tip/colors/badwolf.vim > /home/$NEW_USER/.vim/colors/badwolf.vim
     #installing vundle
     git clone https://github.com/VundleVim/Vundle.vim.git /home/$NEW_USER/.vim/bundle/Vundle.vim
-    #Cloning plugin
-    git clone https://github.com/ycm-core/YouCompleteMe.git /home/$NEW_USER/.vim/bundle/YouCompleteMe
-    cd ~/.vim/bundle/YouCompleteMe
-    python3 install.py --all
     sudo sh -c 'curl https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/toslive/version-edit.txt > /etc/version'
 
 
