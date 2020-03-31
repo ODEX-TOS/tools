@@ -41,7 +41,7 @@ function theme() {
   fi
   pywal "$1"
   if [[ "$(command -v feh)" ]]; then
-    feh --bg-scale "$1"
+    feh --bg-scale --no-fehbg "$1"
   fi
 }
 
@@ -172,7 +172,7 @@ function daemon() {
       done
       head -n1 "$themefile"
       pywal "$file"
-      feh --bg-scale "$file"
+      feh --bg-scale --no-fehbg "$file"
     fi
     time=$(head -n2 "$themefile" | tail -n1 | awk -F= '{print $2}')
     sleep "$time"
