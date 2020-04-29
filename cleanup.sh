@@ -68,6 +68,7 @@ systemctl enable org.cups.cupsd.service 2>>/dev/null
 systemctl enable avahi-daemon.service 2>>/dev/null
 systemctl disable pacman-init.service choose-mirror.service
 systemctl disable systemd-logind
+systemctl enable linux-modules-cleanup
 
 # Journal
 sed -i 's/volatile/auto/g' /etc/systemd/journald.conf 2>>/tmp/.errlog
