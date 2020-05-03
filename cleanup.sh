@@ -69,6 +69,7 @@ systemctl enable avahi-daemon.service 2>>/dev/null
 systemctl disable pacman-init.service choose-mirror.service
 systemctl disable systemd-logind
 systemctl enable linux-modules-cleanup
+lsblk --discard | awk 'NR!=1&&$3!="0B"&&$4!="0B"{print $3, $4}' | grep -E '[0-9]*[TGMKB]' && systemctl enable fstrim.timer
 
 # Journal
 sed -i 's/volatile/auto/g' /etc/systemd/journald.conf 2>>/tmp/.errlog
