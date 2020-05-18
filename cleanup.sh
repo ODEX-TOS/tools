@@ -194,8 +194,10 @@ do_user_setup(){
             sed -i 's:backend = "xrender";::' /home/"$NEW_USER"/.config/compton.conf
             sed -i 's:backend="xrender";::' /home/"$NEW_USER"/.config/compton.conf
         sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /home/"$NEW_USER"/.config/compton.conf # enable blur after installation
+        sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /home/"$NEW_USER"/.config/picom.conf # enable blur after installation
         fi
         sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /etc/xdg/awesome/configuration/compton.conf # enable blur after installation
+        sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /etc/xdg/awesome/configuration/picom.conf # enable blur after installation
     fi
 }
 
