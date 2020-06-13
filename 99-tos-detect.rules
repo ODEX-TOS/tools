@@ -1,0 +1,8 @@
+# Build by Tom Meyers <tom@odex.be>
+# Licensed under the TOS MIT License
+#
+
+ACTION=="add", SUBSYSTEMS=="usb", SUBSYSTEM=="block", ENV{ID_FS_USAGE}=="filesystem", RUN{program}+="/usr/bin/systemd-mount --no-block --automount=yes --collect $devnode /media/%k"
+
+ACTION=="remove", SUBSYSTEMS=="usb", SUBSYSTEM=="block", ENV{ID_FS_USAGE}=="filesystem", RUN{program}+="/usr/bin/systemd-umount --no-block -l /media/%k"
+

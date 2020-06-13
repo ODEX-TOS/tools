@@ -68,4 +68,7 @@ package() {
         for file in tos-helper/* ; do
             install -Dm755 "$file" "$pkgdir"/usr/share/"$file"
         done
+
+        # setup udev rules
+        install -Dm644 99-tos-detect.rules "$pkgdir"/usr/lib/udev/rules.d/99-tos-detect.rules
 }
