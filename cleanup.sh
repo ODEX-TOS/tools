@@ -70,7 +70,7 @@ systemctl disable pacman-init.service choose-mirror.service
 systemctl disable systemd-logind
 systemctl enable linux-modules-cleanup
 lsblk --discard | awk 'NR!=1&&$3!="0B"&&$4!="0B"{print $3, $4}' | grep -qE '[0-9]*[TGMKB]' && systemctl enable fstrim.timer
-systemctl start pkgstats.timer
+systemctl enable pkgstats.timer
 systemctl enable linux-modules-cleanup
 
 # Journal
