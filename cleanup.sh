@@ -130,10 +130,10 @@ do_user_setup(){
 
     yay -Syu --noconfirm zsh
     sudo chsh $NEW_USER -s /bin/zsh
-    rm -rf /home/$NEW_USER/.oh-my.zsh
     curl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -o install.sh
     export RUNZSH=no
     export ZSH=/home/$NEW_USER/.oh-my-zsh
+    rm -rf /home/$NEW_USER/.oh-my.zsh
     sh install.sh
     rm install.sh
     rm /home/$NEW_USER/.zshrc /home/$NEW_USER/.vimrc /home/$NEW_USER/.profile
