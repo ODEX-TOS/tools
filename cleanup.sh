@@ -185,9 +185,10 @@ do_user_setup(){
 
     # set awesomewm as the default launcher for lightdm (only if it exists)
     if [[ "$(command -v awesome)" ]]; then
-        sed -i 's:#user-session=default:user-session=awesome:' /etc/lightdm/lightdm.conf
+        sed -i 's:#user-session=default:user-session=tde:' /etc/lightdm/lightdm.conf
         mkdir -p /var/cache/lightdm/dmrc
-        printf "[Desktop]\nSession=awesome" > /var/cache/lightdm/dmrc/"$NEW_USER".dmrc
+        printf "[Desktop]\nSession=tde" > /var/cache/lightdm/dmrc/"$NEW_USER".dmrc
+        sed -i 's/webkit_theme.*/webkit_theme = tde/g' /etc/lightdm/lightdm-webkit2-greeter.conf
         if [[ -f "/home/$NEW_USER/.config/awesome" ]]; then
             sed -i 's:backend = "xrender";::' /home/"$NEW_USER"/.config/awesome/configuration/compton.conf
         fi
