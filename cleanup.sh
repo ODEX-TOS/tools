@@ -179,8 +179,8 @@ do_user_setup(){
 
     printf 'GRUB_THEME="/boot/grub/themes/tos/theme.txt"' >> /etc/default/grub
     # set the lightdm theme to the tos theme
-    sed  's:#greeter-session=.*$:greeter-session=lightdm-webkit2-greeter:' /etc/lightdm/lightdm.conf
-    sed  's:#greeter-session=.*$:greeter-session=lightdm-webkit2-greeter:' /etc/lightdm/lightdm.conf
+    sed -i 's:#greeter-session=.*$:greeter-session=lightdm-webkit2-greeter:' /etc/lightdm/lightdm.conf
+
     printf "on\ntime=1800\nfull=false\n/usr/share/backgrounds/tos/cabin.png" > /home/$NEW_USER/.config/tos/theme
 
     # set awesomewm as the default launcher for lightdm (only if it exists)
