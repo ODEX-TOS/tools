@@ -68,7 +68,7 @@ case "$2" in
     ;;
     "c"|"connect")
         if [[ "$3" != "" ]]; then
-            nmcli dev wifi connect -a "${@:3}"
+            nmcli dev wifi connect "${@:3}"
         fi
     ;;
     "l"|"list")
