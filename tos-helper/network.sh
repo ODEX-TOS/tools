@@ -23,8 +23,8 @@
 # SOFTWARE.
 function help {
         subname="network"
-        printf "${ORANGE} $name $subname ${NC}OPTIONS: metric | restart | connect | list | help\n\n" 
-        printf "${ORANGE}USAGE:${NC}\n"
+        printf "$ORANGE $name $subname ${NC}OPTIONS: metric | restart | connect | list | help\n\n" 
+        printf "${ORANGE}USAGE:$NC\n"
         printf "$name $subname help \t\t\t\t Show this help message\n"
         printf "$name $subname metric <route> <value> \t\t Change the metric of a route to said value\n"
         printf "$name $subname restart \t\t\t\t Restart the network stack\n"
@@ -41,13 +41,13 @@ function changemetric {
             ip route del "$current"
             ip route add "$new"
         else
-                printf "${RED}Only the root user can change the metric${NC}\n"
+                printf "${RED}Only the root user can change the metric$NC\n"
         fi
 }
 
 function listdevices {
     devices=$(ip link show up | awk '$1 ~ /[0-9]*:.*/{printf $2}' | tr ':' ' ')
-    for device in $devices; do
+    for device in "$devices"; do
             printf "%s %s %s %s\n\n" "$device"  "$(ip addr show dev "$device" | awk '$1 ~ /inet|inet6/{printf $1": "$2" " }')"  "Route:  " "$(ip route show dev "$device" | head -n1)"
     done
 }
@@ -55,7 +55,7 @@ function listdevices {
 case "$2" in
     "m"|"metric")
         if [[ "$3" == "" || "$4" == "" ]]; then
-                    printf "${RED}Can't change metric of specified device because you didn't specifie the device or metric value${NC}\n"
+                    printf "${RED}Can't change metric of specified device because you didn't specifie the device or metric value$NC\n"
             else
                     changemetric "$3" "$4"
         fi
