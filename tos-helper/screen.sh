@@ -51,9 +51,10 @@ function screen-duplicate  {
 
 # When updating the screen we should reload all components so that the can adjust to the new display specs
 function screen-reload {
-    killall polybar waybar # should restart with the keepalive script
-    nohup ~/bin/keepalive.sh &> /dev/null &
-    wal -R
+    if pgrep polybar; then
+       killall polybar waybar # should restart with the keepalive script
+      nohup ~/bin/keepalive.sh &> /dev/null &
+    fi
     if pgrep awesome; then
      echo 'awesome.restart()' | awesome-client
     fi
