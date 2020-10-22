@@ -32,7 +32,17 @@ function help() {
   printf "$name $subname delete <picture>\t\t Delete a theme from the randomizer\n"
   printf "$name $subname random <on|off>\t\t Set random theme on or off\n"
   printf "$name $subname list\t\t\t\t List all pictures used for the random theme generator\n"
+  printf "$name $subname active\t\t\t\t Get the active background image\n"
   printf "$name $subname time <seconds>\t\t Set the timeout between random themes\n"
+}
+
+function setBackgound() {
+  feh --bg-scale --no-fehbg "$1"
+  echo -n "$1" >> /tmp/current_background
+}
+
+function active() {
+  cat /tmp/current_background
 }
 
 function theme() {
@@ -41,7 +51,7 @@ function theme() {
   fi
   pywal "$1"
   if [[ "$(command -v feh)" ]]; then
-    feh --bg-scale --no-fehbg "$1"
+    setBackgound "$1"
   fi
 }
 
@@ -169,7 +179,7 @@ function daemon() {
       done
       head -n1 "$themefile"
       pywal "$file"
-      feh --bg-scale --no-fehbg "$file"
+      setBackgound "$file"
     fi
     time=$(head -n2 "$themefile" | tail -n1 | awk -F= '{print $2}')
     sleep "$time"
@@ -200,6 +210,9 @@ case "$2" in
     theme-check
     awk '$0 ~ /^\/.*png|^\/.*jpg|^\/.*jpeg/' "$themefile" | sed -r '/^\s*$/d'
     ;;
+  "ac" | "active")
+    active
+    ;; 
   "t" | "time")
     theme-check
     day=$(echo "$3" | sed 's/-/\n/g' | awk '{if($0 ~ /d/){ printf ($0-d)*24*60*60}}')

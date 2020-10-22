@@ -152,6 +152,7 @@ _tos_theme_subcommands() {
   local commands; commands=(
     {set,s}": Set the theme"
     {add,a}": Add a theme to the database"
+    {active,ac}": Get the current active background image"
     {delete,d}": Delete a theme"
     {random,r}": enable or disable a theme"
     {list,l}": List database"
