@@ -42,7 +42,11 @@ function setBackgound() {
 }
 
 function active() {
-  cat /tmp/current_background
+  if [[ -f /tmp/current_background ]]; then
+    cat /tmp/current_background
+  else
+   tos theme list | head -n1 | tr -d '\n'
+  fi
 }
 
 function theme() {
