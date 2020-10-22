@@ -38,7 +38,7 @@ function help() {
 
 function setBackgound() {
   feh --bg-scale --no-fehbg "$1"
-  echo -n "$1" >> /tmp/current_background
+  echo -n "$1" > /tmp/current_background
 }
 
 function active() {
