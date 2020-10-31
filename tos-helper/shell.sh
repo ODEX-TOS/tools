@@ -127,7 +127,7 @@ function arg_parse(){
         "run"|"r")
             echo "Running: $3"
             RUNSAVED="$3"
-            if [[ "$3" -gt "$(wc -l /var/cache/tos-shell/$USER.list | awk '{print $1}')" ]]; then
+            if [[ "$3" -gt "$(wc -l /var/cache/tos-shell/$USER.list | awk '{print $1}')" || "$3" -lt "1" ]]; then
                 echo "Invalid id"
                 exit 1
             fi
