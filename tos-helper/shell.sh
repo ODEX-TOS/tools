@@ -210,7 +210,7 @@ function generate_env() {
 
     echo "Preparing isolated environment"
 
-    sudo pacstrap -c "$DIR" base "$PACKAGE" 1>/dev/null &
+    sudo pacstrap -c "$DIR" base bash "$PACKAGE" 1>/dev/null &
     spinner "$!"
 
     # working directory
