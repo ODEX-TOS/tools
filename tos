@@ -16,7 +16,8 @@ NC='\033[0m' # No Color
 
 export SUDO_ASKPASS="/usr/share/tos-rofi/askpass"
 name=$(basename "$0")
-directory="/usr/share/"
+#directory="/usr/share/"
+directory="$(pwd)/"
 themefile="$HOME/.config/tos/theme"
 extended="$directory"tos-helper
 export location="$directory"tos-installer
@@ -112,6 +113,9 @@ case "$1" in
     ;;
   "s" | "screen")
     source "$extended"/screen.sh
+    ;;
+  "sh" | "shell")
+    source "$extended"/shell.sh
     ;;
   "install" | "installer" | "i")
     exec 3>&1

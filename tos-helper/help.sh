@@ -28,7 +28,8 @@ function help() {
   printf "$name network \t\t\t Control all network related settings\n"
   printf "$name screen \t\t\t Control all screen related settings\n"
   printf "$name theme \t\t\t Control all theme related settings\n"
-  printf "$name volume \t\t\t Controll the volume\n"
+  printf "$name volume \t\t\t Control the volume\n"
+  printf "$name shell \t\t\t Run an application in an isolated environment to keep the host system clean\n"
   printf "$name -c | --cypto \t\t generate a crypto key \n"
   printf "$name -c | --cypto <user@ip> \t copy over your ssh key to a remote computer \n"
   printf "$name -h | --help \t\t Show this help message \n"
@@ -42,7 +43,7 @@ function help() {
 }
 
 case "$1" in
-  "" | "-h" | "--help")
+  "" | "-h" | "--help"|"help"|"h")
     help
     ;;
 esac

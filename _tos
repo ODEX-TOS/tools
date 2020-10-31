@@ -20,6 +20,8 @@ _tos_subcommands() {
     {bluetooth,b}": Show bluetooth related commands"\
     {volume,v}": Show volume related commands"\
     {screen,s}": Show screen related commands"\
+    {shell,sh}": Run an application in an isolated environment"\
+
   )
   _describe -t commands 'subcommands' commands "$@"
 }
@@ -67,6 +69,9 @@ function _tos {
             ;;
         "s"|"screen")
             _tos_screen
+            ;;
+        "sh"|"shell")
+            _tos_shell
             ;;
 
     esac
@@ -270,6 +275,34 @@ function _tos_screen {
             _tos_screen_refresh_rate
             ;;
     esac
+}
+
+_tos_shell_subcommands() {
+  local commands; commands=(
+    {-g,--gui}":Allow the application to run in a gui"
+    {-m,--mount}":Mount a directory from the host to the isolated environment"
+    {-s,--save}":Save the current environment to be used later"
+    {list,l}": List all saved environments"
+    {rm,r}": Remove a saved entry"
+    {clean,c}": Remove all saved environments"
+    {run,r}": Run a saved environment by its id"
+    {help,h}": Show the help screen"
+    {reset,r}": Reset screen to original version"
+    {res,resolution}": Change resolution"
+    {rate,refresh}": Change refresh rate"
+  )
+  _describe -t commands 'subcommands' commands "$@"
+}
+
+function _tos_shell {
+    local context curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    local ret=1
+
+    _arguments -C \
+        '1: :_tos_shell_subcommands' \
+        '*::arg:->args'
 }
 
 

@@ -23,7 +23,7 @@
 # SOFTWARE.
 function help {
         subname="volume"
-        printf "${ORANGE} $name $volume ${NC}OPTIONS: get | set | change | toggle | help\n\n" 
+        printf "${ORANGE} $name $subname ${NC}OPTIONS: get | set | change | toggle | help\n\n" 
         printf "${ORANGE}USAGE:${NC}\n"
         printf "$name $subname help \t\t\t\t Show this help message\n"
         printf "$name $subname get \t\t\t\t\t Get the current state of the speaker\n"
