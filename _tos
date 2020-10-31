@@ -287,9 +287,6 @@ _tos_shell_subcommands() {
     {clean,c}": Remove all saved environments"
     {run,r}": Run a saved environment by its id"
     {help,h}": Show the help screen"
-    {reset,r}": Reset screen to original version"
-    {res,resolution}": Change resolution"
-    {rate,refresh}": Change refresh rate"
   )
   _describe -t commands 'subcommands' commands "$@"
 }
