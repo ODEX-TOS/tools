@@ -127,6 +127,10 @@ function arg_parse(){
         "run"|"r")
             echo "Running: $3"
             RUNSAVED="$3"
+            if [[ "$3" -gt "$(wc -l /var/cache/tos-shell/$USER.list)" ]]; then
+                echo "Invalid id"
+                exit 1
+            fi
             export $(env -i $(awk "NR==$3{print}" "/var/cache/tos-shell/$USER.list"))
             # remove all $ options
             while true; do
