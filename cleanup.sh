@@ -181,7 +181,7 @@ do_user_setup(){
     # set the lightdm theme to the tos theme
     sed -i 's:#greeter-session=.*$:greeter-session=lightdm-webkit2-greeter:' /etc/lightdm/lightdm.conf
 
-    printf "on\ntime=1800\nfull=false\n/usr/share/backgrounds/tos/cabin.png" > /home/$NEW_USER/.config/tos/theme
+    printf "on\ntime=1800\nfull=false\n/usr/share/backgrounds/tos/default.png" > /home/$NEW_USER/.config/tos/theme
 
     # set awesomewm as the default launcher for lightdm (only if it exists)
     if [[ "$(command -v awesome)" ]]; then
