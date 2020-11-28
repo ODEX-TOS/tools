@@ -55,8 +55,8 @@ function screen-reload {
        killall polybar waybar # should restart with the keepalive script
       nohup ~/bin/keepalive.sh &> /dev/null &
     fi
-    if pgrep awesome; then
-     echo 'awesome.restart()' | awesome-client
+    if pgrep tde; then
+     echo 'awesome.restart()' | tde-client
     fi
 }
 

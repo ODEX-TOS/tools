@@ -145,8 +145,8 @@ function dpi() {
             #xrandr --output "$out" --scale "$size" 
         done 
         IFS=$origIFS
-        if pgrep awesome; then
-            echo 'awesome.restart()' | awesome-client
+        if pgrep tde; then
+            echo 'tde.restart()' | tde-client
         fi
 
         if pgrep i3; then

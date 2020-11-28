@@ -183,8 +183,8 @@ do_user_setup(){
 
     printf "on\ntime=1800\nfull=false\n/usr/share/backgrounds/tos/default.png" > /home/$NEW_USER/.config/tos/theme
 
-    # set awesomewm as the default launcher for lightdm (only if it exists)
-    if [[ "$(command -v awesome)" ]]; then
+    # set tde as the default launcher for lightdm (only if it exists)
+    if [[ "$(command -v tde)" ]]; then
         sed -i 's:#user-session=default:user-session=tde:' /etc/lightdm/lightdm.conf
         mkdir -p /var/cache/lightdm/dmrc
         printf "[Desktop]\nSession=tde" > /var/cache/lightdm/dmrc/"$NEW_USER".dmrc
