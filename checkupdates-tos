@@ -26,5 +26,14 @@ if [[ "$(command -v checkupdates)" ]]; then
     checkupdates
 fi
 if [[ "$(command -v checkupdates-aur)" ]]; then
-    checkupdates-aur
+	temp="$(mktemp)"
+    list="$(grep "^IgnorePkg" /etc/pacman.conf | sed 's/^ *IgnorePkg *= *//')"
+	checkupdates-aur > "$temp"
+    if [[ ! "$list" == "" ]]; then
+		for item in $list; do
+			sed -i 's/^'$item'.*$//g' "$temp"
+		done
+	fi
+	cat "$temp" | sed '/^$/d'
+	rm "$temp"
 fi
