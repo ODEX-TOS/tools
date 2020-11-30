@@ -45,7 +45,7 @@ function active() {
   if [[ -f /tmp/current_background ]]; then
     cat /tmp/current_background
   else
-   tos theme list | head -n1 | tr -d '\n'
+   tos theme list | tail -n1 | tr -d '\n'
   fi
 }
 
