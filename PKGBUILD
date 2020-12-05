@@ -71,4 +71,14 @@ package() {
 
         # setup udev rules
         install -Dm644 99-tos-detect.rules "$pkgdir"/usr/lib/udev/rules.d/99-tos-detect.rules
+
+        # tos tutorial
+        mkdir -p "$pkgdir/usr/share/tos-tutorial/tree"
+        for file in tos-tutorial/tree/* ; do
+            install -Dm755 "$file" "$pkgdir"/usr/share/"$file"
+        done
+        install -Dm755 "tos-tutorial/main.sh" "$pkgdir/usr/share/tos-tutorial/main.sh"
+
+        # setup the tutorial application
+        install -Dm644 "tos-tutorial.desktop" "$pkgdir/usr/share/applications/tos-tutorial.desktop"
 }

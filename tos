@@ -20,6 +20,7 @@ directory="/usr/share/"
 #directory="$(pwd)/"
 themefile="$HOME/.config/tos/theme"
 extended="$directory"tos-helper
+TUTORIAL_DIR="$directory"tos-tutorial
 export location="$directory"tos-installer
 export framework="$location"/framework.sh
 
@@ -123,4 +124,7 @@ case "$1" in
     exec 3>&-
     source "$location"/"$executable".sh
     ;;
+  "tutorial" | "tut")
+    bash "$TUTORIAL_DIR/main.sh"
+  ;;
 esac
