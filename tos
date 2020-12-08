@@ -85,6 +85,8 @@ case "$1" in
       yay "${@:1}"
     else
       printf "${RED}Package management as root is very dangerous$NC\n"
+      printf "${RED}Not all functionality is available to mitigate security vulnerability${NC}"
+      pacman "${@:1}"
     fi
 
     ;;
