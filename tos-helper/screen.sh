@@ -58,6 +58,9 @@ function screen-reload {
     if pgrep tde; then
      echo 'awesome.restart()' | tde-client
     fi
+    if which autorandr &>/dev/null ; then
+        autorand --save tde
+    fi
 }
 
 function screen-dpi {
