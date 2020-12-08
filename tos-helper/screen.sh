@@ -59,7 +59,7 @@ function screen-reload {
      echo 'awesome.restart()' | tde-client
     fi
     if which autorandr &>/dev/null ; then
-        autorandr --save tde
+        autorandr --save tde --force
     fi
 }
 
