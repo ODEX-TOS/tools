@@ -1,2 +1,0 @@
-#!/bin/bash
-rofiquestion "Do you want to reload i3?" "i3-msg reload && i3-msg restart"

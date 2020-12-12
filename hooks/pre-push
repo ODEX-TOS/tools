@@ -1,8 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # MIT License
 # 
-# Copyright (c) 2019 Meyers Tom
+# Copyright (c) 2019 manilarome
+# Copyright (c) 2020 Tom Meyers
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,12 +23,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# $1 is the exit code
+# $2 is the message
+function log {
+    len="$(( ${#2} - 1 ))"
+    echo -en "$2 "
+    printf '.%.0s' $(seq $(( 70 - $len )))
 
-language=$(cat /etc/vconsole.conf | cut -d= -f2)
+    if [[ ! "$1" -eq "0" ]]; then
+        echo -e " \e[30m\e[41m FAILED  \e[49m\e[39m"
+    else
+        echo -e " \e[30m\e[42m SUCCESS \e[49m\e[39m"
+    fi
+}
 
-if [[ "$language" =~ "be" || "$language" =~ "fr" ]]; then
-        cp "$HOME"/.config/sway/config_azerty "$HOME"/.config/sway/config
-else 
-        cp "$HOME"/.config/sway/config_qwerty "$HOME"/.config/sway/config
-fi
+function run_correct_branch {
+    _branch=$(git branch --show-current)
+    if [[ "$_branch" == "master" ]]; then
+        log "1" "Pushing to master branch is not allowed"
+        exit 1
+    else
+        log "0" "Pushing to the correct branch"
+    fi
+}
 
+run_correct_branch

@@ -94,7 +94,7 @@ pacman -Syu bash polybar-git rofi xorg-xrandr
 curl https://raw.githubusercontent.com/ODEX-TOS/dotfiles/master/emoji -o ~/.config/emoji
 ```
 
-Make sure this repo is inside your path evnironment variable
+Make sure this repo is inside your path environment variable
 eg
 
 ```bash
@@ -126,22 +126,28 @@ A simple utility that will scan the arch repo servers and will reorder them base
 rankmirror
 ```
 
-#### rofiquestion
-
-Ask the user if they want to reboot. If the answer is yes then execute the second parameter as a command
-
-```
-rofiquestion "Do you want to reboot" "sudo -A systemctl reboot"
-```
-
-#### dialogarchinstall
-
-A simple installer to install tos (an arch based distro)
-
 #### tos
 
 This is a very large tool that is not going to be explained here.
 See below for more information
+
+### Commit hooks
+
+Before creating commits you need to setup commit hooks.
+These commit hooks perform a series of checks to make sure you didn't forget something important
+
+This ranges from linting, license checks, correct usage of branching etc
+
+It is not mandatory to use this feature, however it will make it more likely to be allowed.
+
+Setting the commit hooks is as easy as executing the following commands from the project root:
+
+```bash
+ln -s "$PWD"/hooks/pre-commit .git/hooks/pre-commit
+ln -s "$PWD"/hooks/commit-msg .git/hooks/commit-msg
+ln -s "$PWD"/hooks/pre-push .git/hooks/pre-push
+
+```
 
 _For more examples, please refer to the [Documentation](https://github.com/ODEX-TOS/tools/wiki)_
 

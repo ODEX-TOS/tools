@@ -1,3 +1,0 @@
-#!/bin/bash
-
-rofiquestion "Do you want to reboot" "sudo -A reboot"

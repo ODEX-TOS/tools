@@ -1,2 +1,0 @@
-#!/bin/bash
-rofiquestion "Do you want to reload TDE?" 'echo "_G.awesome.restart()" | tde-client'

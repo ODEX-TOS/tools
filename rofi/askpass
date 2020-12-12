@@ -1,2 +1,0 @@
-#!/bin/bash
-rofi -dmenu -font 'Fira Code 10' -password -no-fixed-num-lines -p "$(printf "$1" | sed s/://)"
