@@ -46,6 +46,7 @@ function packages() {
 function ask() {
 	dialogcheck
 	exec 3>&1
+	# shellcheck disable=SC2034
 	result=$(dialog --title "TOS Installer" --inputbox "$1" 0 0 "$2" 2>&1 1>&3)
 	exec 3>&-
 }

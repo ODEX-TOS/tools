@@ -23,7 +23,6 @@
 # SOFTWARE.
 
 NEW_USER=$(cat /etc/passwd | grep "/home" |cut -d: -f1 |head -1)
-DISTRO_NAME=""
 
 do_check_internet_connection(){
     ping -c 1 8.8.8.8 >& /dev/null   # ping Google's address

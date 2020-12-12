@@ -141,11 +141,11 @@ function blue() {
 function dpi() {
         origIFS="$IFS"
         IFS="\n"
-        for screen in $(grep "scale=" "$HOME"/.config/tos/theme); do
-            out=$(printf "$screen" | cut -d= -f2 | cut -d " " -f1)
-            size=$(printf "$screen" | cut -d= -f2 | cut -d " " -f2)
-            #xrandr --output "$out" --scale "$size" 
-        done 
+        #for screen in $(grep "scale=" "$HOME"/.config/tos/theme); do
+        #    out=$(printf "$screen" | cut -d= -f2 | cut -d " " -f1)
+        #    size=$(printf "$screen" | cut -d= -f2 | cut -d " " -f2)
+        #    xrandr --output "$out" --scale "$size" 
+        #done 
         IFS=$origIFS
         if pgrep tde; then
             echo 'tde.restart()' | tde-client
