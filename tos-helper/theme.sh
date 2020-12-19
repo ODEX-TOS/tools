@@ -79,11 +79,11 @@ function theme-check() {
   fi
   # TODO: change this into a cronjob or real daemon
   # TODO: current check to see if a daemon exists always returns true
-  process=$(ps -aux)
-  if [[ "$(echo "$process" | grep 'tos theme daemon')" != *'tos theme daemon'* ]]; then
-    echo "No daemon found. Launching a new instance"
-    nohup tos theme daemon &>/dev/null &# launch theme daemon when it isn't running
-  fi
+  #process=$(ps -aux)
+  #if [[ "$(echo "$process" | grep 'tos theme daemon')" != *'tos theme daemon'* ]]; then
+  #  echo "No daemon found. Launching a new instance"
+  #  nohup tos theme daemon &>/dev/null &# launch theme daemon when it isn't running
+  #fi
 }
 
 function theme-add() {
@@ -210,7 +210,8 @@ case "$2" in
     theme-random "$3"
     ;;
   "daemon")
-    daemon
+    #daemon
+    echo "Daemon is disabled"
     ;;
   "l" | "list")
     theme-check
