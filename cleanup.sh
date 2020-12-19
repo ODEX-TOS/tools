@@ -153,6 +153,8 @@ do_user_setup(){
     git clone https://github.com/zsh-users/zsh-autosuggestions /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-autosuggestions
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
     git clone https://github.com/zsh-users/zsh-completions.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-completions
+   git clone git@github.com:marlonrichert/zsh-autocomplete.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-autocomplete
+
     git clone https://github.com/denysdovhan/spaceship-prompt.git /home/"$NEW_USER"/.oh-my-zsh/custom/themes/spaceship-prompt
     ln -s /home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme /home/"$NEW_USER"/.oh-my-zsh/custom/themes/spaceship.zsh-theme
     curl https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos >  /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-completions/src/_tos
