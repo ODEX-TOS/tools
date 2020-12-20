@@ -118,6 +118,9 @@ case "$1" in
   "-c" | "--crypto")
     source "$extended"/etc.sh
     ;;
+  "-t" | "--true-color")
+    source "$extended"/etc.sh
+    ;;
   "g" | "gpg")
     source "$extended"/gpg.sh
     ;;

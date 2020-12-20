@@ -39,6 +39,7 @@ function help() {
   printf "$name -p | --profile <picture>\t Set the user profile picture \n"
   printf "$name -rs | --repair-system \t Perform a basic system repair attempt \n"
   printf "$name -u | --update \t\t Update your system  \n"
+  printf "$name -t | --true-color \t\t Test the true-color capability of your terminal  \n"
   printf "$name -Q \t\t\t\t Query the local database of packages  \n"
   printf "$name -R \t\t\t\t Remove software from the system  \n"
   printf "$name -S \t\t\t\t Search the online database  \n"

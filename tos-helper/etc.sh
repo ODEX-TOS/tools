@@ -32,5 +32,24 @@ case "$1" in
                ssh-copy-id "$2"
         fi 
     ;;
+    "-t"|"--true-color")
+		seconds=${2:-1}
+    	cols=$(tput cols)
+    	rows=$(tput lines)
+   
+    	for x in $(seq 1 "$seconds"); do
+        	clear
+         	b=$(( 255 - $(( x * 255 / seconds )) ))
+         	for i in $(seq 1 "$rows"); do
+            	for j in $(seq 1 "$cols"); do
+                	r=$(( 255 - $((i*255/rows )) ))
+                	g=$(( 255 - $((j*255/cols )) ))
+                    printf "\033[48;2;%s;%s;%sm \033[0m" "$r" "$g" "$b"
+                done
+             	echo
+         	done
+        sleep 0.5
+    	done
+    ;;
 esac
 

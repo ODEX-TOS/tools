@@ -13,6 +13,7 @@ _tos_subcommands() {
     #{is,installer-server}":Install tos from the terminal" \
     #{-u,--update}":Update the system to the latest version" \
     {-c,--crypto}":Add a ssh key, when a user@ip is specified add current key to that host" \
+    {-t,--true-color}":Test the true color capability of your terminal emulator" \
     #{-rs,--repair-system}":Perform a system repair (this will take a long time)" \
     {gpg,g}": Show pgp (Gnu pg) related commands"\
     {network,n}": Show network related commands"\
