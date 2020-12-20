@@ -155,7 +155,7 @@ do_user_setup(){
     git clone https://github.com/marlonrichert/fast-syntax-highlighting.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/fast-syntax-highlighting
 
     git clone https://github.com/zsh-users/zsh-completions.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-completions
-   git clone git@github.com:marlonrichert/zsh-autocomplete.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-autocomplete
+   git clone https://github.com/marlonrichert/zsh-autocomplete.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-autocomplete
 
     git clone https://github.com/denysdovhan/spaceship-prompt.git /home/"$NEW_USER"/.oh-my-zsh/custom/themes/spaceship-prompt
     ln -s /home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme /home/"$NEW_USER"/.oh-my-zsh/custom/themes/spaceship.zsh-theme
