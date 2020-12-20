@@ -151,7 +151,9 @@ do_user_setup(){
     git clone https://github.com/ODEX-TOS/Pictures Pictures
 
     git clone https://github.com/zsh-users/zsh-autosuggestions /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+
+    git clone https://github.com/marlonrichert/fast-syntax-highlighting.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/fast-syntax-highlighting
+
     git clone https://github.com/zsh-users/zsh-completions.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-completions
    git clone git@github.com:marlonrichert/zsh-autocomplete.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-autocomplete
 
