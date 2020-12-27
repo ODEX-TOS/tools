@@ -132,7 +132,8 @@ case "$2" in
         screen-reload
     ;;
     "rate"|"refresh")
-        xrandr --output "$3" --rate "$4"
+        current_resolution="$(xrandr -q | grep "$3" | awk '{print $4}' | awk -F'+' '{print $1}')"
+        xrandr --output "$3" --mode "$current_resolution" --rate "$4"
         screen-reload
     ;;
     "-h"|"--help"|"help"|"h"|"")
