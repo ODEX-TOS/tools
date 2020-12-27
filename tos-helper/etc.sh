@@ -23,7 +23,6 @@
 # SOFTWARE.
 
 # shellcheck disable=SC2059
-source tos-helper/color.sh
 
 function info {
 	status="${GREEN}healthy${NC}"
