@@ -15,6 +15,7 @@ _tos_subcommands() {
     {-c,--crypto}":Add a ssh key, when a user@ip is specified add current key to that host" \
     {-t,--true-color}":Test the true color capability of your terminal emulator" \
     #{-rs,--repair-system}":Perform a system repair (this will take a long time)" \
+    {info,i}": Show general information about your system/environment"\
     {gpg,g}": Show pgp (Gnu pg) related commands"\
     {network,n}": Show network related commands"\
     {theme,t}": Show theme related commands"\

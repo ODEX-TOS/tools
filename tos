@@ -121,6 +121,9 @@ case "$1" in
   "-t" | "--true-color")
     source "$extended"/etc.sh
     ;;
+  "info" | "i")
+    source "$extended"/etc.sh
+    ;;
   "g" | "gpg")
     source "$extended"/gpg.sh
     ;;
