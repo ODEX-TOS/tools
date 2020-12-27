@@ -47,8 +47,4 @@ function help() {
 
 }
 
-case "$1" in
-  "" | "-h" | "--help"|"help"|"h")
-    help
-    ;;
-esac
+help

@@ -56,9 +56,6 @@ function installyay() {
 }
 
 case "$1" in
-  "" | "-h" | "--help")
-    source "$extended"/help.sh
-    ;;
   "c" | "calamares")
     calamares
     ;;
@@ -156,5 +153,8 @@ case "$1" in
     ;;
   "tutorial" | "tut")
     bash "$TUTORIAL_DIR/main.sh"
+  ;;
+  **)
+    source "$extended"/help.sh
   ;;
 esac
