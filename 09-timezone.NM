@@ -2,6 +2,6 @@
 case "$2" in
     up)
     	# Automatically set the timezone based on the current location
-	timedatectl set-timezone "$(curl --fail https://ipapi.co/timezone)"
+	timedatectl set-timezone "$(curl --fail https://network.odex.be/timezone)"
     ;;
 esac
