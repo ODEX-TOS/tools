@@ -21,6 +21,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+# shellcheck disable=SC2145,2059
+
 YELLOW='\033[1;33m'
 GREEN='\033[0;32m'
 
@@ -93,6 +96,7 @@ function loadcountbigger {
     echo -n ' '
     echo -e "$YELLOW"
     # executed command
+    # shellcheck disable=SC2009
     while [[ "$(ps -aux | grep -c " $1$")"  -lt "$2" ]] &>/dev/null
     do
         # shellcheck disable=SC2012
@@ -109,6 +113,7 @@ function loadcountsmaller {
     echo -n ' '
     echo -e "$YELLOW"
     # executed command
+    # shellcheck disable=SC2009
     while [[ "$(ps -aux | grep -c " $1$")"  -gt "$2" ]] &>/dev/null
     do
         # shellcheck disable=SC2059

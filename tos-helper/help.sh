@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# shellcheck disable=SC2059
+# shellcheck disable=SC2059,SC2154
 
 function help() {
   printf "$ORANGE $name ${NC}OPTIONS: bluetooth|info|network|screen|theme|volume -c -h -rs -u -Q -R- -S -iso\n\n" "$ORANGE" "$name" "$NC"

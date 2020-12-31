@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-NEW_USER=$(cat /etc/passwd | grep "/home" |cut -d: -f1 |head -1)
+NEW_USER=$(grep "/home" "/etc/passwd" |cut -d: -f1 |head -1)
 
 do_check_internet_connection(){
     ping -c 1 8.8.8.8 >& /dev/null   # ping Google's address
@@ -30,10 +30,11 @@ do_check_internet_connection(){
 
 do_arch_news_latest_headline(){
     # gets the latest Arch news headline for 'kalu' config file news.conf
-    local info=$(mktemp)
-    wget -q -T 10 -O $info https://www.archlinux.org/ && \
-        { grep 'title="View full article:' $info | sed -e 's|&gt;|>|g' -e 's|^.*">[ ]*||' -e 's|</a>$||' | head -n 1 ; }
-    rm -f $info
+    local info
+    info="$(mktemp)"
+    wget -q -T 10 -O "$info" https://www.archlinux.org/ && \
+        { grep 'title="View full article:' "$info" | sed -e 's|&gt;|>|g' -e 's|^.*">[ ]*||' -e 's|</a>$||' | head -n 1 ; }
+    rm -f "$info"
 }
 
 do_config_for_app(){
@@ -48,8 +49,8 @@ do_config_for_app(){
             do_arch_news_latest_headline >> /etc/skel/.config/kalu/news.conf
             ;;
         update-mirrorlist)
-            test -x /usr/bin/$app && {
-                /usr/bin/$app
+            test -x /usr/bin/"$app" && {
+                /usr/bin/"$app"
             }
             ;;
         # add other apps here!
@@ -60,11 +61,11 @@ do_config_for_app(){
 
 do_common_systemd(){
 
-systemctl enable NetworkManager -f 2>>/tmp/.errlog
-systemctl disable multi-user.target 2>>/dev/null
-systemctl enable vboxservice 2>>/dev/null
-systemctl enable org.cups.cupsd.service 2>>/dev/null
-systemctl enable avahi-daemon.service 2>>/dev/null
+systemctl enable NetworkManager -f 2>/tmp/.errlog
+systemctl disable multi-user.target 2>/dev/null
+systemctl enable vboxservice 2>/dev/null
+systemctl enable org.cups.cupsd.service 2>/dev/null
+systemctl enable avahi-daemon.service 2>/dev/null
 systemctl disable pacman-init.service choose-mirror.service
 systemctl disable systemd-logind
 systemctl enable linux-modules-cleanup
@@ -79,10 +80,10 @@ sed -i 's/volatile/auto/g' /etc/systemd/journald.conf 2>>/tmp/.errlog
 
 do_clean_archiso(){
 
-rm -f /etc/sudoers.d/g_wheel 2>>/tmp/.errlog
-rm -f /var/lib/NetworkManager/NetworkManager.state 2>>/tmp/.errlog
-sed -i 's/.*pam_wheel\.so/#&/' /etc/pam.d/su 2>>/tmp/.errlog
-find /usr/lib/initcpio -name archiso* -type f -exec rm '{}' \;
+rm -f /etc/sudoers.d/g_wheel 2>/tmp/.errlog
+rm -f /var/lib/NetworkManager/NetworkManager.state 2>/tmp/.errlog
+sed -i 's/.*pam_wheel\.so/#&/' /etc/pam.d/su 2>/tmp/.errlog
+find /usr/lib/initcpio -name 'archiso*' -type f -exec rm '{}' \;
 rm -Rf /etc/systemd/system/{choose-mirror.service,pacman-init.service,etc-pacman.d-gnupg.mount,getty@tty1.service.d}
 rm -Rf /etc/systemd/scripts/choose-mirror
 rm -f /etc/systemd/system/getty@tty1.service.d/autologin.conf
@@ -98,9 +99,8 @@ do_vbox(){
 # Detects if running in vbox
 local xx
 
-lspci | grep -i "virtualbox" >/dev/null
-if [[ $? == 0 ]]
-    then
+
+if lspci | grep -i "virtualbox" >/dev/null; then
         :      
     else
         for xx in virtualbox-guest-utils virtualbox-guest-modules-arch virtualbox-guest-dkms ; do
@@ -122,30 +122,30 @@ pacman -Rsc gnome-boxes --noconfirm
 }
 
 do_user_setup(){
-    cd /home/$NEW_USER
+    # shellcheck disable=SC2164
+    cd /home/"$NEW_USER"
     if [[ -d .config/awesome ]]; then
         rm -rf .config/awesome
     fi
 
     yay -Syu --noconfirm zsh
-    sudo chsh $NEW_USER -s /bin/zsh
+    sudo chsh "$NEW_USER" -s /bin/zsh
     curl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -o install.sh
     export RUNZSH=no
-    export ZSH=/home/$NEW_USER/.oh-my-zsh
-    rm -rf /home/$NEW_USER/.oh-my.zsh
+    export ZSH="/home/$NEW_USER/.oh-my-zsh"
+    rm -rf "/home/$NEW_USER/.oh-my.zsh"
     sh install.sh
     rm install.sh
-    rm /home/$NEW_USER/.zshrc /home/$NEW_USER/.vimrc /home/$NEW_USER/.profile
+    rm "/home/$NEW_USER/.zshrc" "/home/$NEW_USER/.vimrc" "/home/$NEW_USER/.profile"
 
-    ln .config/.zshrc /home/$NEW_USER/.zshrc
-    ln .config/.profile /home/$NEW_USER/.profile
-    ln .config/.vimrc /home/$NEW_USER/.vimrc
-    curl -fLo /home/$NEW_USER/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    git clone https://github.com/VundleVim/Vundle.vim.git /home/$NEW_USER/.vim/bundle/Vundle.vim
-    ln .config/.Xresources /home/$NEW_USER/.Xresources
-    mkdir -p /home/$NEW_USER/.icons/default
-    ln .config/index.theme /home/$NEW_USER/.icons/default/index.theme
-    git clone https://github.com/ODEX-TOS/zsh-load /home/$NEW_USER/.oh-my-zsh/load
+    ln .config/.zshrc "/home/$NEW_USER/.zshrc"
+    ln .config/.profile "/home/$NEW_USER/.profile"
+
+    ln .config/.Xresources "/home/$NEW_USER/.Xresources"
+    mkdir -p "/home/$NEW_USER/.icons/default"
+    ln .config/index.theme "/home/$NEW_USER/.icons/default/index.theme"
+    git clone https://github.com/ODEX-TOS/zsh-load "/home/$NEW_USER/.oh-my-zsh/load"
+    # shellcheck disable=SC2164
     cd /home/"$NEW_USER"
     rm -rf Pictures
     git clone https://github.com/ODEX-TOS/Pictures Pictures
@@ -155,22 +155,18 @@ do_user_setup(){
     git clone https://github.com/marlonrichert/fast-syntax-highlighting.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/fast-syntax-highlighting
 
     git clone https://github.com/zsh-users/zsh-completions.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-completions
-   git clone https://github.com/marlonrichert/zsh-autocomplete.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-autocomplete
+    git clone https://github.com/marlonrichert/zsh-autocomplete.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-autocomplete
 
     git clone https://github.com/denysdovhan/spaceship-prompt.git /home/"$NEW_USER"/.oh-my-zsh/custom/themes/spaceship-prompt
-    ln -s /home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme /home/"$NEW_USER"/.oh-my-zsh/custom/themes/spaceship.zsh-theme
+    ln -s "/home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme" /home/"$NEW_USER"/.oh-my-zsh/custom/themes/spaceship.zsh-theme
     curl https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos >  /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-completions/src/_tos
 
     if [[ "$(command -v startkde)" ]]; then
-        printf "xrdb ~/.Xresources\nexec startkde" >> /home/$NEW_USER/.xinitrc
+        printf "xrdb ~/.Xresources\nexec startkde" >> "/home/$NEW_USER/.xinitrc"
     else 
-        printf "xrdb ~/.Xresources\nexec i3" >> /home/$NEW_USER/.xinitrc
+        printf "xrdb ~/.Xresources\nexec i3" >> "/home/$NEW_USER/.xinitrc"
     fi
 
-    mkdir -p /home/$NEW_USER/.vim/colors
-    curl https://bitbucket.org/sjl/badwolf/raw/tip/colors/badwolf.vim > /home/$NEW_USER/.vim/colors/badwolf.vim
-    #installing vundle
-    git clone https://github.com/VundleVim/Vundle.vim.git /home/$NEW_USER/.vim/bundle/Vundle.vim
     sudo sh -c 'curl https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/toslive/version-edit.txt > /etc/version'
 
 
@@ -178,13 +174,14 @@ do_user_setup(){
     systemctl enable sshd
     systemctl enable tlp
 
-    chown -R $NEW_USER:users /home/$NEW_USER
+    mkdir -p "/home/$NEW_USER/"{Desktop,Documents,Videos}
+    chown -R "$NEW_USER:users" "/home/$NEW_USER"
 
     printf 'GRUB_THEME="/boot/grub/themes/tos/theme.txt"' >> /etc/default/grub
     # set the lightdm theme to the tos theme
     sed -i 's:#greeter-session=.*$:greeter-session=lightdm-webkit2-greeter:' /etc/lightdm/lightdm.conf
 
-    printf "on\ntime=1800\nfull=false\n/usr/share/backgrounds/tos/default.jpg" > /home/$NEW_USER/.config/tos/theme
+    printf "on\ntime=1800\nfull=false\n/usr/share/backgrounds/tos/default.jpg" > "/home/$NEW_USER/.config/tos/theme"
 
     # set tde as the default launcher for lightdm (only if it exists)
     if [[ "$(command -v tde)" ]]; then
@@ -201,22 +198,22 @@ do_user_setup(){
         sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /home/"$NEW_USER"/.config/compton.conf # enable blur after installation
         sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /home/"$NEW_USER"/.config/picom.conf # enable blur after installation
         fi
-        sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /etc/xdg/awesome/configuration/compton.conf # enable blur after installation
-        sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /etc/xdg/awesome/configuration/picom.conf # enable blur after installation
+        sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /etc/xdg/tde/configuration/compton.conf # enable blur after installation
+        sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /etc/xdg/tde/configuration/picom.conf # enable blur after installation
     fi
 }
 
 do_tos(){
 
-rm -rf /home/$NEW_USER/{.xinitrc,.xsession} 2>>/tmp/.errlog
-rm -rf /root/{.xinitrc,.xsession} 2>>/tmp/.errlog
-rm -rf /etc/skel/{.xinitrc,.xsession} 2>>/tmp/.errlog
-sed -i "/if/,/fi/"'s/^/#/' /home/$NEW_USER/.bash_profile
-sed -i "/if/,/fi/"'s/^/#/' /home/$NEW_USER/.zprofile
+rm -rf "/home/$NEW_USER/"{.xinitrc,.xsession} 2>/tmp/.errlog
+rm -rf /root/{.xinitrc,.xsession} 2>/tmp/.errlog
+rm -rf /etc/skel/{.xinitrc,.xsession} 2>/tmp/.errlog
+sed -i "/if/,/fi/"'s/^/#/' "/home/$NEW_USER/.bash_profile"
+sed -i "/if/,/fi/"'s/^/#/' "/home/$NEW_USER/.zprofile"
 sed -i "/if/,/fi/"'s/^/#/' /root/.bash_profile
 sed -i "/if/,/fi/"'s/^/#/' /root/.zprofile
 
-if [[ "/home/$NEW_USER/.config/awesome" ]]; then
+if [[ -d "/home/$NEW_USER/.config/awesome" ]]; then
     rm -rf "/home/$NEW_USER/.config/awesome"
 fi
 

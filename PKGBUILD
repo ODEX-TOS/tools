@@ -35,12 +35,6 @@ package() {
         install -Dm755 checkupdates-tos "$pkgdir"/usr/bin/checkupdates-tos
         install -Dm755 09-timezone.NM "$pkgdir"/etc/NetworkManager/dispatcher.d/09-timezone
 
-        # installer
-        mkdir -p "$pkgdir"/usr/share/tos-installer
-        mv installer tos-installer
-        for file in tos-installer/* ; do
-            install -Dm755 "$file" "$pkgdir"/usr/share/"$file"
-        done
 
         # tos-helper
         mkdir -p "$pkgdir"/usr/share/tos-helper

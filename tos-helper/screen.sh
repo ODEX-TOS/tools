@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# shellcheck disable=SC2059
+# shellcheck disable=SC2059,SC2154
 
 function help {
         subname="screen"
@@ -70,8 +70,8 @@ function screen-dpi {
     dpi=$(echo "$2" | cut -dx -f1 | awk '{print (100* 1/$0)}')
     DEFAULT_FONT_SIZE="16"
     CALCULATED_FONT_SIZE=$(printf "$DEFAULT_FONT_SIZE" | awk -v "value=$dpi" '{printf int(($0 / 100 ) * value)}')
-    sed -i 's:pixelsize=[0-9]*:pixelsize='$CALCULATED_FONT_SIZE':' ~/.Xresources
-    sed -i 's/Xft.dpi: .*$/Xft.dpi: '$dpi'/g' ~/.Xresources
+    sed -i 's:pixelsize=[0-9]*:pixelsize='"$CALCULATED_FONT_SIZE"':' ~/.Xresources
+    sed -i 's/Xft.dpi: .*$/Xft.dpi: '"$dpi"'/g' ~/.Xresources
     xrdb ~/.Xresources
     # TODO: figure out why xrandr scaling no longer works
     # xrandr --output "$1" --scale "$2"
@@ -82,7 +82,7 @@ function screen-dpi {
     if [[ ! -f "$themefile" ]]; then
         printf "off\ntime=1000\nbluetooth=false\nscale=$1 $2\n" >>"$themefile"
     else
-        sed -i 's:scale='$1'.*$:scale='$1' '$2':' "$HOME"/.config/tos/theme
+        sed -i 's:scale='"$1"'.*$:scale='"$1"' '"$2"':' "$HOME"/.config/tos/theme
     fi
 
 }
@@ -97,7 +97,7 @@ function add {
     height=$(printf "%s" "$res" | awk -Fx '{print $1}')
     width=$(printf "%s" "$res" | awk -Fx '{print $2}')
     modeline=$(gtf "$height" "$width" "$freq" | head -n3 | tail -n1 | sed 's;.*Modeline ;;' | awk '{print $1}' | sed 's;";;g')
-    xrandr --newmode "$modeline" $(gtf "$height" "$width" "$freq" | head -n3 |  tail -n1 | sed 's;.*Modeline ".*"  ;;')
+    xrandr --newmode "$modeline" "$(gtf "$height" "$width" "$freq" | head -n3 |  tail -n1 | sed 's;.*Modeline ".*"  ;;')"
     xrandr --addmode "$monitor" "$modeline"
     xrandr --output "$monitor" --mode "$modeline"
 }

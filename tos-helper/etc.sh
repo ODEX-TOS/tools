@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# shellcheck disable=SC2059
+# shellcheck disable=SC2059,SC2154
 
 function info {
 	status="${GREEN}healthy${NC}"
@@ -42,6 +42,7 @@ function info {
 	echo -e "\tVersion: \t\t\t $(tde-client "return awesome.version" | awk '{print $2}' | tr -d '"')"
 	echo -e "\tType: \t\t\t\t $(tde-client "return awesome.release" | awk '{print $2}' | tr -d '"')"
 	echo -e "\tRelease: \t\t\t $(tde-client "return require('release')" | awk '{print $2}' | tr -d '"')"
+	# shellcheck disable=SC2009,SC2046
 	echo -e "\tCPU usage: \t\t\t $(ps -aux | grep $(pgrep tde) | head -n1 | awk '{print $3"%"}')"
 	echo ""
 	echo -e "${ORANGE}TOS:${NC}"
@@ -53,12 +54,12 @@ function info {
 	if [[ -n "$unhealthy" ]]; then
 		echo ""
 		echo -e "$unhealthy"
-		/bin/cat ~/.cache/tde/error.log | tail -n20 | awk '{print "\tINFO: \t\t\t\t", $0}'
+		tail -n20 ~/.cache/tde/error.log  | awk '{print "\tINFO: \t\t\t\t", $0}'
 		echo ""
 		while IFS= read -r line
 		do
 			echo -e "\tUPDATES:\t\t\t $line"
-		done <<< "$(echo -e $updates | sed 's/---___---/\n/g')"
+		done <<< "$(echo -e "$updates" | sed 's/---___---/\n/g')"
 	fi
 }
 

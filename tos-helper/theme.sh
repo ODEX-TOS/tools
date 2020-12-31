@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# shellcheck disable=SC2059
+# shellcheck disable=SC2059,SC2154
 themefile="$HOME/.config/tos/theme"
 function help() {
   subname="theme"
@@ -62,7 +62,7 @@ function theme() {
 }
 
 function pywal() {
-  option="$(grep ^full=.* $themefile | cut -d= -f2)"
+  option="$(grep "^full=.*" "$themefile" | cut -d= -f2)"
   # if the option is not set or set to true then we perform a full style change
   if [[ "$option" == "" || "$option" == "true" ]]; then
     wal -i "$1"
@@ -92,6 +92,7 @@ function theme-add() {
   fi
   if [[ -d "$1" ]]; then
     # loop through all files recursivly
+    # shellcheck disable=SC2044
     for file in $(find "$1" -type f); do
       if [[ "$file" == *".jpg" || "$file" == *".jpeg" || "$file" == *".png" ]]; then
         readlink -f "$file" >>"$themefile"
@@ -140,6 +141,7 @@ function blue() {
 # setting the dpi of your screen through tos
 function dpi() {
         origIFS="$IFS"
+        # shellcheck disable=SC2141
         IFS="\n"
         #for screen in $(grep "scale=" "$HOME"/.config/tos/theme); do
         #    out=$(printf "$screen" | cut -d= -f2 | cut -d " " -f1)

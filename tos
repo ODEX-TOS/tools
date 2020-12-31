@@ -43,8 +43,6 @@ directory="/usr/share/"
 themefile="$HOME/.config/tos/theme"
 extended="$directory"tos-helper
 TUTORIAL_DIR="$directory"tos-tutorial
-export location="$directory"tos-installer
-export framework="$location"/framework.sh
 
 function installyay() {
   cd || exit 1
@@ -144,12 +142,6 @@ case "$1" in
     ;;
   "sh" | "shell")
     source "$extended"/shell.sh
-    ;;
-  "install" | "installer" | "i")
-    exec 3>&1
-    executable=$(dialog --title "TOS Installer" --backtitle "TOS" --menu "What do you want to install?" 0 0 0 $(/usr/bin/ls "$location"/*.sh | sed 's:^.*framework.sh$::' | xargs -n 1 basename | sed 's:.sh::' | awk '{print $0, "Install"}') 2>&1 1>&3)
-    exec 3>&-
-    source "$location"/"$executable".sh
     ;;
   "tutorial" | "tut")
     bash "$TUTORIAL_DIR/main.sh"

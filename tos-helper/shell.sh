@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# shellcheck disable=SC2059
+# shellcheck disable=SC2059,SC2154
 
 
 trap ctrl_c INT
@@ -60,9 +60,10 @@ function spinner()
 {
     local pid="$1"
     local delay=0.1
+    # shellcheck disable=SC1003
     local spinstr='|/-\'
     local loadtime=0
-    while [[ "$(ps a | awk '{print $1}' | grep $pid)" ]]; do
+    while ps a | awk '{print $1}' | grep -q "$pid"; do
         local temp=${spinstr#?}
         loadtime="$(awk -v loadtime="$loadtime" -v delay="$delay" 'BEGIN {print loadtime + delay; exit}')"
         printf " [%c]  %.0fs" "$spinstr" "$loadtime" 2>/dev/null
@@ -76,13 +77,16 @@ function spinner()
 function list() {
     if [[ -f "/var/cache/tos-shell/$USER.list" ]]; then
         num="0"
-        while read line; do
-            local num=$(( $num + 1 ))
-            SIZE="$(env $line sh -c 'sudo du -chs "$DIR" | tail -n1 | cut -f1')"
+        while read -r line; do
+            local num=$(( num + 1 ))
+            # shellcheck disable=SC2016
+            SIZE="$(env "$line" sh -c 'sudo du -chs "$DIR" | tail -n1 | cut -f1')"
             if echo "$line" | grep -q "MOUNT=0"; then
-                env $line SIZE="$SIZE" ID="$num" sh -c 'echo "ID: $ID -- Command: $RUN, Filesystem size: $SIZE"'
+                # shellcheck disable=SC2016
+                env "$line" SIZE="$SIZE" ID="$num" sh -c 'echo "ID: $ID -- Command: $RUN, Filesystem size: $SIZE"'
             else
-                env $line SIZE="$SIZE" ID="$num" sh -c 'echo "ID: $ID -- Command: $RUN, Mountpoint: $MOUNT -> /data, Filesystem size: $SIZE"'
+                # shellcheck disable=SC2016
+                env "$line" SIZE="$SIZE" ID="$num" sh -c 'echo "ID: $ID -- Command: $RUN, Mountpoint: $MOUNT -> /data, Filesystem size: $SIZE"'
             fi
         done <"/var/cache/tos-shell/$USER.list"
     fi
@@ -90,8 +94,9 @@ function list() {
 
 function clean() {
     if [[ -f "/var/cache/tos-shell/$USER.list" ]]; then
-        while read line; do
-            env $line sudo sh -c 'rm -rf "$DIR"'
+        while read -r line; do
+            # shellcheck disable=SC2016
+            env "$line" sudo sh -c 'rm -rf "$DIR"'
         done <"/var/cache/tos-shell/$USER.list"
         sudo rm "/var/cache/tos-shell/$USER.list"
         sudo touch "/var/cache/tos-shell/$USER.list"
@@ -101,10 +106,12 @@ function clean() {
 function remove() {
     if [[ -f "/var/cache/tos-shell/$USER.list" ]]; then
         local num="0"
-        while read line; do
-            num=$(( $num + 1 ))
+        # shellcheck disable=SC2094
+        while read -r line; do
+            num=$(( num + 1 ))
             if [[ "$num" == "$1" ]]; then
-                env $line sudo sh -c 'rm -rf "$DIR"'
+                # shellcheck disable=SC2016
+                env "$line" sudo sh -c 'rm -rf "$DIR"'
                 # remove line
                 awk -v num="$num" '!(num == NR){print $0}' "/var/cache/tos-shell/$USER.list" > temp && sudo mv temp "/var/cache/tos-shell/$USER.list"
                 break
@@ -127,14 +134,14 @@ function arg_parse(){
             clean
             exit 0
         ;;
-        "run"|"r")
+        "run"|"ru")
             echo "Running: $3"
             RUNSAVED="$3"
-            if [[ "$3" -gt "$(wc -l /var/cache/tos-shell/$USER.list | awk '{print $1}')" || "$3" -lt "1" ]]; then
+            if [[ "$3" -gt "$(wc -l /var/cache/tos-shell/"$USER".list | awk '{print $1}')" || "$3" -lt "1" ]]; then
                 echo "Invalid id"
                 exit 1
             fi
-            export $(env -i $(awk "NR==$3{print}" "/var/cache/tos-shell/$USER.list"))
+            export "$(env -i "$(awk "NR==$3{print}" "/var/cache/tos-shell/$USER.list")")"
             # remove all $ options
             while true; do
                 case "$2" in
@@ -209,7 +216,7 @@ function validate_command() {
 }
 
 function generate_env() {
-    DIR=$(mktemp -d -p $HOME/.cache)
+    DIR="$(mktemp -d -p "$HOME/.cache")"
 
     echo "Preparing isolated environment"
 
@@ -275,6 +282,7 @@ function cleanup() {
 }
 
 function main() {
+    # shellcheck disable=SC2068
     arg_parse $@
     validate_user
     validate_command
@@ -294,4 +302,5 @@ function ctrl_c() {
         exit 0
 }
 
+# shellcheck disable=SC2068
 main $@
