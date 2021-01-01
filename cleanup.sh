@@ -192,14 +192,23 @@ do_user_setup(){
         if [[ -f "/home/$NEW_USER/.config/awesome" ]]; then
             sed -i 's:backend = "xrender";::' /home/"$NEW_USER"/.config/awesome/configuration/compton.conf
         fi
-        if [[ -f "/home/$NEW_USER/.config/compton.conf" ]]; then
-            sed -i 's:backend = "xrender";::' /home/"$NEW_USER"/.config/compton.conf
-            sed -i 's:backend="xrender";::' /home/"$NEW_USER"/.config/compton.conf
-        sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /home/"$NEW_USER"/.config/compton.conf # enable blur after installation
-        sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /home/"$NEW_USER"/.config/picom.conf # enable blur after installation
+
+        # TODO: detect if the system has glx support instead of hardcoding virtualbox
+        # This is also no solution for qemu, old hardware or any other virtualizing system
+        # We should find a way in the iso to detect if the hardware supports the picom glx backend
+        if lspci | grep -i "virtualbox" >/dev/null; then
+            echo "Detected that we are in virtualbox, not using blur"
+            sed -i 's:vsync = true;::' /etc/xdg/tde/configuration/compton.conf
+            sed -i 's:vsync = true;::' /etc/xdg/tde/configuration/picom.conf
+        else
+            sed -i 's:backend = "xrender";::' /etc/xdg/tde/configuration/compton.conf
+            sed -i 's:backend="xrender";::' /etc/xdg/tde/configuration/picom.conf
+            sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /etc/xdg/tde/configuration/compton.conf # enable blur after installation
+            sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /etc/xdg/tde/configuration/picom.conf # enable blur after installation
         fi
-        sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /etc/xdg/tde/configuration/compton.conf # enable blur after installation
-        sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /etc/xdg/tde/configuration/picom.conf # enable blur after installation
+        
+        cp /etc/xdg/tde/configuration/picom.conf /home/"$NEW_USER"/.config/picom.conf
+        cp /etc/xdg/tde/configuration/compton.conf /home/"$NEW_USER"/.config/compton.conf
     fi
 }
 
