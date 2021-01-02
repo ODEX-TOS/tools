@@ -44,15 +44,6 @@ themefile="$HOME/.config/tos/theme"
 extended="$directory"tos-helper
 TUTORIAL_DIR="$directory"tos-tutorial
 
-function installyay() {
-  cd || exit 1
-  git clone https://aur.archlinux.org/yay.git
-  cd yay || exit 1
-  makepkg -si
-  cd || exit 1
-  rm -rf yay
-}
-
 case "$1" in
   "c" | "calamares")
     calamares
@@ -79,9 +70,6 @@ case "$1" in
 		exit 1
     tos-cli-installer
     ;;
-  "-u" | "--update")
-    source "$extended"/update.sh
-    ;;
   "-m" | "--mount")
     cryptsetup open "$2"3 "$3"
     mount /dev/mapper/tos-root /mnt
@@ -96,9 +84,6 @@ case "$1" in
     ;;
   "-S"* | "-R"* | "-Q"*)
     if [ "$(id -u)" != "0" ]; then
-      if [[ ! $(command -v yay) ]]; then
-        installyay
-      fi
       yay "${@:1}"
     else
       printf "${RED}Package management as root is very dangerous$NC\n"
@@ -124,9 +109,6 @@ case "$1" in
     ;;
   "n" | "network")
     source "$extended"/network.sh
-    ;;
-  "-rs" | "--repair-system")
-    source "$extended"/update.sh
     ;;
   "t" | "theme")
     source "$extended"/theme.sh
