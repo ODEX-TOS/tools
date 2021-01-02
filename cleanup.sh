@@ -193,16 +193,13 @@ do_user_setup(){
             sed -i 's:backend = "xrender";::' /home/"$NEW_USER"/.config/awesome/configuration/compton.conf
         fi
 
-        # TODO: detect if the system has glx support instead of hardcoding virtualbox
-        # This is also no solution for qemu, old hardware or any other virtualizing system
-        # We should find a way in the iso to detect if the hardware supports the picom glx backend
-        if lspci | grep -i "virtualbox" >/dev/null; then
-            echo "Detected that we are in virtualbox, not using blur"
+        if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -iqE "(paravirtual|QEMU|QXL|virtualbox)"; then
+            echo "Detected that we are in a virtualized environment, not using blur"
             sed -i 's:vsync = true;::' /etc/xdg/tde/configuration/compton.conf
             sed -i 's:vsync = true;::' /etc/xdg/tde/configuration/picom.conf
         else
             sed -i 's:backend = "xrender";::' /etc/xdg/tde/configuration/compton.conf
-            sed -i 's:backend="xrender";::' /etc/xdg/tde/configuration/picom.conf
+            sed -i 's:backend = "xrender";:backend = "glx";:' /etc/xdg/tde/configuration/picom.conf
             sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /etc/xdg/tde/configuration/compton.conf # enable blur after installation
             sed -i -e "s/blur-background-frame = false/blur-background-frame = true/g" /etc/xdg/tde/configuration/picom.conf # enable blur after installation
         fi
