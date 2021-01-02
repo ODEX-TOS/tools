@@ -59,7 +59,7 @@ function screen-reload {
       nohup ~/bin/keepalive.sh &> /dev/null &
     fi
     if pgrep tde; then
-     echo 'awesome.restart()' | tde-client
+     tde-client "require('lib-tde.signals').emit_refresh_screen()"
     fi
     if which autorandr &>/dev/null ; then
         autorandr --save tde --force

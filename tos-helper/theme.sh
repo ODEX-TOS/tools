@@ -150,7 +150,7 @@ function dpi() {
         #done 
         IFS=$origIFS
         if pgrep tde; then
-            echo 'tde.restart()' | tde-client
+            tde-client "require('lib-tde.signals').emit_refresh_screen()"
         fi
 
         if pgrep i3; then
