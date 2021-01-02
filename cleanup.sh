@@ -212,30 +212,77 @@ do_user_setup(){
     fi
 }
 
-do_tos(){
 
-rm -rf "/home/$NEW_USER/"{.xinitrc,.xsession} 2>/tmp/.errlog
-rm -rf /root/{.xinitrc,.xsession} 2>/tmp/.errlog
-rm -rf /etc/skel/{.xinitrc,.xsession} 2>/tmp/.errlog
-sed -i "/if/,/fi/"'s/^/#/' "/home/$NEW_USER/.bash_profile"
-sed -i "/if/,/fi/"'s/^/#/' "/home/$NEW_USER/.zprofile"
-sed -i "/if/,/fi/"'s/^/#/' /root/.bash_profile
-sed -i "/if/,/fi/"'s/^/#/' /root/.zprofile
+# This funciton sets up your NVIDIA gpu driver, including extra features such as hardware encoding/decoding
+# vulkan support (if applicable), 32bit support and more
+do_amd_driver(){
+    # install video driver, mesa, 32bit support and hardware encoding/decoding
+    pacman -Syu xf86-video-amdgpu mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-libva-mesa-driver
 
-if [[ -d "/home/$NEW_USER/.config/awesome" ]]; then
-    rm -rf "/home/$NEW_USER/.config/awesome"
-fi
-
-do_user_setup
-
-do_display_manager
-
-do_check_internet_connection && {
-    #do_config_for_app update-mirrorlist
-    do_config_for_app kalu
+    # TODO: implement AMD Dynamic Switchable Graphics for laptops
 }
 
-chmod 750 /root
+# This funciton sets up your NVIDIA gpu driver, including extra features such as hardware encoding/decoding
+# vulkan support (if applicable), 32bit support and more
+do_intel_driver(){
+    pacman -Syu mesa lib32-mesa vulkan-intel
+}
+
+# This funciton sets up your NVIDIA gpu driver, including extra features such as hardware encoding/decoding
+# vulkan support (if applicable), 32bit support and more
+do_nvidia_driver(){
+    # install the nvidia driver, 32bit support and
+    pacman -Syu nvidia-dkms lib32-nvidia-utils
+
+    # TODO: implement NVIDIA Optimus for laptops
+}
+
+# This function detects the driver of your system and sets it up
+do_gpu_driver(){
+    if [[ ! "$(command -v lspci)" ]]; then
+        pacman -Syu pciutils
+    fi
+
+    if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -iq "AMD"; then
+        do_amd_driver
+    fi
+
+    if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -iq "INTEL"; then
+        do_intel_driver
+    fi
+
+    if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -iq "NVIDIA"; then
+        do_nvidia_driver
+    fi
+
+}
+
+do_tos(){
+
+    rm -rf "/home/$NEW_USER/"{.xinitrc,.xsession} 2>/tmp/.errlog
+    rm -rf /root/{.xinitrc,.xsession} 2>/tmp/.errlog
+    rm -rf /etc/skel/{.xinitrc,.xsession} 2>/tmp/.errlog
+    sed -i "/if/,/fi/"'s/^/#/' "/home/$NEW_USER/.bash_profile"
+    sed -i "/if/,/fi/"'s/^/#/' "/home/$NEW_USER/.zprofile"
+    sed -i "/if/,/fi/"'s/^/#/' /root/.bash_profile
+    sed -i "/if/,/fi/"'s/^/#/' /root/.zprofile
+
+    if [[ -d "/home/$NEW_USER/.config/awesome" ]]; then
+        rm -rf "/home/$NEW_USER/.config/awesome"
+    fi
+
+    do_user_setup
+
+    do_display_manager
+
+    do_check_internet_connection && {
+        #do_config_for_app update-mirrorlist
+        do_config_for_app kalu
+    }
+
+    chmod 750 /root
+
+    do_gpu_driver
 }
 
 
