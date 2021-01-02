@@ -52,22 +52,12 @@ function active() {
 }
 
 function theme() {
-  if [[ ! "$(command -v wal)" ]]; then
-    yay -Syu python-pywal
-  fi
-  pywal "$1"
   if [[ "$(command -v feh)" ]]; then
     setBackgound "$1"
   fi
 }
 
-function pywal() {
-  option="$(grep "^full=.*" "$themefile" | cut -d= -f2)"
-  # if the option is not set or set to true then we perform a full style change
-  if [[ "$option" == "" || "$option" == "true" ]]; then
-    wal -i "$1"
-  fi
-}
+
 
 function theme-check() {
   if [[ ! -f "$themefile" ]]; then
@@ -77,13 +67,6 @@ function theme-check() {
   else
     sed -i -r '/^\s*$/d' "$themefile"
   fi
-  # TODO: change this into a cronjob or real daemon
-  # TODO: current check to see if a daemon exists always returns true
-  #process=$(ps -aux)
-  #if [[ "$(echo "$process" | grep 'tos theme daemon')" != *'tos theme daemon'* ]]; then
-  #  echo "No daemon found. Launching a new instance"
-  #  nohup tos theme daemon &>/dev/null &# launch theme daemon when it isn't running
-  #fi
 }
 
 function theme-add() {
