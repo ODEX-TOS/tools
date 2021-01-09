@@ -53,7 +53,7 @@ case "$1" in
       printf "${RED}Please supply an image as input $NC\n"
       exit 1
     fi
-    convert "$2" -resize 200x200 "$HOME/.face.jpg"
+    convert "$2" -resize 200x200\! "$HOME/.face.jpg"
     mv "$HOME/.face.jpg" "$HOME/.face"
     ;;
   "is" | "installer-server")
