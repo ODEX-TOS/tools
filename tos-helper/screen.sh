@@ -58,10 +58,6 @@ function screen-reload {
        killall polybar waybar # should restart with the keepalive script
       nohup ~/bin/keepalive.sh &> /dev/null &
     fi
-    if pgrep tde; then
-     sleep 0.5
-     tde-client "require('lib-tde.signals').emit_refresh_screen()"
-    fi
     if which autorandr &>/dev/null ; then
         autorandr --save tde --force
     fi
