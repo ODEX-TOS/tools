@@ -26,31 +26,41 @@
 
 function help {
         subname="gpg"
-        printf "${ORANGE} $name $subname ${NC}OPTIONS: info | key | export | import | upload | generate | git | help\n\n" 
+        printf "${ORANGE} $name $subname ${NC}OPTIONS: info | key | public | export | import | upload | generate | git | help\n\n" 
         printf "${ORANGE}USAGE:${NC}\n"
-        printf "$name $subname help \t\t\t\t Show this help message\n"
-        printf "$name $subname info \t\t\t\t Get gpg information\n"
-        printf "$name $subname key \t\t\t\t Get all key id's\n"
-        printf "$name $subname export <key> \t\t\t Export your gpg key\n"
-        printf "$name $subname import <file> \t\t\t Import your gpg key from a file\n"
-        printf "$name $subname upload <key> <?server> \t\t Upload your key to a keyserver optionally add a server address\n"
+        printf "$name $subname help \t\t\t Show this help message\n"
+        printf "$name $subname info \t\t\t Get gpg information\n"
+        printf "$name $subname key \t\t\t Get all key id's\n"
+        printf "$name $subname public <key> <?file>\t Export your public gpg key in plain text, optionally save it to a file\n"
+        printf "$name $subname export <key> <?file>\t Export your private gpg key, optionally save it to a file\n"
+        printf "$name $subname import <file> \t\t Import your gpg key from a file\n"
+        printf "$name $subname upload <key> <?server> \t Upload your key to a keyserver, optionally add a server address\n"
         printf "$name $subname generate \t\t\t Generate a gpg key\n"
-        printf "$name $subname git \t\t\t\t Setup your git with gpg\n"
+        printf "$name $subname git <key>\t\t\t Setup your git with a given gpg key\n"
 }
 
 
 case "$2" in
     "in"|"info")
-            gpg --list-secret-keys --keyid-format LONG
+        gpg --list-secret-keys --keyid-format LONG
     ;;
     "k"|"key")
-            gpg --list-secret-keys --keyid-format LONG | grep -E '^sec' | awk '{print $2}' | cut -d/ -f2
+        gpg --list-secret-keys --keyid-format LONG | grep -E '^sec' | awk '{print $2}' | cut -d/ -f2
+    ;;
+    "p"|"public")
+        if [[ "$4" != "" ]]; then
+            # we use tee here because the public key is plain text
+            gpg --armor --export "$3" | tee "$4"
+        else
+            gpg --armor --export "$3"
+        fi
     ;;
     "e"|"export")
         if [[ "$4" != "" ]]; then
-                gpg --export-secret-keys "$3" > "$4"
+            #
+            gpg --export-secret-keys "$3" > "$4"
         else
-                gpg --export-secret-keys "$3"
+            gpg --export-secret-keys "$3"
         fi
     ;;
     "i"|"import")
@@ -64,12 +74,12 @@ case "$2" in
         fi
     ;;
     "ge"|"generate")
-            gpg --full-generate-key
+        gpg --full-generate-key
     ;;
     "gi"|"git")
-            git config --global user.signingkey "$3"
-            mail=$(gpg --list-secret-keys --keyid-format LONG "$3" | grep -E '^uid' | awk -F\< '{print $2}' | tr '>' ' ')
-            git config --global user.email "$mail"
+        git config --global user.signingkey "$3"
+        mail=$(gpg --list-secret-keys --keyid-format LONG "$3" | grep -E '^uid' | awk -F\< '{print $2}' | tr '>' ' ')
+        git config --global user.email "$mail"
     ;;
     "-h"|"--help"|"help"|"h"|"")
         help

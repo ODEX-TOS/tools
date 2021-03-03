@@ -25,9 +25,10 @@
 # shellcheck disable=SC2059,SC2154
 
 function help() {
-  printf "$ORANGE $name ${NC}OPTIONS: bluetooth|info|network|screen|theme|volume -c -h -rs -u -Q -R- -S -iso\n\n" "$ORANGE" "$name" "$NC"
+  printf "$ORANGE $name ${NC}OPTIONS: bluetooth|gpg|info|network|screen|theme|volume -c -h -rs -u -Q -R- -S -iso\n\n" "$ORANGE" "$name" "$NC"
   printf "${ORANGE}USAGE:$NC\n"
   printf "$name bluetooth \t\t\t Control all bluetooth settings \n"
+  printf "$name gpg \t\t\t Configuration for your gpg/pgp keys\n"
   printf "$name info \t\t\t Print information about your system/environment\n"
   printf "$name network \t\t\t Control all network related settings\n"
   printf "$name screen \t\t\t Control all screen related settings\n"
