@@ -31,7 +31,7 @@ function info {
 		unhealthy="${RED}HEALTH STATUS:${NC}"
 	fi
 	updates="$(checkupdates-tos | sed ':a;N;$!ba;s/\n/---___---/g')"
-	if [[ "$(echo -e "$updates" | wc -l)" -gt "0" ]]; then
+	if [[ "$(echo -e "$updates" | wc -l)" -gt "1" ]]; then
 		status="${RED}unhealthy${NC}"
 		unhealthy="${RED}HEALTH STATUS:${NC}"
 	fi
