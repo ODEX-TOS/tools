@@ -325,7 +325,7 @@ menuentry "TOS GNU/Linux Rescue system" {
 EOF
 
 # install the new version of the grub config
-grub-mkconfig /boot/grub/grub.cfg
+grub-mkconfig -o /boot/grub/grub.cfg
 
 }
 
