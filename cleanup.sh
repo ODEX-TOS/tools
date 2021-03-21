@@ -282,6 +282,53 @@ do_tos(){
     do_gpu_driver
 }
 
+# this generates the rescue image and adds it to grub
+do_rescue() {
+    # first try to detect the iso mountpoint (this is done by searching for mounted iso's with a TOS label)
+    # There should only be one (unless a recovery partition already exists, then this might be the recovery partition, in that case we shouldn't continue
+    local iso_mount
+    iso_mount="$(blkid | grep 'TYPE="iso9660"' | grep -E 'LABEL="TOS_[0-9]+"' | tail -n1 | awk -F: '{print $1}')"
+    
+    # now we try to detect the rescue partition
+    local rescue_partition_UUID
+    rescue_partition_UUID="$(grep "/rescue" /etc/fstab | grep -o 'UUID=[0-9a-zA-Z-]*' | cut -d"=" -f2)"
+
+
+    # if non of those exist then abort
+    if [[ "$rescue_partition_UUID" == "" || "$iso_mount" == "" ]]; then
+        return
+    # in the case that we 'think' that the iso_mount is the rescue_partition (then we abort since there is already a recovery partition)
+    elif [[ "$rescue_partition_UUID" == "$iso_mount" ]]; then
+        return
+    fi
+    # now we can dd the iso to our rescue image
+    dd status=progress if="$iso_mount" of="/rescue/rescue.iso" bs=10M
+
+    local CMD_LINE
+    CMD_LINE="$(cat /proc/cmdline)"
+
+    # lastly we add the menuentry to grub
+    cat <<EOF >> /etc/grub.d/40_custom
+
+menuentry "TOS GNU/Linux Rescue system" {
+    load_video
+    insmod gzio
+    insmod part_gpt
+    insmod ext2
+    search --no-floppy --fs-uuid --set=root $rescue_partition_UUID
+    loopback loop /rescue.iso
+    linux (loop)/tos/boot/x86_64/vmlinuz-linux-tos iso-scan/filename=/rescue.iso noprompt noeject tos.rescue=1 $CMD_LINE
+    echo 'Loading initial ramdisk ...' 
+    initrd (loop)/tos/boot/intel-ucode.img (loop)/tos/boot/amd-ucode.img (loop)/tos/boot/x86_64/initramfs-linux-tos.img
+}
+
+EOF
+
+# install the new version of the grub config
+grub-mkconfig /boot/grub/grub.cfg
+
+}
+
 
 
 ########################################
@@ -291,6 +338,7 @@ do_tos(){
 do_common_systemd
 do_clean_archiso
 do_tos
+do_rescue
 rm -rf /usr/bin/installer
 rm -rf /usr/bin/cleaner_script.sh
 
