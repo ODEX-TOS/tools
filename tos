@@ -83,7 +83,7 @@ SystemAccount=false
     arch-chroot /mnt
 
     ;;
-  "-S"* | "-R"* | "-Q"*)
+  "-S"* | "-R"* | "-Q"*|"-U"*)
     if [ "$(id -u)" != "0" ]; then
       yay "${@:1}"
     else

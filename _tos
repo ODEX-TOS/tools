@@ -6,6 +6,7 @@ _tos_subcommands() {
     '-S:Install a package'
     '-R:Remove a package'
     '-Q:Query package database'
+    '-U:Update a package'
     {-h,--help}":Show help imformation" \
     {-p,--profile}":Set your profile picture" \
     {c,calamares}":Install TOS using a normal installer" \
