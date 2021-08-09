@@ -23,17 +23,50 @@
 # SOFTWARE.
 file="$1"
 
+CONF_DIR="$HOME/.cache/tde/"
+CONF="$CONF_DIR/open.conf"
+
+[[ ! -f "$CONF" ]] && { mkdir -p "$CONF_DIR" ; touch "$CONF" ; }
+
+# read out the config
+source "$CONF"
+
+# FILES_AS_DIR=1 means the --files-as-dir option is enabled
+
+
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+  echo "$0 --help | Print this help message"
+  echo "$0 --files-as-dir | treath files as directories on the next invocation"
+  echo "$0 --reset | treath files and directories differently on the next invocation"
+  exit 0
+fi
+
+if [[ "$1" == "--files-as-dir" ]]; then
+  echo "FILES_AS_DIR=1" > "$CONF"
+  exit 0
+fi
+
+if [[ "$1" == "--reset" ]]; then
+  echo "FILES_AS_DIR=0" > "$CONF"
+  exit 0
+fi
+
+function open_in_code() {
+  # If the insiders version is installed open that one.
+  # Otherwise open in normal vscode
+  if [[ "$(command -v code-insiders)" ]]; then
+    code-insiders "$file" &> /dev/null & exit 0
+  elif [[ "$(command -v code)" ]]; then
+    code "$file" &> /dev/null & exit 0
+  fi
+}
+
+
 ext=$(echo "$file" | awk -F. '{print $NF}')
 
 #if the input is the current directory open it in vs code
 if [[ "$file" == "." || -d "$file" ]]; then
-    # If the insiders version is installed open that one.
-    # Otherwise open in normal vscode
-    if [[ "$(command -v code-insiders)" ]]; then
-      code-insiders "$file" &> /dev/null & exit 0
-    elif [[ "$(command -v code)" ]]; then
-      code "$file" &> /dev/null & exit 0
-    fi
+    open_in_code
 fi
 
 # Open uri's with xdg-open
@@ -48,5 +81,8 @@ case "$ext" in
     pka) packettracer "$file" &>/dev/null & exit 0;;
 esac
 
-
-exec /usr/bin/xdg-open "$file"
+if [[ "$FILES_AS_DIR" == "1" ]]; then
+  open_in_code
+else
+  exec /usr/bin/xdg-open "$file"
+fi
