@@ -57,13 +57,13 @@ case "$1" in
     mv "$HOME/.face.png" "$HOME/.face"
 
     # now create the 'face' in account services
-    sudo cp "$HOME/.face" "/var/lib/AccountsService/icons/$USER"
+    pkexec bash -c 'cp "'"$HOME"'/.face" "/var/lib/AccountsService/icons/'"$USER"'"
     echo "[User]
 Session=tde
 XSession=tde
-Icon=/var/lib/AccountsService/icons/$USER
+Icon=/var/lib/AccountsService/icons/'"$USER"'
 SystemAccount=false
-" | sudo tee "/var/lib/AccountsService/users/$USER" 1>/dev/null
+" | tee "/var/lib/AccountsService/users/'"$USER"'" 1>/dev/null'
     ;;
   "is" | "installer-server")
     printf "${RED} This installer is outdated and no longer works${NC}\n"
