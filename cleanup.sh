@@ -100,6 +100,8 @@ do_user_setup(){
     cd /home/"$NEW_USER"
     rm -rf Pictures
     git clone https://github.com/ODEX-TOS/Pictures Pictures
+    
+    rm -rf Pictures/{.git,.gitignore,.github}
 
     git clone https://github.com/zsh-users/zsh-autosuggestions /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 
