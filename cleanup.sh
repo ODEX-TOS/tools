@@ -46,6 +46,38 @@ sed -i 's/volatile/auto/g' /etc/systemd/journald.conf 2>>/tmp/.errlog
 
 }
 
+do_logind_suspend_state() {
+    # hibernate is enabled on the system
+    if grep -q "resume=UUID" /etc/default/grub ; then
+    cat <<EOF | tee /etc/systemd/logind.conf.d/hibernate.conf
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[Login]
+HandleSuspendKey=suspend
+HandleHibernateKey=hibernate
+HandleLidSwitch=suspend-then-hibernate
+
+EOF
+    else
+        cat <<EOF | tee /etc/systemd/logind.conf.d/lock.conf
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[Login]
+HandleSuspendKey=ignore
+HandleHibernateKey=ignore
+HandleLidSwitch=lock
+
+EOF
+    fi
+    
+    # make sure that the systemd logind doesn't block lid events (This is only used in the live iso)
+    if [[ -f "/etc/systemd/logind.conf.d/do-not-suspend.conf" ]]; then
+        rm "/etc/systemd/logind.conf.d/do-not-suspend.conf"
+    fi
+}
+
 do_clean_archiso(){
 
 rm -f /etc/sudoers.d/g_wheel 2>/tmp/.errlog
@@ -114,12 +146,6 @@ do_user_setup(){
     ln -s "/home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme" /home/"$NEW_USER"/.oh-my-zsh/custom/themes/spaceship.zsh-theme
     curl https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos >  /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-completions/src/_tos
 
-    if [[ "$(command -v startkde)" ]]; then
-        printf "xrdb ~/.Xresources\nexec startkde" >> "/home/$NEW_USER/.xinitrc"
-    else 
-        printf "xrdb ~/.Xresources\nexec i3" >> "/home/$NEW_USER/.xinitrc"
-    fi
-
     sudo sh -c 'curl https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/toslive/version-edit.txt > /etc/version'
 
 
@@ -158,7 +184,6 @@ do_user_setup(){
         fi
         
         cp /etc/xdg/tde/configuration/picom.conf /home/"$NEW_USER"/.config/picom.conf
-        cp /etc/xdg/tde/configuration/compton.conf /home/"$NEW_USER"/.config/compton.conf
     fi
 }
 
@@ -294,6 +319,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 ########################################
 
 do_common_systemd
+do_logind_suspend_state
 do_clean_archiso
 do_tos
 do_rescue
