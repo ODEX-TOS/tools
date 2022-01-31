@@ -289,7 +289,23 @@ do_rescue() {
     dd status=progress if="$iso_mount" of="/rescue/rescue.iso" bs=10M
 
     local CMD_LINE
-    CMD_LINE="$(cat /proc/cmdline)"
+    # we want to find all the parameters in the kernel command line for tos.*=
+    # e.g. tos.key,tos/loadkeys, ...
+    CMD_LINE="$(grep -Eo 'tos.\S+=\S+' /proc/cmdline | tr '\n' ' ')"
+
+    # we also want cow_spacesize
+    CMD_LINE="$CMD_LINE $(grep -Eo 'cow_spacesize=\S+' /proc/cmdline | tr '\n' ' ')"
+
+    # nvidia
+    CMD_LINE="$CMD_LINE $(grep -Eo 'nvidia\S*=\S+' /proc/cmdline | tr '\n' ' ')"
+
+    # nomodeset
+    CMD_LINE="$CMD_LINE $(grep -Eo 'nomodeset\S*=\S+' /proc/cmdline | tr '\n' ' ')"
+
+    # virtual terminal settings
+    CMD_LINE="$CMD_LINE $(grep -Eo 'vt.\S+=\S+' /proc/cmdline | tr '\n' ' ')"
+
+
 
     # lastly we add the menuentry to grub
     cat <<EOF >> /etc/grub.d/40_custom
@@ -301,7 +317,7 @@ menuentry "TOS GNU/Linux Rescue system" {
     insmod ext2
     search --no-floppy --fs-uuid --set=root $rescue_partition_UUID
     loopback loop /rescue.iso
-    linux (loop)/tos/boot/x86_64/vmlinuz-linux-tos iso-scan/filename=/rescue.iso noprompt noeject tos.rescue=1 $CMD_LINE
+    linux (loop)/tos/boot/x86_64/vmlinuz-linux-tos $CMD_LINE tos.rescue=1 img_dev=/dev/disk/by-uuid/$rescue_partition_UUID img_loop=/rescue.iso
     echo 'Loading initial ramdisk ...' 
     initrd (loop)/tos/boot/intel-ucode.img (loop)/tos/boot/amd-ucode.img (loop)/tos/boot/x86_64/initramfs-linux-tos.img
 }
