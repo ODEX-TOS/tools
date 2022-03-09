@@ -112,40 +112,21 @@ do_user_setup(){
         rm -rf .config/awesome
     fi
 
-    yay -Syu --noconfirm zsh
-    sudo chsh "$NEW_USER" -s /bin/zsh
-    curl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -o install.sh
-    export RUNZSH=no
-    export ZSH="/home/$NEW_USER/.oh-my-zsh"
-    rm -rf "/home/$NEW_USER/.oh-my-zsh"
-    sh install.sh
-    rm install.sh
-    rm "/home/$NEW_USER/.zshrc" "/home/$NEW_USER/.vimrc" "/home/$NEW_USER/.profile"
+    yay -Syu --noconfirm fish fisher
+    sudo chsh "$NEW_USER" -s /bin/fish
 
-    ln .config/.zshrc "/home/$NEW_USER/.zshrc"
     ln .config/.profile "/home/$NEW_USER/.profile"
 
     ln .config/.Xresources "/home/$NEW_USER/.Xresources"
     mkdir -p "/home/$NEW_USER/.icons/default"
     ln .config/index.theme "/home/$NEW_USER/.icons/default/index.theme"
-    git clone https://github.com/ODEX-TOS/zsh-load "/home/$NEW_USER/.oh-my-zsh/load"
+
     # shellcheck disable=SC2164
     cd /home/"$NEW_USER"
     rm -rf Pictures
     git clone https://github.com/ODEX-TOS/Pictures Pictures
     
     rm -rf Pictures/{.git,.gitignore,.github}
-
-    git clone https://github.com/zsh-users/zsh-autosuggestions /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-
-    git clone https://github.com/marlonrichert/fast-syntax-highlighting.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/fast-syntax-highlighting
-
-    git clone https://github.com/zsh-users/zsh-completions.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-completions
-    git clone https://github.com/marlonrichert/zsh-autocomplete.git /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-autocomplete
-
-    git clone https://github.com/denysdovhan/spaceship-prompt.git /home/"$NEW_USER"/.oh-my-zsh/custom/themes/spaceship-prompt
-    ln -s "/home/$NEW_USER/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme" /home/"$NEW_USER"/.oh-my-zsh/custom/themes/spaceship.zsh-theme
-    curl https://raw.githubusercontent.com/ODEX-TOS/tools/master/_tos >  /home/"$NEW_USER"/.oh-my-zsh/custom/plugins/zsh-completions/src/_tos
 
     sudo sh -c 'curl https://raw.githubusercontent.com/ODEX-TOS/tos-live/master/toslive/version-edit.txt > /etc/version'
 
