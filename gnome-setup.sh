@@ -16,7 +16,7 @@ gnome-extensions enable netspeed@alynx.one
 gnome-extensions enable ubuntu-dock@ubuntu.com
 
 # gnome-shell-extension-desktop-icons-ng
-gnome-extensions enable ding@rastersoft.com
+#gnome-extensions enable ding@rastersoft.com
 
 # TODO: COnfigure keybindings and settings of the extentions
 # settings options are stored in org.gnome.shell.extensions.*
