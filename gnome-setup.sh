@@ -65,7 +65,11 @@ gsettings set org.gnome.shell.extensions.clipboard-indicator toggle-menu "['<Sup
 for i in {1..9}; do
 	gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-"$i" "['<Super><Shift>$i']"
 	gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-"$i" "['<Super>$i']"
+	gsettings set org.gnome.shell.keybindings switch-to-application-"$i" "[]"
 done
+
+gsettings set org.gnome.mutter.keybindings toggle-tiled-left "['<Alt><Super>Left']"
+gsettings set org.gnome.mutter.keybindings toggle-tiled-right "['<Alt><Super>Right']"
 
 # Open search
 gsettings set org.gnome.settings-daemon.plugins.media-keys search "['<Super>d']"
