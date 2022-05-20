@@ -73,21 +73,26 @@ case "$1" in
     ;;
     "-t"|"--true-color")
 		seconds=${2:-1}
+		refresh_time="0.5"
+		refresh_time_inverted="2"
+
     	cols=$(tput cols)
     	rows=$(tput lines)
    
-    	for x in $(seq 1 "$seconds"); do
-        	clear
-         	b=$(( 255 - $(( x * 255 / seconds )) ))
+    	for x in $(seq 1  "$refresh_time" "$seconds"); do
+         	b=$(( 255 - $(( x * 255 / (seconds * refresh_time_inverted)  )) ))
+			text=""
          	for i in $(seq 1 "$rows"); do
             	for j in $(seq 1 "$cols"); do
                 	r=$(( 255 - $((i*255/rows )) ))
                 	g=$(( 255 - $((j*255/cols )) ))
-                    printf "\033[48;2;%s;%s;%sm \033[0m" "$r" "$g" "$b"
+                    text+="\033[48;2;$r;$g;${b}m \033[0m"
                 done
-             	echo
+				text+="\n"
          	done
-        sleep 0.5
+			clear
+			echo -en "$text"
+        sleep "$refresh_time"
     	done
     ;;
 	"i"|"info")

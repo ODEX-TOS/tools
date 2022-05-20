@@ -100,8 +100,7 @@ do_display_manager(){
 systemctl -f enable gdm || echo "gmd display manager is not present"
 systemctl -f enable sddm || echo "sddm display manager is not present"
 systemctl -f enable lightdm || echo "lightdm display manager is not present"
-pacman -R gnome-software --noconfirm
-pacman -Rsc gnome-boxes --noconfirm
+
 
 }
 
@@ -134,6 +133,8 @@ do_user_setup(){
     systemctl enable bluetooth
     systemctl enable sshd
     systemctl enable tlp
+    systemctl enable cups || true
+    systemctl enable haveged || true
 
     mkdir -p "/home/$NEW_USER/"{Desktop,Documents,Videos}
     chown -R "$NEW_USER:users" "/home/$NEW_USER"
@@ -166,6 +167,14 @@ do_user_setup(){
         fi
         
         cp /etc/xdg/tde/configuration/picom.conf /home/"$NEW_USER"/.config/picom.conf
+    fi
+
+    if [[ "$(command -v gnome-shell)" ]]; then
+           sed -i 's/#WaylandEnable=false/WaylandEnable=true/g' /etc/gdm/custom.conf || true
+           systemctl disable lightdm || true
+           systemctl enable gdm || true
+           # Should run as user
+           su "$NEW_USER" -c 'bash /etc/tos/gnome-setup.sh' || true
     fi
 }
 

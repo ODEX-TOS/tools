@@ -11,7 +11,7 @@ license=('GPL')
 source=(
 "git+https://github.com/ODEX-TOS/tools.git")
 md5sums=('SKIP')
-depends=('git' 'bash' 'bluez-utils' 'gnupg' 'networkmanager' 'pacman-contrib' 'checkupdates-aur-tos' 'imagemagick' 'light' 'feh' 'yay')
+depends=('git' 'bash' 'bluez-utils' 'gnupg' 'networkmanager' 'pacman-contrib' 'checkupdates-aur-tos' 'imagemagick' 'light' 'feh' 'yay' 'gnome' 'gnome-shell-extensions')
 makedepends=('git')
 
 pkgver() {
@@ -31,6 +31,7 @@ package() {
         install -Dm755 rankmirror "$pkgdir"/usr/bin/rankmirror
         install -Dm755 tos "$pkgdir"/usr/bin/tos
         install -Dm755 cleanup.sh "$pkgdir"/usr/bin/cleanup.sh
+        install -Dm755 gnome-setup.sh "$pkgdir"/etc/tos/gnome-setup.sh
         install -Dm755 brightness "$pkgdir"/usr/bin/brightness
         install -Dm755 checkupdates-tos "$pkgdir"/usr/bin/checkupdates-tos
         install -Dm755 09-timezone.NM "$pkgdir"/etc/NetworkManager/dispatcher.d/09-timezone
