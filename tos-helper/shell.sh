@@ -66,7 +66,7 @@ function spinner()
     while ps a | awk '{print $1}' | grep -q "$pid"; do
         local temp=${spinstr#?}
         loadtime="$(awk -v loadtime="$loadtime" -v delay="$delay" 'BEGIN {print loadtime + delay; exit}')"
-        printf " [%c]  %.0fs" "$spinstr" "$loadtime" 2>/dev/null
+        printf " [${ORANGE}%c${NC}]  %.0fs" "$spinstr" "$loadtime" 2>/dev/null
         local spinstr=$temp${spinstr%"$temp"}
         sleep "$delay"
         printf "\r"
@@ -80,7 +80,7 @@ function list() {
         while read -r line; do
             local num=$(( num + 1 ))
             # shellcheck disable=SC2016
-            SIZE="$(env "$line" sh -c 'sudo du -chs "$DIR" | tail -n1 | cut -f1')"
+            SIZE="$(env $line sh -c 'sudo du -chs "$DIR" | tail -n1 | cut -f1')"
             if echo "$line" | grep -q "MOUNT=0"; then
                 # shellcheck disable=SC2016
                 env "$line" SIZE="$SIZE" ID="$num" sh -c 'echo "ID: $ID -- Command: $RUN, Filesystem size: $SIZE"'
@@ -92,11 +92,15 @@ function list() {
     fi
 }
 
+function remove_from_line() {
+        # shellcheck disable=SC2016
+	env $@ sudo sh -c 'if mountpoint -q "$DIR/proc"; then sudo umount "$DIR/proc" ;fi ; rm -rf "$DIR"'
+}
+
 function clean() {
     if [[ -f "/var/cache/tos-shell/$USER.list" ]]; then
         while read -r line; do
-            # shellcheck disable=SC2016
-            env "$line" sudo sh -c 'rm -rf "$DIR"'
+            remove_from_line $line
         done <"/var/cache/tos-shell/$USER.list"
         sudo rm "/var/cache/tos-shell/$USER.list"
         sudo touch "/var/cache/tos-shell/$USER.list"
@@ -110,8 +114,7 @@ function remove() {
         while read -r line; do
             num=$(( num + 1 ))
             if [[ "$num" == "$1" ]]; then
-                # shellcheck disable=SC2016
-                env "$line" sudo sh -c 'rm -rf "$DIR"'
+            	remove_from_line $line
                 # remove line
                 awk -v num="$num" '!(num == NR){print $0}' "/var/cache/tos-shell/$USER.list" > temp && sudo mv temp "/var/cache/tos-shell/$USER.list"
                 break
@@ -220,7 +223,7 @@ function generate_env() {
 
     echo "Preparing isolated environment"
 
-    sudo pacstrap -c "$DIR" base bash "$PACKAGE" 1>/dev/null &
+    sudo pacstrap -c "$DIR" base bash "$PACKAGE" &>/dev/null &
     spinner "$!"
 
     # working directory
@@ -276,7 +279,10 @@ function cleanup() {
     if [[ -d "$MOUNT" && -d "$DIR/data" ]]; then
         sudo umount "$DIR/data"
     fi
-    if [[ "$DELETE" == "1" ]]; then
+    if mountpoint -q "$DIR/proc"; then
+        sudo umount "$DIR/proc"
+    fi
+    if [[ "$DELETE" == "1" && "$DIR" != "" && -d "$DIR" ]]; then
         sudo rm -rf "$DIR"
     fi
 }
