@@ -256,7 +256,7 @@ function save() {
     if [[ ! "$SAVE" == "1" ]]; then
         return
     fi
-    echo -e"${BLUE}(tos-shell)${NC} Commiting current state"
+    echo -e "${BLUE}(tos-shell)${NC} Commiting current state"
 
     # ensure the config dir exists
     if [[ ! -d "/var/cache/tos-shell" ]]; then
