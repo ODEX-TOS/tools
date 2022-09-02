@@ -66,7 +66,7 @@ function spinner()
     while ps a | awk '{print $1}' | grep -q "$pid"; do
         local temp=${spinstr#?}
         loadtime="$(awk -v loadtime="$loadtime" -v delay="$delay" 'BEGIN {print loadtime + delay; exit}')"
-        printf " [${ORANGE}%c${NC}]  %.0fs" "$spinstr" "$loadtime" 2>/dev/null
+        printf "${BLUE}(tos-shell)${NC} [${ORANGE}%c${NC}]  %.0fs" "$spinstr" "$loadtime" 2>/dev/null
         local spinstr=$temp${spinstr%"$temp"}
         sleep "$delay"
         printf "\r"
@@ -138,7 +138,7 @@ function arg_parse(){
             exit 0
         ;;
         "run"|"ru")
-            echo "Running: $3"
+            echo -e "${BLUE}(tos-shell)${NC} Running: $3"
             RUNSAVED="$3"
             if [[ "$3" -gt "$(wc -l /var/cache/tos-shell/"$USER".list | awk '{print $1}')" || "$3" -lt "1" ]]; then
                 echo "Invalid id"
@@ -202,7 +202,7 @@ function validate_user(){
         exit 1
     fi
     # temporary escalate privileges so it doesn't happen in a background job
-    echo "Elevating privileges"
+    echo -e "${BLUE}(tos-shell)${NC} Elevating privileges"
     sudo printf ""
 }
 
@@ -212,8 +212,8 @@ function validate_command() {
         exit 1
     fi
     if ! pacman -Ss "^$PACKAGE\$" &>/dev/null; then
-        echo "Package cannot be installed, since it doesn't exist"
-        printf "If you feel this is a mistake you can enter the environment by executing ${ORANGE}tos shell bash${NC}\n"
+        echo -e "${RED}(tos-shell)${NC} Package cannot be installed, since it doesn't exist"
+        printf "${RED}(tos-shell)${NC} If you feel this is a mistake you can enter the environment by executing ${ORANGE}tos shell bash${NC}\n"
         exit 1
     fi
 }
@@ -221,7 +221,7 @@ function validate_command() {
 function generate_env() {
     DIR="$(mktemp -d -p "$HOME/.cache")"
 
-    echo "Preparing isolated environment"
+    echo -e "${BLUE}(tos-shell)${NC} Preparing isolated environment"
 
     sudo pacstrap -c "$DIR" base bash "$PACKAGE" &>/dev/null &
     spinner "$!"
@@ -256,7 +256,7 @@ function save() {
     if [[ ! "$SAVE" == "1" ]]; then
         return
     fi
-    echo "Commiting current state"
+    echo -e"${BLUE}(tos-shell)${NC} Commiting current state"
 
     # ensure the config dir exists
     if [[ ! -d "/var/cache/tos-shell" ]]; then
@@ -275,7 +275,7 @@ function save() {
 
 function cleanup() {
     # cleanup
-    printf "${GREEN}Cleaning up filesystem${NC}\n"
+    printf "${BLUE}(tos-shell)${NC} ${GREEN}Cleaning up filesystem${NC}\n"
     if [[ -d "$MOUNT" && -d "$DIR/data" ]]; then
         sudo umount "$DIR/data"
     fi
